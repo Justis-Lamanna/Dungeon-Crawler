@@ -6,7 +6,7 @@ public class DungeonView extends JFrame
 	public static final int INITIAL_WIDTH = 800;
 	public static final int INITIAL_HEIGHT = 800;
 	public static final String TILES = "tiles.png";
-	public static final String TILEMAP = "tilemap.png";
+	public static final String TILEMAP = "tilemap.txt";
 
 	private Dungeon dungeon;
 
