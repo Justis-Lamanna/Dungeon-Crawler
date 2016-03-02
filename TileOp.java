@@ -1,3 +1,4 @@
+//
 public class TileOp
 {
 	public static final int OBSTACLE = 0;
@@ -28,6 +29,7 @@ public class TileOp
 			{
 				for(int dcol = -1; dcol <= 1; dcol++)
 				{
+					if(drow * dcol == 0){continue;}
 					try
 					{
 						if(basemap[row+drow][col+dcol] == LAND){count += dcount;}
