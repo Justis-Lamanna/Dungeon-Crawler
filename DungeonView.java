@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class DungeonView extends JFrame
 {
@@ -23,9 +24,20 @@ public class DungeonView extends JFrame
 		JPanel frame = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
-		Dungeon dungeon = new Dungeon(tileFilename, tilemapFilename);
+		dungeon = new Dungeon(tileFilename, tilemapFilename);
 		c = setGridBagConstraints(0, 0, 5, 1, 0.9, 1.0);
 		frame.add(dungeon, c);
+
+		JButton baseMapButton = new JButton("Base Map");
+		c = setGridBagConstraints(0, 1, 1, 1, 0.1, 0.1);
+		baseMapButton.addActionListener((ActionEvent e) -> dungeon.setDrawMap(Dungeon.BASEMAP));
+		frame.add(baseMapButton, c);
+
+		JButton regMapButton = new JButton("Tile Map");
+		c = setGridBagConstraints(0, 2, 1, 1, 0.1, 0.1);
+		regMapButton.addActionListener((ActionEvent e) -> dungeon.setDrawMap(Dungeon.TILEMAP));
+		frame.add(regMapButton, c);
+
 		add(frame);
 	}
 

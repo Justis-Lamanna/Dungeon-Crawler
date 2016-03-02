@@ -8,25 +8,31 @@ import java.awt.image.BufferedImage;
 public class Dungeon extends JComponent
 {
 	public static final int TILE_SIZE = 24;
+	public static final boolean BASEMAP = false;
+	public static final boolean TILEMAP = true;
 
 	private String tileFilename;
 	private String tilemapFilename;
-
 	private BufferedImage tilebase;
 	private BufferedImage[] tiles;
 	private int[][] tilemap;
+	private int[][] basemap;
+
+	private boolean mapToDraw = BASEMAP;
 
 	public Dungeon(String tileFilename, String tilemapFilename)
 	{
 		this.tileFilename = tileFilename;
 		this.tilemapFilename = tilemapFilename;
 		tiles = generateTiles(tileFilename);
-		tilemap = parseTilemap(tilemapFilename);
+		basemap = generateBasemap(tilemapFilename);
+		tilemap = generateTilemap(basemap);
 	}
 
 	public void paint(Graphics g)
 	{
-		paintMap(g, 10);
+		if(mapToDraw == TILEMAP){paintMap(g, 10);}
+		else{paintBasemap(g, 10, 10, 14, 50);}
 	}
 
 	private void paintMap(Graphics g, int backgroundTile)
@@ -38,7 +44,32 @@ public class Dungeon extends JComponent
 			{
 				try
 				{
-					g.drawImage(getTile(row, col), col*TILE_SIZE, row*TILE_SIZE, null);
+					BufferedImage tile = getTile(tiles, tilemap, row, col);
+					g.drawImage(tile, col*TILE_SIZE, row*TILE_SIZE, null);
+				}
+				catch(IndexOutOfBoundsException ex)
+				{
+					g.drawImage(bgTile, col*TILE_SIZE, row*TILE_SIZE, null);
+				}
+			}
+		}
+	}
+
+	private void paintBasemap(Graphics g, int backgroundTile, int obstacleTile, int groundTile, int waterTile)
+	{
+		BufferedImage bgTile = tiles[backgroundTile];
+		BufferedImage obTile = tiles[obstacleTile];
+		BufferedImage grTile = tiles[groundTile];
+		BufferedImage waTile = tiles[waterTile];
+		BufferedImage[] baseTiles = {obTile, grTile, waTile};
+		for(int row = 0; row < getHeight()/TILE_SIZE; row++)
+		{
+			for(int col = 0; col < getWidth()/TILE_SIZE; col++)
+			{
+				try
+				{
+					BufferedImage tile = getTile(baseTiles, basemap, row, col);
+					g.drawImage(tile, col*TILE_SIZE, row*TILE_SIZE, null);
 				}
 				catch(IndexOutOfBoundsException ex)
 				{
@@ -80,54 +111,51 @@ public class Dungeon extends JComponent
 		return returnArray;
 	}
 
-	private int[][] parseTilemap(String filename)
+	private int[][] generateBasemap(String filename)
 	{
-		int[][] returnArray;
-		try(Scanner inScanner = new Scanner(new File(filename)))
-		{
-			int width = inScanner.nextInt();
-			int height = inScanner.nextInt();
-			inScanner.nextLine(); //There's a newline left after parsing width and height; This consumes it.
-			return parseTilemap(inScanner, width, height);
+		int[][] returnValue = null;
+		try
+		{	
+			Scanner inScanner = new Scanner(new File(filename));
+			int mapWidth = inScanner.nextInt();
+			int mapHeight = inScanner.nextInt();
+			inScanner.nextLine(); //There's a newline left after nextInt. This eats the newLine.
+			returnValue = new int[mapHeight][mapWidth];
+			for(int row = 0; row < returnValue.length; row++)
+			{
+				String[] line = inScanner.nextLine().split(" +");
+				for(int col = 0; col < line.length; col++)
+				{
+					returnValue[row][col] = Integer.parseInt(line[col]);
+				}
+			}
 		}
 		catch(FileNotFoundException ex)
 		{
 			ex.printStackTrace();
-			return null;
 		}
+		return returnValue;
 	}
 
-	private int[][] parseTilemap(Scanner inScanner, int width, int height)
+	private int[][] generateTilemap(int[][] basemap)
 	{
-		int[][] returnArray = new int[height][width];
-		for(int row = 0; row < height; row++)
-		{
-			String[] line = inScanner.nextLine().split(" +");
-			for(int col = 0; col < width; col++)
-			{
-				returnArray[row][col] = Integer.parseInt(line[col]);
-			}
-		}
-		return returnArray;
+		return TileOp.convertTilemap(basemap);
 	}
 
-	private BufferedImage getTile(int row, int col)
+	private int[][] generateTilemap(String filename)
 	{
-		int tileNumber = tilemap[row][col];
-		return tiles[tileNumber];
+		return generateBasemap(filename);
 	}
 
-	public void setTiles(String newTileFilename)
+	private BufferedImage getTile(BufferedImage[] tiles, int[][] tilemap, int row, int col)
 	{
-		tileFilename = newTileFilename;
-		tiles = generateTiles(tileFilename);
-		repaint();
+		int tile = tilemap[row][col];
+		return tiles[tile];
 	}
 
-	public void setTilemap(String newTilemapFilename)
+	public void setDrawMap(boolean maptype)
 	{
-		tilemapFilename = newTilemapFilename;
-		tilemap = parseTilemap(tilemapFilename);
+		mapToDraw = maptype;
 		repaint();
 	}
 }
