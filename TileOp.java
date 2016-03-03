@@ -5,6 +5,27 @@ public class TileOp
 	public static final int LAND = 1;
 	public static final int WATER = 2;
 
+	public static final int O_NW = 0;
+	public static final int O_N = 2;
+	public static final int O_NE = 4;
+	public static final int O_W = 8;
+	public static final int O_C = 10;
+	public static final int O_E = 12;
+	public static final int O_SW = 16;
+	public static final int O_S = 18;
+	public static final int O_SE = 20;
+	public static final int O_NW_CORNER = 24;
+	public static final int O_NE_CORNER = 25;
+	public static final int O_SW_CORNER = 32;
+	public static final int O_SE_CORNER = 33;
+	public static final int O_W_HORIZONTAL = 26;
+	public static final int O_C_HORIZONTAL = 27;
+	public static final int O_E_HORIZONTAL = 28;
+	public static final int O_N_VERTICAL = 34;
+	public static final int O_C_VERTICAL = 35;
+	public static final int O_S_VERTICAL = 36;
+	public static final int O_ROCK = 29;
+
 	public static int[][] convertTilemap(int[][] basemap)
 	{
 		int[][] newmap = new int[basemap.length][basemap[0].length];
@@ -14,12 +35,12 @@ public class TileOp
 			{
 				convertTile(basemap, newmap, row, col);
 			}
-			System.out.println();
+			//System.out.println();
 		}
 		return newmap;
 	}
 
-	public static void convertTile(int[][] basemap, int[][] newmap, int row, int col)
+	private static void convertTile(int[][] basemap, int[][] newmap, int row, int col)
 	{
 		if(basemap[row][col] == OBSTACLE)
 		{
@@ -29,20 +50,79 @@ public class TileOp
 			{
 				for(int dcol = -1; dcol <= 1; dcol++)
 				{
-					if(drow * dcol == 0){continue;}
+					//if(drow * dcol == 0){continue;}
 					try
 					{
-						if(basemap[row+drow][col+dcol] == LAND){count += dcount;}
+						int type = basemap[row+drow][col+dcol];
+						if(type == LAND || type == WATER){count += dcount;}
 					}
 					catch(IndexOutOfBoundsException ex){}
 					dcount *= 2;
 				}
 			}
-			//newmap[row][col] = getCorrespondingTile(count);
+			//System.out.print(count + "\t");
+			newmap[row][col] = getObstacleTile(count);
 		}
 		else
 		{
-			newmap[row][col] = basemap[row][col];
+			newmap[row][col] = 14;
+			//System.out.print("||\t");
+		}
+	}
+
+	private static int getObstacleTile(int count)
+	{
+		switch(count)
+		{
+			case 0: return O_C;
+			case 1: return O_NW_CORNER;
+			case 2:
+			case 3:
+			case 6:
+			case 7: return O_N + (int)(Math.random() * 3) - 1;
+			case 4: return O_NE_CORNER;
+			case 8:
+			case 9:
+			case 65:
+			case 72:
+			case 73: return O_W;
+			case 11: 
+			case 15:
+			//case 67: 
+			case 75: 
+			case 79: return O_NW;
+			case 32:
+			case 36:
+			case 288:
+			case 292: return O_E;
+			case 38: 
+			case 39: 
+			case 294:
+			case 295: return O_NE;
+			case 64: return O_SW_CORNER;
+			case 128:
+			case 192:
+			case 384:
+			case 448: return O_S + (int)(Math.random() * 3) - 1;
+			case 200: 
+			case 201: 
+			case 456: 
+			case 457: return O_SW;
+			case 256: return O_SE_CORNER;
+			case 416: 
+			case 420:
+			case 480:
+			case 484: return O_SE;
+			case 455: 
+			case 325: return O_C_HORIZONTAL;
+			case 463: 
+			case 203: return O_W_HORIZONTAL;
+			case 487: 
+			case 422: return O_E_HORIZONTAL;
+			case 365: return O_C_VERTICAL;
+			case 367: return O_N_VERTICAL;
+			case 493: return O_S_VERTICAL;
+			default: return O_ROCK;
 		}
 	}
 }

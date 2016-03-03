@@ -39,6 +39,16 @@ public class DungeonView extends JFrame
 		regMapButton.addActionListener((ActionEvent e) -> dungeon.setDrawMap(Dungeon.TILEMAP));
 		frame.add(regMapButton, c);
 
+		JButton refreshButton = new JButton("Reopen Tile Map");
+		c = setGridBagConstraints(1, 1, 1, 1, 0.1, 0.1);
+		refreshButton.addActionListener((ActionEvent e) -> dungeon.reopen());
+		frame.add(refreshButton, c);
+
+		JButton retryButton = new JButton("Refresh Tile Map");
+		c = setGridBagConstraints(1, 2, 1, 1, 0.1, 0.1);
+		retryButton.addActionListener((ActionEvent e) -> dungeon.refresh());
+		frame.add(retryButton, c);
+
 		add(frame);
 	}
 

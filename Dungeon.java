@@ -159,4 +159,17 @@ public class Dungeon extends JComponent
 		mapToDraw = maptype;
 		repaint();
 	}
+
+	public void refresh()
+	{
+		tilemap = generateTilemap(basemap);
+		repaint();
+	}
+
+	public void reopen()
+	{
+		basemap = generateBasemap(tilemapFilename);
+		tilemap = generateTilemap(basemap);
+		repaint();
+	}
 }
