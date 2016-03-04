@@ -18,22 +18,28 @@ public class Dungeon extends JComponent
 	private BufferedImage[] tiles;
 	private int[][] tilemap;
 	private int[][] basemap;
+	private Node[][] nodes;
+	private ArrayList<RoomNode> rooms = new ArrayList<>();
 
 	private boolean mapToDraw = BASEMAP;
+	private boolean drawNodes = false;
+	private boolean drawPaths = false;
+	private boolean drawRooms = false;
 
 	public Dungeon(String tileFilename, String tilemapFilename)
 	{
 		this.tileFilename = tileFilename;
 		this.tilemapFilename = tilemapFilename;
-		tiles = generateTiles(tileFilename);
-		basemap = generateBasemap(tilemapFilename);
-		tilemap = generateTilemap(basemap);
+		reopen(false);
 	}
 
 	public void paint(Graphics g)
 	{
 		if(mapToDraw == TILEMAP){paintMap(g, 10);}
-		else{paintBasemap(g, 10, 10, 14, 50);}
+		else{paintBasemap(g, 10, 10, 14, 49);}
+		if(drawNodes){paintNodes(g);}
+		if(drawPaths){paintPaths(g);}
+		if(drawRooms){paintRooms(g);}
 	}
 
 	private void paintMap(Graphics g, int backgroundTile)
@@ -80,7 +86,85 @@ public class Dungeon extends JComponent
 		}
 	}
 
-	private BufferedImage[] generateTiles(String filename)
+	private void paintNodes(Graphics g)
+	{
+		for(Node[] noderow : nodes)
+		{
+			for(Node node : noderow)
+			{	
+				if(node != null)
+				{
+					int centerX = node.getX() * TILE_SIZE + (TILE_SIZE/4);
+					int centerY = node.getY() * TILE_SIZE + (TILE_SIZE/4);
+					if(node.getType() == 1){g.setColor(Color.BLACK);}
+					else if(node.getType() == 2){g.setColor(Color.BLUE);}
+					else{g.setColor(Color.WHITE);}
+					g.fillOval(centerX, centerY, TILE_SIZE/2, TILE_SIZE/2);
+				}
+			}
+		}
+	}
+
+	private void paintPaths(Graphics g)
+	{
+		g.setColor(Color.BLACK);
+		for(Node[] noderow : nodes)
+		{
+			for(Node node : noderow)
+			{	
+				if(node != null)
+				{
+					int centerX = node.getX() * TILE_SIZE + (TILE_SIZE/2);
+					int centerY = node.getY() * TILE_SIZE + (TILE_SIZE/2);
+					Node east = node.getPath(Node.EAST);
+					if(east != null)
+					{
+						int westX = east.getX() * TILE_SIZE + (TILE_SIZE/2);
+						int westY = east.getY() * TILE_SIZE + (TILE_SIZE/2);
+						g.drawLine(centerX, centerY, westX, westY);
+					}
+					Node south = node.getPath(Node.SOUTH);
+					if(south != null)
+					{
+						int southX = south.getX() * TILE_SIZE + (TILE_SIZE/2);
+						int southY = south.getY() * TILE_SIZE + (TILE_SIZE/2);
+						g.drawLine(centerX, centerY, southX, southY);
+					}
+					Node southeast = node.getPath(Node.SOUTHEAST);
+					if(southeast != null)
+					{
+						int southeastX = southeast.getX() * TILE_SIZE + (TILE_SIZE/2);
+						int southeastY = southeast.getY() * TILE_SIZE + (TILE_SIZE/2);
+						g.drawLine(centerX, centerY, southeastX, southeastY);
+					}
+					Node southwest = node.getPath(Node.SOUTHWEST);
+					if(southwest != null)
+					{
+						int southwestX = southwest.getX() * TILE_SIZE + (TILE_SIZE/2);
+						int southwestY = southwest.getY() * TILE_SIZE + (TILE_SIZE/2);
+						g.drawLine(centerX, centerY, southwestX, southwestY);
+					}
+				}
+			}
+		}
+	}
+
+	private void paintRooms(Graphics g)
+	{
+		g.setColor(Color.WHITE);
+		for(RoomNode room : rooms)
+		{
+			ArrayList<Node> nodes = room.getNodes();
+			for(Node node : nodes)
+			{
+				int centerX = node.getX() * TILE_SIZE + (TILE_SIZE/4);
+				int centerY = node.getY() * TILE_SIZE + (TILE_SIZE/4);
+				g.fillRect(centerX, centerY, TILE_SIZE/2, TILE_SIZE/2); 
+			}
+		}
+	}
+
+	private void generateTiles(String filename)
 	{
 		BufferedImage tilebase = null;
 		try
@@ -93,41 +177,39 @@ public class Dungeon extends JComponent
 			e.printStackTrace();
 			System.exit(0);
 		}
-		return divideTiles(tilebase, TILE_SIZE, TILE_SIZE);
+		divideTiles(tilebase, TILE_SIZE, TILE_SIZE);
 	}
 
-	private BufferedImage[] divideTiles(BufferedImage image, int width, int height)
+	private void divideTiles(BufferedImage image, int width, int height)
 	{
 		int tileWidth = image.getWidth(null) / width;
 		int tileHeight = image.getHeight(null) / height;
 		int totalTiles = tileWidth * tileHeight;
-		BufferedImage[] returnArray = new BufferedImage[totalTiles];
+		tiles = new BufferedImage[totalTiles];
 		for(int col = 0; col < tileHeight; col++)
 		{
 			for(int row = 0; row < tileWidth; row++)
 			{
-				returnArray[col*tileWidth+row] = image.getSubimage(row*height, col*width, height, width);
+				tiles[col*tileWidth+row] = image.getSubimage(row*height, col*width, height, width);
 			}
 		}
-		return returnArray;
 	}
 
-	private int[][] generateBasemap(String filename)
+	private void generateBasemap(String filename)
 	{
-		int[][] returnValue = null;
 		try
 		{	
 			Scanner inScanner = new Scanner(new File(filename));
 			int mapWidth = inScanner.nextInt();
 			int mapHeight = inScanner.nextInt();
 			inScanner.nextLine(); //There's a newline left after nextInt. This eats the newLine.
-			returnValue = new int[mapHeight][mapWidth];
-			for(int row = 0; row < returnValue.length; row++)
+			basemap = new int[mapHeight][mapWidth];
+			for(int row = 0; row < basemap.length; row++)
 			{
 				String[] line = inScanner.nextLine().split(" +");
 				for(int col = 0; col < line.length; col++)
 				{
-					returnValue[row][col] = Integer.parseInt(line[col]);
+					basemap[row][col] = Integer.parseInt(line[col]);
 				}
 			}
 		}
@@ -135,17 +217,11 @@ public class Dungeon extends JComponent
 		{
 			ex.printStackTrace();
 		}
-		return returnValue;
 	}
 
-	private int[][] generateTilemap(int[][] basemap)
+	private void generateTilemap(int[][] basemap)
 	{
-		return TileOp.convertTilemap(basemap);
-	}
-
-	private int[][] generateTilemap(String filename)
-	{
-		return generateBasemap(filename);
+		tilemap = TileOp.convertTilemap(basemap);
 	}
 
 	private BufferedImage getTile(BufferedImage[] tiles, int[][] tilemap, int row, int col)
@@ -154,22 +230,148 @@ public class Dungeon extends JComponent
 		return tiles[tile];
 	}
 
-	public void setDrawMap(boolean maptype)
+	private void findNodes()
+	{
+		nodes = new Node[basemap.length][basemap[0].length];
+		for(int row = 0; row < basemap.length; row++)
+		{
+			for(int col = 0; col < basemap[0].length; col++)
+			{
+				if(basemap[row][col] != 0)
+				{
+					nodes[row][col] = new Node(basemap[row][col], col, row);
+					//System.out.println(basemap[row][col]);
+				}
+			}
+		}
+	}
+
+	private void findPaths()
+	{
+		for(int row = 0; row < nodes.length; row++)
+		{
+			for(int col = 0; col < nodes[0].length; col++)
+			{
+				Node current = nodes[row][col];
+				if(current == null){continue;}
+				Node east;
+				try{east = nodes[row][col+1];}
+				catch(ArrayIndexOutOfBoundsException ex){east = null;}
+				current.setDoublePath(east, Node.EAST);
+				Node south;
+				try{south = nodes[row+1][col];}
+				catch(ArrayIndexOutOfBoundsException ex){south = null;}
+				current.setDoublePath(south, Node.SOUTH);
+				if(east != null && south != null)
+				{
+					Node southeast;
+					try{southeast = nodes[row+1][col+1];}
+					catch(ArrayIndexOutOfBoundsException ex){southeast = null;}
+					current.setDoublePath(southeast, Node.SOUTHEAST);
+				}
+				Node west;
+				try{west = nodes[row][col-1];}
+				catch(ArrayIndexOutOfBoundsException ex){west = null;}
+				if(west != null && south != null)
+				{
+					Node southwest;
+					try{southwest = nodes[row+1][col-1];}
+					catch(ArrayIndexOutOfBoundsException ex){southwest = null;}
+					current.setDoublePath(southwest, Node.SOUTHWEST);
+				}
+			}
+		}
+	}
+
+	private void findRooms()
+	{
+		boolean[][] visited = new boolean[nodes.length][nodes[0].length];
+		for(int row = 0; row < nodes.length; row++)
+		{
+			for(int col = 0; col < nodes[0].length; col++)
+			{
+				if(nodes[row][col] != null && !visited[row][col] && isRoom(row, col))
+				{
+					createRoom(row, col, visited);
+				}
+			}
+		}
+	}
+
+	private boolean isRoom(int row, int col)
+	{
+		Node current = nodes[row][col];
+		return
+			(current.getPath(Node.NORTHWEST) != null) ||
+			(current.getPath(Node.NORTHEAST) != null) ||
+			(current.getPath(Node.SOUTHWEST) != null) ||
+			(current.getPath(Node.SOUTHEAST) != null);
+	}
+
+	private void createRoom(int row, int col, boolean[][] visited)
+	{
+		LinkedList<Node> nodesToVisit = new LinkedList<>();
+		RoomNode room = new RoomNode();
+		nodesToVisit.add(nodes[row][col]);
+		while(nodesToVisit.size() > 0)
+		{
+			Node current = nodesToVisit.remove();
+			visited[current.getY()][current.getX()] = true;
+			room.addNode(current);
+			addUnvisitedToQueue(current, Node.NORTHWEST, nodesToVisit, visited);
+			addUnvisitedToQueue(current, Node.NORTHEAST, nodesToVisit, visited);
+			addUnvisitedToQueue(current, Node.SOUTHWEST, nodesToVisit, visited);
+			addUnvisitedToQueue(current, Node.SOUTHEAST, nodesToVisit, visited);
+			addUnvisitedToQueue(current, Node.NORTH, nodesToVisit, visited);
+			addUnvisitedToQueue(current, Node.EAST, nodesToVisit, visited);
+			addUnvisitedToQueue(current, Node.WEST, nodesToVisit, visited);
+			addUnvisitedToQueue(current, Node.SOUTH, nodesToVisit, visited);
+		}
+		rooms.add(room);
+	}
+
+	public void addUnvisitedToQueue(Node current, int direction, LinkedList nodesToVisit, boolean[][] visited)
+	{
+		Node nw = current.getPath(direction);
+		if(nw != null && !visited[nw.getY()][nw.getX()] && isRoom(nw.getY(), nw.getX()))
+		{
+			nodesToVisit.add(nw);
+			visited[nw.getY()][nw.getX()] = true;
+		}
+	}
+
+	public void setDrawMap(boolean maptype, boolean repaint)
 	{
 		mapToDraw = maptype;
-		repaint();
+		if(repaint){repaint();}
 	}
 
-	public void refresh()
+	public void reopen(boolean repaint)
 	{
-		tilemap = generateTilemap(basemap);
-		repaint();
+		generateTiles(tileFilename);
+		generateBasemap(tilemapFilename);
+		generateTilemap(basemap);
+		findNodes();
+		findPaths();
+		findRooms();
+		if(repaint){repaint();}
 	}
 
-	public void reopen()
+	public void toggleNodes(boolean repaint)
 	{
-		basemap = generateBasemap(tilemapFilename);
-		tilemap = generateTilemap(basemap);
-		repaint();
+		drawNodes = !drawNodes;
+		if(repaint){repaint();}
+	}
+
+	public void togglePaths(boolean repaint)
+	{
+		drawPaths = !drawPaths;
+		if(repaint){repaint();}
+	}
+
+	public void toggleRooms(boolean repaint)
+	{
+		drawRooms = !drawRooms;
+		if(repaint){repaint();}
 	}
 }

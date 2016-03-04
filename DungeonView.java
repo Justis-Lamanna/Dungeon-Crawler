@@ -31,23 +31,33 @@ public class DungeonView extends JFrame
 
 		JButton baseMapButton = new JButton("Base Map");
 		c = setGridBagConstraints(0, 1, 1, 1, 0.1, 0.1);
-		baseMapButton.addActionListener((ActionEvent e) -> dungeon.setDrawMap(Dungeon.BASEMAP));
+		baseMapButton.addActionListener((ActionEvent e) -> dungeon.setDrawMap(Dungeon.BASEMAP, true));
 		frame.add(baseMapButton, c);
 
 		JButton regMapButton = new JButton("Tile Map");
 		c = setGridBagConstraints(0, 2, 1, 1, 0.1, 0.1);
-		regMapButton.addActionListener((ActionEvent e) -> dungeon.setDrawMap(Dungeon.TILEMAP));
+		regMapButton.addActionListener((ActionEvent e) -> dungeon.setDrawMap(Dungeon.TILEMAP, true));
 		frame.add(regMapButton, c);
 
 		JButton refreshButton = new JButton("Reopen Tile Map");
 		c = setGridBagConstraints(1, 1, 1, 1, 0.1, 0.1);
-		refreshButton.addActionListener((ActionEvent e) -> dungeon.reopen());
+		refreshButton.addActionListener((ActionEvent e) -> dungeon.reopen(true));
 		frame.add(refreshButton, c);
 
-		JButton retryButton = new JButton("Refresh Tile Map");
-		c = setGridBagConstraints(1, 2, 1, 1, 0.1, 0.1);
-		retryButton.addActionListener((ActionEvent e) -> dungeon.refresh());
+		JButton retryButton = new JButton("Toggle Nodes");
+		c = setGridBagConstraints(2, 1, 1, 1, 0.1, 0.1);
+		retryButton.addActionListener((ActionEvent e) -> dungeon.toggleNodes(true));
 		frame.add(retryButton, c);
+
+		JButton pathButton = new JButton("Toggle Path");
+		c = setGridBagConstraints(2, 2, 1, 1, 0.1, 0.1);
+		pathButton.addActionListener((ActionEvent e) -> dungeon.togglePaths(true));
+		frame.add(pathButton, c);
+
+		JButton roomButton = new JButton("Toggle Rooms");
+		c = setGridBagConstraints(3, 1, 1, 1, 0.1, 0.1);
+		roomButton.addActionListener((ActionEvent e) -> dungeon.toggleRooms(true));
+		frame.add(roomButton, c);
 
 		add(frame);
 	}

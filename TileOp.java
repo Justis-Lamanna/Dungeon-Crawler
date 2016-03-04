@@ -63,10 +63,14 @@ public class TileOp
 			//System.out.print(count + "\t");
 			newmap[row][col] = getObstacleTile(count);
 		}
-		else
+		else if(basemap[row][col] == LAND)
 		{
 			newmap[row][col] = 14;
 			//System.out.print("||\t");
+		}
+		else
+		{
+			newmap[row][col] = 49;
 		}
 	}
 
@@ -104,18 +108,22 @@ public class TileOp
 			case 192:
 			case 384:
 			case 448: return O_S + (int)(Math.random() * 3) - 1;
+			case 193:
 			case 200: 
 			case 201: 
+			case 449:
 			case 456: 
 			case 457: return O_SW;
 			case 256: return O_SE_CORNER;
 			case 416: 
 			case 420:
+			case 452: 
 			case 480:
 			case 484: return O_SE;
 			case 455: 
 			case 325: return O_C_HORIZONTAL;
 			case 463: 
+			case 454:
 			case 203: return O_W_HORIZONTAL;
 			case 487: 
 			case 422: return O_E_HORIZONTAL;
