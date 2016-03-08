@@ -55,4 +55,17 @@ public class Node
 	{
 		return connections[direction];
 	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		Node node = (Node)o;
+		return (x == node.getX() && y == node.getY());
+	}
+
+	@Override
+	public String toString()
+	{
+		return String.format("(%d, %d, %d)", x, y, type);
+	}
 }

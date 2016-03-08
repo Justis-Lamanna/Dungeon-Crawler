@@ -5,6 +5,8 @@ public class RoomNode
 	private ArrayList<Node> containedNodes;
 	private ArrayList<RoomNode> connections;
 
+	private Node centerNode;
+
 	public RoomNode()
 	{
 		containedNodes = new ArrayList<Node>();
@@ -30,6 +32,34 @@ public class RoomNode
 	public ArrayList<Node> getNodes()
 	{
 		return containedNodes;
+	}
+
+	public boolean calculateCenter()
+	{
+		for(Node node : containedNodes)
+		{
+			if(
+				containedNodes.contains(node.getPath(Node.NORTH)) &&
+				containedNodes.contains(node.getPath(Node.EAST)) &&
+				containedNodes.contains(node.getPath(Node.SOUTH)) &&
+				containedNodes.contains(node.getPath(Node.WEST)))
+			{
+				centerNode = node;
+				return true;
+			}
+		}
+		//Nothing matched the criteria.
+		return false;
+	}
+
+	public int getX()
+	{
+		return centerNode.getX();
+	}
+
+	public int getY()
+	{
+		return centerNode.getY();
 	}
 
 	@Override
