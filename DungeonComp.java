@@ -18,10 +18,11 @@ public class DungeonComp extends JComponent
 	private boolean drawNodes = false;
 	private boolean drawPaths = false;
 	private boolean drawRooms = false;
+	private boolean drawEntity = false;
 
 	public DungeonComp(String tileFilename, String tilemapFilename)
 	{
-		dungeon = new Dungeon(tilemapFilename);
+		dungeon = new Dungeon(tilemapFilename, Dungeon.TEST_LIST);
 		generateTiles(tileFilename);
 	}
 
@@ -32,6 +33,7 @@ public class DungeonComp extends JComponent
 		if(drawNodes){paintNodes(g);}
 		if(drawPaths){paintPaths(g);}
 		if(drawRooms){paintRooms(g);}
+		if(drawEntity){paintEntities(g);}
 	}
 
 	private void paintMap(Graphics g, int backgroundTile)
@@ -165,6 +167,23 @@ public class DungeonComp extends JComponent
 		}
 	}
 
+	private void paintEntities(Graphics g)
+	{
+		ArrayList<Entity> allEntities = dungeon.getEntities();
+		for(Entity entity : allEntities)
+		{
+			BufferedImage entityImage = entity.getSpecies().getImage();
+			int drawX = (entity.getX() * TILE_SIZE) - ((entityImage.getWidth() - TILE_SIZE) / 2);
+			int drawY = (entity.getY() * TILE_SIZE) - (entityImage.getHeight() - TILE_SIZE);
+			g.drawImage(entityImage, drawX, drawY, null);
+		}
+	}
+
+	private int calculateDrawPoint(int tileNumber, int imageWidth)
+	{
+		return (tileNumber * TILE_SIZE) - ((imageWidth - TILE_SIZE)/2);
+	}
+
 	private void generateTiles(String filename)
 	{
 		BufferedImage tilebase = null;
@@ -227,6 +246,12 @@ public class DungeonComp extends JComponent
 	public void toggleRooms(boolean repaint)
 	{
 		drawRooms = !drawRooms;
+		if(repaint){repaint();}
+	}
+
+	public void toggleEntity(boolean repaint)
+	{
+		drawEntity = !drawEntity;
 		if(repaint){repaint();}
 	}
 }

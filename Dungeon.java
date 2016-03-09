@@ -8,15 +8,22 @@ import java.awt.image.BufferedImage;
 
 public class Dungeon
 {
+	public static final Species[] TEST_LIST = {Species.ROBOT2};
+
 	private String tilemapFilename;
 	private int[][] tilemap;
 	private int[][] basemap;
 	private Node[][] nodes;
 	private ArrayList<RoomNode> rooms = new ArrayList<>();
 
-	public Dungeon(String tilemapFilename)
+	private Entity player;
+	private Species[] possibleSpecies;
+	private ArrayList<Entity> enemies = new ArrayList<>();
+
+	public Dungeon(String tilemapFilename, Species[] speciesList)
 	{
 		this.tilemapFilename = tilemapFilename;
+		possibleSpecies = speciesList;
 		loadDungeon();
 	}
 
@@ -27,6 +34,9 @@ public class Dungeon
 		findNodes();
 		findPaths();
 		findRooms();
+		player = new Entity(this, Species.PLAYER);
+		enemies.clear();
+		spawnEnemies(1);
 	}
 
 	private void generateBasemap(String filename)
@@ -175,7 +185,7 @@ public class Dungeon
 		}
 	}
 
-	public void addUnvisitedToQueue(Node current, int direction, LinkedList nodesToVisit, boolean[][] visited)
+	public void addUnvisitedToQueue(Node current, int direction, LinkedList<Node> nodesToVisit, boolean[][] visited)
 	{
 		Node nw = current.getPath(direction);
 		if(nw != null && !visited[nw.getY()][nw.getX()] && isRoom(nw.getY(), nw.getX()))
@@ -203,5 +213,50 @@ public class Dungeon
 	public ArrayList<RoomNode> getRooms()
 	{
 		return rooms;
+	}
+
+	public ArrayList<Entity> getEntities()
+	{
+		ArrayList<Entity> entities = new ArrayList<>();
+		entities.add(player);
+		for(Entity enemy : enemies)
+		{
+			entities.add(enemy);
+		}
+		return entities;
+	}
+
+	public void spawnEnemies(int number)
+	{
+		Random prng = new Random();
+		for(int count = 0; count < number; count++)
+		{
+			Species randomSpecies = possibleSpecies[prng.nextInt(possibleSpecies.length)];
+			Entity enemy = new Entity(this, randomSpecies);
+			int iteration = 0;
+			while(!isValidPosition(enemy))
+			{
+				enemy.randomizeLocation();
+			}
+			enemies.add(enemy);
+		}
+	}
+
+	private boolean isValidPosition(Entity newEnemy)
+	{
+		int newEnemyX = newEnemy.getX();
+		int newEnemyY = newEnemy.getY();
+		if(newEnemyX == player.getX() && newEnemyY == player.getY())
+		{
+			return false;
+		}
+		for(Entity enemy : enemies)
+		{
+			if(newEnemyX == enemy.getX() && newEnemyY == enemy.getY())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

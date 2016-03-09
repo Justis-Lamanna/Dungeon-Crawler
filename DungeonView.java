@@ -26,8 +26,9 @@ public class DungeonView extends JFrame
 		GridBagConstraints c = new GridBagConstraints();
 
 		dungeon = new DungeonComp(tileFilename, tilemapFilename);
+		JScrollPane scrollpane = new JScrollPane(dungeon);
 		c = setGridBagConstraints(0, 0, 5, 1, 0.9, 1.0);
-		frame.add(dungeon, c);
+		frame.add(scrollpane, c);
 
 		JButton baseMapButton = new JButton("Base Map");
 		c = setGridBagConstraints(0, 1, 1, 1, 0.1, 0.1);
@@ -58,6 +59,11 @@ public class DungeonView extends JFrame
 		c = setGridBagConstraints(3, 1, 1, 1, 0.1, 0.1);
 		roomButton.addActionListener((ActionEvent e) -> dungeon.toggleRooms(true));
 		frame.add(roomButton, c);
+
+		JButton showEntityButton = new JButton("Toggle Entities");
+		c = setGridBagConstraints(3, 2, 1, 1, 0.1, 0.1);
+		showEntityButton.addActionListener((ActionEvent e) -> dungeon.toggleEntity(true));
+		frame.add(showEntityButton, c);
 
 		add(frame);
 	}
