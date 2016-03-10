@@ -254,4 +254,10 @@ public class DungeonComp extends JComponent
 		drawEntity = !drawEntity;
 		if(repaint){repaint();}
 	}
+
+	public void kachunk(boolean repaint)
+	{
+		dungeon.updateAll();
+		if(repaint){repaint();}
+	}
 }

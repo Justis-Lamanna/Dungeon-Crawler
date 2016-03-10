@@ -62,6 +62,11 @@ public class RoomNode
 		return centerNode.getY();
 	}
 
+	public Node getCenter()
+	{
+		return centerNode;
+	}
+
 	@Override
 	public String toString()
 	{
