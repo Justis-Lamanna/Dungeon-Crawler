@@ -253,5 +253,6 @@ public class DungeonComp extends JComponent
 	{
 		drawEntity = !drawEntity;
 		if(repaint){repaint();}
+		
 	}
 }
