@@ -65,7 +65,8 @@ public class TileOp
 		}
 		else if(basemap[row][col] == LAND)
 		{
-			newmap[row][col] = 14;
+			int random = (int)(Math.random() * 3);
+			newmap[row][col] = 14 + (random * 8);
 			//System.out.print("||\t");
 		}
 		else

@@ -8,7 +8,11 @@ import java.awt.image.BufferedImage;
 
 public class Dungeon
 {
-	public static final Species[] TEST_LIST = {Species.ROBOT1, Species.ROBOT2, Species.ROBOT3, Species.ROBOT4, Species.ROBOT5, Species.ROBOT6, Species.ROBOT7, Species.ROBOT8};
+	public static final Species[] TEST_LIST = {
+		Species.ROBOT1, Species.ROBOT2, Species.ROBOT3, 
+		Species.ROBOT4, Species.ROBOT5, Species.ROBOT6, 
+		Species.ROBOT7, Species.ROBOT8, Species.ROBOT9,
+		Species.ROBOT10};
 
 	private String tilemapFilename;
 	private int[][] tilemap;

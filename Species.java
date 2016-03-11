@@ -18,6 +18,8 @@ public class Species
 	public static final Species ROBOT6 = new Species("Robot6", "Sprites/robot6.png");
 	public static final Species ROBOT7 = new Species("Robot7", "Sprites/robot7.png");
 	public static final Species ROBOT8 = new Species("Robot8", "Sprites/robot8.png");
+	public static final Species ROBOT9 = new Species("Robot9", "Sprites/robot9.png");
+	public static final Species ROBOT10 = new Species("Robot10", "Sprites/robot10.png");
 
 	public Species(String name, String imageFilename)
 	{

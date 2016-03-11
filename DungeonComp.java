@@ -14,11 +14,11 @@ public class DungeonComp extends JComponent
 
 	private Dungeon dungeon;
 	private BufferedImage[] tiles;
-	private boolean mapToDraw = BASEMAP;
+	private boolean mapToDraw = TILEMAP;
 	private boolean drawNodes = false;
 	private boolean drawPaths = false;
 	private boolean drawRooms = false;
-	private boolean drawEntity = false;
+	private boolean drawEntity = true;
 
 	public DungeonComp(String tileFilename, String tilemapFilename)
 	{
@@ -153,14 +153,14 @@ public class DungeonComp extends JComponent
 		for(RoomNode room : rooms)
 		{
 			ArrayList<Node> nodes = room.getNodes();
-			g.setColor(Color.WHITE);
+			g.setColor(Color.RED);
 			for(Node node : nodes)
 			{
 				int centerX = node.getX() * TILE_SIZE + (TILE_SIZE/4);
 				int centerY = node.getY() * TILE_SIZE + (TILE_SIZE/4);
 				g.fillRect(centerX, centerY, TILE_SIZE/2, TILE_SIZE/2);
 			}
-			g.setColor(Color.GRAY);
+			g.setColor(Color.PINK);
 			int roomCenterX = room.getX() * TILE_SIZE + (TILE_SIZE/4);
 			int roomCenterY = room.getY() * TILE_SIZE + (TILE_SIZE/4);
 			g.fillRect(roomCenterX, roomCenterY, TILE_SIZE/2, TILE_SIZE/2);
