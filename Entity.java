@@ -7,18 +7,32 @@ public class Entity
 	private Dungeon dungeon;
 	private Species species;
 	private Random prng;
+	private EntityState currentState;
 
-	public Entity(Dungeon dungeon, Species species, long seed)
+	public static final EntityState MOVE_STATE = new MoveState();
+
+	public Entity(Dungeon dungeon, Species species, long seed, EntityState startState)
 	{
 		this.dungeon = dungeon;
 		this.species = species;
 		prng = new Random(seed);
 		randomizeLocation();
+		currentState = startState;
+	}
+
+	public Entity(Dungeon dungeon, Species species, long seed)
+	{
+		this(dungeon, species, seed, MOVE_STATE);
+	}
+
+	public Entity(Dungeon dungeon, Species species, EntityState startState)
+	{
+		this(dungeon, species, System.currentTimeMillis(), startState);
 	}
 
 	public Entity(Dungeon dungeon, Species species)
 	{
-		this(dungeon, species, System.currentTimeMillis());
+		this(dungeon, species, System.currentTimeMillis(), MOVE_STATE);
 	}
 
 	private Node generateLocation()
@@ -28,7 +42,6 @@ public class Entity
 		RoomNode room = rooms.get(randomRoom);
 		ArrayList<Node> nodes = room.getNodes();
 		int randomNode = prng.nextInt(nodes.size());
-		//System.out.println(nodes.get(randomNode));
 		return nodes.get(randomNode);
 	}
 
@@ -48,6 +61,21 @@ public class Entity
 		return currentNode;
 	}
 
+	public void setCurrentNode(Node n)
+	{
+		currentNode = n;
+	}
+
+	public Node getDestinationNode()
+	{
+		return gotoNode;
+	}
+
+	public void setDestinationNode(Node n)
+	{
+		gotoNode = n;
+	}
+
 	public int getX()
 	{
 		return currentNode.getX();
@@ -56,6 +84,16 @@ public class Entity
 	public int getY()
 	{
 		return currentNode.getY();
+	}
+
+	public void setState(EntityState state)
+	{	
+		currentState = state;
+	}
+
+	public void doState()
+	{
+		currentState.doState(this, dungeon);
 	}
 
 	@Override

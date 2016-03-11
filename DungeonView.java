@@ -45,6 +45,11 @@ public class DungeonView extends JFrame
 		refreshButton.addActionListener((ActionEvent e) -> dungeon.reopen(true));
 		frame.add(refreshButton, c);
 
+		JButton kachunkButton = new JButton("Ka-Chunk!");
+		c = setGridBagConstraints(1, 2, 1, 1, 0.1, 0.1);
+		kachunkButton.addActionListener((ActionEvent e) -> dungeon.kachunk(true));
+		frame.add(kachunkButton, c);
+
 		JButton retryButton = new JButton("Toggle Nodes");
 		c = setGridBagConstraints(2, 1, 1, 1, 0.1, 0.1);
 		retryButton.addActionListener((ActionEvent e) -> dungeon.toggleNodes(true));

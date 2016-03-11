@@ -259,4 +259,49 @@ public class Dungeon
 		}
 		return true;
 	}
+
+	public void updateAll()
+	{
+		for(Entity enemy : enemies)
+		{
+			enemy.doState();
+		}
+	}
+
+	public Node randomNode(int type)
+	{
+		ArrayList<Node> list = getNodesList();
+		int randomPosition;
+		do
+		{
+			randomPosition = (int)(Math.random() * list.size());
+		} while (list.get(randomPosition).getType() != type);
+		return list.get(randomPosition);
+	}
+
+	public Node randomRoomNode(Node previous, Node current)
+	{
+		while(true)
+		{
+			int randomPosition = (int)(Math.random() * rooms.size());
+			Node randomNode = rooms.get(randomPosition).getCenter();
+			if(!randomNode.equals(previous) && !randomNode.equals(current)){return randomNode;}
+		}
+	}
+
+	public ArrayList<Node> getNodesList()
+	{
+		ArrayList<Node> retList = new ArrayList<>();
+		for(int row = 0; row < nodes.length; row++)
+		{
+			for(int col = 0; col < nodes[0].length; col++)
+			{
+				if(nodes[row][col] != null)
+				{
+					retList.add(nodes[row][col]);
+				}
+			}
+		}
+		return retList;
+	}
 }

@@ -255,4 +255,10 @@ public class DungeonComp extends JComponent
 		if(repaint){repaint();}
 		
 	}
+
+	public void kachunk(boolean repaint)
+	{
+		dungeon.updateAll();
+		if(repaint){repaint();}
+	}
 }
