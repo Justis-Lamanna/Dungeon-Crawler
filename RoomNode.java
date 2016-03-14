@@ -4,6 +4,8 @@ public class RoomNode
 {
 	private ArrayList<Node> containedNodes;
 	private ArrayList<RoomNode> connections;
+	private ArrayList<Node> justInteriorNodes;
+	private ArrayList<Node> exteriorNodes;
 
 	private Node centerNode;
 
@@ -11,6 +13,8 @@ public class RoomNode
 	{
 		containedNodes = new ArrayList<Node>();
 		connections = new ArrayList<RoomNode>();
+		justInteriorNodes = new ArrayList<Node>();
+		exteriorNodes = new ArrayList<Node>();
 	}
 
 	public void addNode(Node node)
@@ -65,6 +69,32 @@ public class RoomNode
 	public Node getCenter()
 	{
 		return centerNode;
+	}
+
+	public void calculateExteriorNodes()
+	{
+		for(Node node : containedNodes)
+		{
+			for(int dir = 0; dir < 8; dir++)
+			{
+				Node connection = node.getPath(dir);
+				if(connection != null && !containedNodes.contains(connection) && !exteriorNodes.contains(connection))
+				{
+					exteriorNodes.add(connection);
+					justInteriorNodes.add(node);
+				}
+			}
+		}
+	}
+
+	public ArrayList<Node> getExteriorNodes()
+	{
+		return exteriorNodes;
+	}
+
+	public ArrayList<Node> getJustInteriorNodes()
+	{
+		return justInteriorNodes;
 	}
 
 	@Override

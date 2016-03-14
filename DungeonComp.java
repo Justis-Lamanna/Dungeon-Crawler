@@ -160,6 +160,16 @@ public class DungeonComp extends JComponent
 				int centerY = node.getY() * TILE_SIZE + (TILE_SIZE/4);
 				g.fillRect(centerX, centerY, TILE_SIZE/2, TILE_SIZE/2);
 			}
+
+			ArrayList<Node> extNodes = room.getExteriorNodes();
+			g.setColor(Color.ORANGE);
+			for(Node node : extNodes)
+			{
+				int centerX = node.getX() * TILE_SIZE + (TILE_SIZE/4);
+				int centerY = node.getY() * TILE_SIZE + (TILE_SIZE/4);
+				g.fillRect(centerX, centerY, TILE_SIZE/2, TILE_SIZE/2);
+			}
+
 			g.setColor(Color.PINK);
 			int roomCenterX = room.getX() * TILE_SIZE + (TILE_SIZE/4);
 			int roomCenterY = room.getY() * TILE_SIZE + (TILE_SIZE/4);

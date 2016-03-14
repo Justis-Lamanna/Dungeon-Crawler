@@ -185,6 +185,7 @@ public class Dungeon
 		}
 		if(room.calculateCenter()) //If a center can't be found, we consider this to mean it wasn't a room after all.
 		{
+			room.calculateExteriorNodes();
 			rooms.add(room);
 		}
 	}
@@ -307,5 +308,23 @@ public class Dungeon
 			}
 		}
 		return retList;
+	}
+
+	/*public boolean isInRoom(Node node)
+	{
+		for(RoomNode room : rooms)
+		{
+			if(room.getNodes().contains(node)){return true;}
+		}
+		return false;
+	}*/
+
+	public RoomNode getRoom(Node node)
+	{
+		for(RoomNode room : rooms)
+		{
+			if(room.getNodes().contains(node)){return room;}
+		}
+		return null;
 	}
 }
