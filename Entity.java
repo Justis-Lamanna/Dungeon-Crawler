@@ -96,6 +96,11 @@ public class Entity
 		currentState.doState(this, dungeon);
 	}
 
+	public boolean isWater()
+	{
+		return species.isWater();
+	}
+
 	@Override
 	public String toString()
 	{

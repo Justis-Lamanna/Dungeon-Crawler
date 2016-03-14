@@ -14,6 +14,10 @@ public class Node
 	public static final int WEST = 6;
 	public static final int NORTHWEST = 7;
 
+	public static final int OBSTACLE = 0;
+	public static final int LAND = 1;
+	public static final int WATER = 2;
+
 	public Node(int type, int x, int y)
 	{
 		this.x = x;
