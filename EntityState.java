@@ -17,7 +17,9 @@ public abstract class EntityState
 
 	public LinkedList<Node> findShortestPath(Entity entity, Dungeon dungeon, Node start, Node end)
 	{
-		return readPath(findShortestPath(entity, dungeon, start), end);
+		LinkedList<Node> path = readPath(findShortestPath(entity, dungeon, start), end);
+		System.out.println(path);
+		return path;
 	}
 
 	public HashMap<Node, Node> findShortestPath(Entity entity, Dungeon dungeon, Node start)

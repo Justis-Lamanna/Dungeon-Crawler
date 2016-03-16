@@ -11,8 +11,6 @@ public class Entity
 	
 	public int facing;
 
-	public static final EntityState MOVE_STATE = new MoveState();
-
 	public Entity(Dungeon dungeon, Species species, long seed, EntityState startState)
 	{
 		this.dungeon = dungeon;
@@ -24,7 +22,7 @@ public class Entity
 
 	public Entity(Dungeon dungeon, Species species, long seed)
 	{
-		this(dungeon, species, seed, MOVE_STATE);
+		this(dungeon, species, seed, new MoveState());
 	}
 
 	public Entity(Dungeon dungeon, Species species, EntityState startState)
@@ -34,7 +32,7 @@ public class Entity
 
 	public Entity(Dungeon dungeon, Species species)
 	{
-		this(dungeon, species, System.currentTimeMillis(), MOVE_STATE);
+		this(dungeon, species, System.currentTimeMillis(), new MoveState());
 	}
 
 	private Node generateLocation()

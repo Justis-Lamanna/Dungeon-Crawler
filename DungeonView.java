@@ -70,6 +70,11 @@ public class DungeonView extends JFrame
 		showEntityButton.addActionListener((ActionEvent e) -> dungeon.toggleEntity(true));
 		frame.add(showEntityButton, c);
 
+		JButton spawnEnemy = new JButton("Spawn Enemy");
+		c = setGridBagConstraints(4, 1, 1, 1, 0.1, 0.1);
+		spawnEnemy.addActionListener((ActionEvent e) -> dungeon.getDungeon().spawnEnemies(1));
+		frame.add(spawnEnemy, c);
+
 		addInput("NUMPAD8", "goNorth", new DirectionAction(dungeon, 0));
 		addInput("NUMPAD9", "goNorthWest", new DirectionAction(dungeon, 1));
 		addInput("NUMPAD6", "goWest", new DirectionAction(dungeon, 2));
