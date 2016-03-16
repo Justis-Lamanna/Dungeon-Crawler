@@ -70,6 +70,14 @@ public class DungeonView extends JFrame
 		showEntityButton.addActionListener((ActionEvent e) -> dungeon.toggleEntity(true));
 		frame.add(showEntityButton, c);
 
+		Action doNothing = new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Yas!");
+			}
+		};
+		dungeon.getInputMap().put(KeyStroke.getKeyStroke("F2"),  "doNothing");
+		dungeon.getActionMap().put("doNothing",  doNothing);
+
 		add(frame);
 	}
 
