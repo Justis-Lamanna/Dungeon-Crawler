@@ -2,7 +2,6 @@ import java.util.*;
 
 public class MoveState extends EntityState
 {
-	private int cDirection = 0;
 	private Node targetNode = null;
 
 	public void doState(Entity e, Dungeon d)
@@ -26,7 +25,7 @@ public class MoveState extends EntityState
 				targetNode = randomExteriorNode;
 			}
 			Node nextNode = nextNode(e, d, current, targetNode);
-			cDirection = getDirection(current, nextNode);
+			e.facing = getDirection(current, nextNode);
 			e.setCurrentNode(nextNode);
 		}
 		else
@@ -45,17 +44,17 @@ public class MoveState extends EntityState
 			{
 				for(int dir = 0; dir < 4; dir++)
 				{
-					int leftDirection = Math.floorMod(cDirection + dir, 8);
-					int rightDirection = Math.floorMod(cDirection - dir, 8);
+					int leftDirection = Math.floorMod(e.facing + dir, 8);
+					int rightDirection = Math.floorMod(e.facing - dir, 8);
 					if(current.getPath(leftDirection) != null)
 					{
-						cDirection = leftDirection;
+						e.facing = leftDirection;
 						e.setCurrentNode(current.getPath(leftDirection));
 						break;
 					}
 					else if(current.getPath(rightDirection) != null)
 					{
-						cDirection = rightDirection;
+						e.facing = rightDirection;
 						e.setCurrentNode(current.getPath(rightDirection));
 						break;
 					}
@@ -64,7 +63,7 @@ public class MoveState extends EntityState
 			}
 			else
 			{
-				Node exclude = current.getPath((cDirection + 4) % 8);
+				Node exclude = current.getPath((e.facing + 4) % 8); //The opposite direction.
 				Node randomNode;
 				while(true)
 				{
@@ -72,7 +71,7 @@ public class MoveState extends EntityState
 					randomNode = candidateNodes.get(randomPosition);
 					if(!randomNode.equals(exclude)){break;}
 				}
-				cDirection = getDirection(current, randomNode);
+				e.facing = getDirection(current, randomNode);
 				e.setCurrentNode(randomNode);
 			}
 

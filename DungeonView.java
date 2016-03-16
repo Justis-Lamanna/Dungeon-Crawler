@@ -70,13 +70,14 @@ public class DungeonView extends JFrame
 		showEntityButton.addActionListener((ActionEvent e) -> dungeon.toggleEntity(true));
 		frame.add(showEntityButton, c);
 
-		Action doNothing = new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Yas!");
-			}
-		};
-		dungeon.getInputMap().put(KeyStroke.getKeyStroke("F2"),  "doNothing");
-		dungeon.getActionMap().put("doNothing",  doNothing);
+		addInput("NUMPAD8", "goNorth", new DirectionAction(dungeon, 0));
+		addInput("NUMPAD9", "goNorthWest", new DirectionAction(dungeon, 1));
+		addInput("NUMPAD6", "goWest", new DirectionAction(dungeon, 2));
+		addInput("NUMPAD3", "goSouthWest", new DirectionAction(dungeon, 3));
+		addInput("NUMPAD2", "goSouth", new DirectionAction(dungeon, 4));
+		addInput("NUMPAD1", "goSouthEast", new DirectionAction(dungeon, 5));
+		addInput("NUMPAD4", "goEast", new DirectionAction(dungeon, 6));
+		addInput("NUMPAD7", "goNorthEast", new DirectionAction(dungeon, 7));
 
 		add(frame);
 	}
@@ -95,5 +96,11 @@ public class DungeonView extends JFrame
 			new Insets(5, 5, 5, 5), 
 			0, 
 			0);
+	}
+
+	public void addInput(String stroke, String name, Action action)
+	{
+		dungeon.getInputMap().put(KeyStroke.getKeyStroke(stroke), name);
+		dungeon.getActionMap().put(name, action);
 	}
 }

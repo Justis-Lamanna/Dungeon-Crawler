@@ -8,6 +8,8 @@ public class Entity
 	private Species species;
 	private Random prng;
 	private EntityState currentState;
+	
+	public int facing;
 
 	public static final EntityState MOVE_STATE = new MoveState();
 

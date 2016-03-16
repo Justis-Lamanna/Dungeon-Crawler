@@ -4,6 +4,7 @@ Algorithms project involving the creation of a Mystery Dungeon AI.
 Several classes are involved in this project, and getting them straight may be confusing.
 * DungeonView - The entry point of the project.
   * Responsible for creating the main frame.
+  * Responsible for binding the control keys to their respective actions.
 * DungeonComp - A component, used to display the dungeon.
   *Responsible for drawing the dungeon into the frame.
   *Contains the logic for toggling certain aspects of the dungeon, such as entities, nodes, paths, and rooms.
@@ -28,3 +29,4 @@ Several classes are involved in this project, and getting them straight may be c
   * Currently contains an EntityState, a current node, and a target node.
 * EntityState - An abstract class, which is to be extended for each state. Includes code for determining a path.
 * MoveState - A state, which causes an enemy to wander around.
+* DirectionAction - A derivative of Action, which is bound to the numpad. It is responsible for moving the player a certain direction.

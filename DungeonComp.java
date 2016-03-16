@@ -271,4 +271,9 @@ public class DungeonComp extends JComponent
 		dungeon.updateAll();
 		if(repaint){repaint();}
 	}
+
+	public Dungeon getDungeon()
+	{
+		return dungeon;
+	}
 }
