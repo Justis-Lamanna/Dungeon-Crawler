@@ -247,6 +247,11 @@ public class Dungeon
 		}
 	}
 
+	public void clearEnemies()
+	{
+		enemies.clear();
+	}
+
 	private boolean isValidPosition(Entity newEnemy)
 	{
 		int newEnemyX = newEnemy.getX();

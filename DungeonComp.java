@@ -276,4 +276,16 @@ public class DungeonComp extends JComponent
 	{
 		return dungeon;
 	}
+
+	public void spawnEnemies(int number, boolean repaint)
+	{
+		dungeon.spawnEnemies(number);
+		if(repaint){repaint();}
+	}
+
+	public void clearEnemies(boolean repaint)
+	{
+		dungeon.clearEnemies();
+		if(repaint){repaint();}
+	}
 }

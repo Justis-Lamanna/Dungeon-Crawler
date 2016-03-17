@@ -72,8 +72,13 @@ public class DungeonView extends JFrame
 
 		JButton spawnEnemy = new JButton("Spawn Enemy");
 		c = setGridBagConstraints(4, 1, 1, 1, 0.1, 0.1);
-		spawnEnemy.addActionListener((ActionEvent e) -> dungeon.getDungeon().spawnEnemies(1));
+		spawnEnemy.addActionListener((ActionEvent e) -> dungeon.spawnEnemies(1, true));
 		frame.add(spawnEnemy, c);
+
+		JButton clearEnemy = new JButton("Clear Enemies");
+		c = setGridBagConstraints(4, 2, 1, 1, 0.1, 0.1);
+		clearEnemy.addActionListener((ActionEvent e) -> dungeon.clearEnemies(true));
+		frame.add(clearEnemy, c);
 
 		addInput("NUMPAD8", "goNorth", new DirectionAction(dungeon, 0));
 		addInput("NUMPAD9", "goNorthWest", new DirectionAction(dungeon, 1));
@@ -105,7 +110,7 @@ public class DungeonView extends JFrame
 
 	public void addInput(String stroke, String name, Action action)
 	{
-		dungeon.getInputMap().put(KeyStroke.getKeyStroke(stroke), name);
+		dungeon.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(stroke), name);
 		dungeon.getActionMap().put(name, action);
 	}
 }

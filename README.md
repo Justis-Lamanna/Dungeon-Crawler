@@ -6,8 +6,8 @@ Several classes are involved in this project, and getting them straight may be c
   * Responsible for creating the main frame.
   * Responsible for binding the control keys to their respective actions.
 * DungeonComp - A component, used to display the dungeon.
-  *Responsible for drawing the dungeon into the frame.
-  *Contains the logic for toggling certain aspects of the dungeon, such as entities, nodes, paths, and rooms.
+  * Responsible for drawing the dungeon into the frame.
+  * Contains the logic for toggling certain aspects of the dungeon, such as entities, nodes, paths, and rooms.
 * Dungeon - The actual Dungeon.
   *Responsible for taking a basemap, and:
     1. Determining nodes
@@ -29,4 +29,5 @@ Several classes are involved in this project, and getting them straight may be c
   * Currently contains an EntityState, a current node, and a target node.
 * EntityState - An abstract class, which is to be extended for each state. Includes code for determining a path.
 * MoveState - A state, which causes an enemy to wander around.
+* FollowState - A state, which causes an enemy to move toward the player.
 * DirectionAction - A derivative of Action, which is bound to the numpad. It is responsible for moving the player a certain direction.
