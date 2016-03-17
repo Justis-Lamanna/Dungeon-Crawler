@@ -237,7 +237,7 @@ public class Dungeon
 		for(int count = 0; count < number; count++)
 		{
 			Species randomSpecies = possibleSpecies[prng.nextInt(possibleSpecies.length)];
-			Entity enemy = new Entity(this, randomSpecies, new FollowState());
+			Entity enemy = new Entity(this, randomSpecies);
 			int iteration = 0;
 			while(!isValidPosition(enemy))
 			{

@@ -9,7 +9,17 @@ public abstract class EntityState
 		LinkedList<Node> path = findShortestPath(entity, dungeon, start, end);
 		//System.out.println(path);
 		if(path.size() > 1){return path.get(1);} //0 is the current node, so 1 is the next node to go to.
-		else{return start;}
+		else
+		{
+			Node newNode;
+			do
+			{
+				int randomDirection = (int)(Math.random() * 8);
+				newNode = start.getPath(randomDirection);
+				entity.facing = randomDirection;
+			} while(newNode == null || !isValidNode(entity, dungeon, start, newNode));
+			return newNode;
+		}
 	}
 
 	public LinkedList<Node> findShortestPath(HashMap<Node, Node> map, Node start, Node end)
@@ -85,6 +95,7 @@ public abstract class EntityState
 			uu = map.get(uu);
 		}
 		ss.push(uu);
+		//Verify the path starts at the, well, start.
 		if(ss.peek().equals(start))
 		{
 			return ss;
@@ -114,9 +125,9 @@ public abstract class EntityState
 		for(Entity enemy : enemies)
 		{
 			if(enemy.equals(player)){continue;}
-			if(enemy.equals(entity)){break;}
+			else if(enemy.equals(entity)){break;}
 			Node enemyNode = enemy.getCurrentNode();
-			if(node.equals(enemyNode)){return true;}
+			if(enemyNode.equals(node)){return true;}
 		}
 		return false;
 	}

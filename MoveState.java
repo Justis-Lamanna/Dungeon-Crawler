@@ -46,13 +46,13 @@ public class MoveState extends EntityState
 				{
 					int leftDirection = Math.floorMod(e.facing + dir, 8);
 					int rightDirection = Math.floorMod(e.facing - dir, 8);
-					if(current.getPath(leftDirection) != null)
+					if(current.getPath(leftDirection) != null && !isOccupied(e, d, current.getPath(leftDirection)))
 					{
 						e.facing = leftDirection;
 						e.setCurrentNode(current.getPath(leftDirection));
 						break;
 					}
-					else if(current.getPath(rightDirection) != null)
+					else if(current.getPath(rightDirection) != null && !isOccupied(e, d, current.getPath(rightDirection)))
 					{
 						e.facing = rightDirection;
 						e.setCurrentNode(current.getPath(rightDirection));
