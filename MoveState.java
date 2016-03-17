@@ -35,12 +35,12 @@ public class MoveState extends EntityState
 			ArrayList<Node> candidateNodes = new ArrayList<>();
 			for(int dir = 0; dir < 8; dir++)
 			{
-				if(current.getPath(dir) != null)
+				if(current.getPath(dir) != null && !isOccupied(e, d, current.getPath(dir)))
 				{
 					candidateNodes.add(current.getPath(dir));
 				}
 			}
-			if(candidateNodes.size() <= 2) //Straight, corner, or dead end.
+			if(candidateNodes.size() <= 2 && candidateNodes.size() > 0) //Straight, corner, or dead end.
 			{
 				for(int dir = 0; dir < 4; dir++)
 				{
@@ -61,7 +61,7 @@ public class MoveState extends EntityState
 
 				}
 			}
-			else
+			else if(candidateNodes.size() > 2)
 			{
 				Node exclude = current.getPath((e.facing + 4) % 8); //The opposite direction.
 				Node randomNode;
