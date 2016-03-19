@@ -1,7 +1,8 @@
-//
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import bui.dungeon.DungeonComp;
+import bui.dungeon.DirectionAction;
 
 public class DungeonView extends JFrame
 {

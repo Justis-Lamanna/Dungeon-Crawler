@@ -1,3 +1,5 @@
+package bui.dungeon;
+
 import java.util.*;
 
 public class RoomNode

@@ -1,4 +1,5 @@
-//
+package bui.dungeon;
+
 import java.util.*;
 import java.io.*;
 import javax.imageio.ImageIO;
@@ -20,10 +21,14 @@ public class DungeonComp extends JComponent
 	private boolean drawRooms = false;
 	private boolean drawEntity = true;
 
+	private static BufferedImage attackImage;
+
 	public DungeonComp(String tileFilename, String tilemapFilename)
 	{
 		dungeon = new Dungeon(tilemapFilename, Dungeon.TEST_LIST);
 		generateTiles(tileFilename);
+		try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
+		catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
 	}
 
 	public void paint(Graphics g)
@@ -183,15 +188,28 @@ public class DungeonComp extends JComponent
 		for(Entity entity : allEntities)
 		{
 			BufferedImage entityImage = entity.getSpecies().getImage();
-			int drawX = (entity.getX() * TILE_SIZE) - ((entityImage.getWidth() - TILE_SIZE) / 2);
-			int drawY = (entity.getY() * TILE_SIZE) - (entityImage.getHeight() - TILE_SIZE);
+			//int drawX = (entity.getX() * TILE_SIZE) - ((entityImage.getWidth() - TILE_SIZE) / 2);
+			int drawX = calculateDrawPointX(entity.getX(), entityImage.getWidth());
+			//int drawY = (entity.getY() * TILE_SIZE) - (entityImage.getHeight() - TILE_SIZE);
+			int drawY = calculateDrawPointY(entity.getY(), entityImage.getHeight());
 			g.drawImage(entityImage, drawX, drawY, null);
+			if(entity.getState().isState() == 1)
+			{
+				drawX = calculateDrawPointX(entity.getX(), attackImage.getWidth());
+				drawY = calculateDrawPointY(entity.getY(), attackImage.getHeight());
+				g.drawImage(attackImage, drawX, drawY, null);
+			}
 		}
 	}
 
-	private int calculateDrawPoint(int tileNumber, int imageWidth)
+	private int calculateDrawPointX(int tileNumber, int imageWidth)
 	{
 		return (tileNumber * TILE_SIZE) - ((imageWidth - TILE_SIZE)/2);
+	}
+
+	private int calculateDrawPointY(int tileNumber, int imageHeight)
+	{
+		return (tileNumber * TILE_SIZE) - ((imageHeight - TILE_SIZE)/2);
 	}
 
 	private void generateTiles(String filename)

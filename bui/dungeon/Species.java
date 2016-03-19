@@ -1,3 +1,5 @@
+package bui.dungeon;
+
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.awt.image.BufferedImage;

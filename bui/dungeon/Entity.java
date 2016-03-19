@@ -1,3 +1,5 @@
+package bui.dungeon;
+
 import java.util.*;
 
 public class Entity
@@ -94,6 +96,11 @@ public class Entity
 	public void doState()
 	{
 		currentState.doState(this, dungeon);
+	}
+
+	public EntityState getState()
+	{
+		return currentState;
 	}
 
 	public boolean isWater()

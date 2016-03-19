@@ -1,3 +1,5 @@
+package bui.dungeon;
+
 public class Node
 {
 	private int x;
