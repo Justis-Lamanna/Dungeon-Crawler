@@ -1,49 +1,49 @@
-package bui.dungeon;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mysterydungeon.entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import mysterydungeon.dungeon.Dungeon;
+import mysterydungeon.dungeon.Node;
+import mysterydungeon.dungeon.RoomNode;
 
+/**
+ *
+ * @author Justis
+ */
 public class Entity
 {
 	private Node currentNode;
 	private Node gotoNode;
 	private Dungeon dungeon;
 	private Species species;
-	private Random prng;
 	private EntityState currentState;
 	
 	public int facing;
 
-	public Entity(Dungeon dungeon, Species species, long seed, EntityState startState)
+	public Entity(Dungeon dungeon, Species species, EntityState startState)
 	{
 		this.dungeon = dungeon;
 		this.species = species;
-		prng = new Random(seed);
 		randomizeLocation();
 		currentState = startState;
 	}
 
-	public Entity(Dungeon dungeon, Species species, long seed)
-	{
-		this(dungeon, species, seed, new MoveState());
-	}
-
-	public Entity(Dungeon dungeon, Species species, EntityState startState)
-	{
-		this(dungeon, species, System.currentTimeMillis(), startState);
-	}
-
 	public Entity(Dungeon dungeon, Species species)
 	{
-		this(dungeon, species, System.currentTimeMillis(), new MoveState());
+		this(dungeon, species, new MoveState());
 	}
 
 	private Node generateLocation()
 	{
 		ArrayList<RoomNode> rooms = dungeon.getRooms();
-		int randomRoom = prng.nextInt(rooms.size());
+		int randomRoom = dungeon.prng.nextInt(rooms.size());
 		RoomNode room = rooms.get(randomRoom);
 		ArrayList<Node> nodes = room.getNodes();
-		int randomNode = prng.nextInt(nodes.size());
+		int randomNode = dungeon.prng.nextInt(nodes.size());
 		return nodes.get(randomNode);
 	}
 

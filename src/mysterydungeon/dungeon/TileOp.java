@@ -1,5 +1,14 @@
-package bui.dungeon;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mysterydungeon.dungeon;
 
+/**
+ *
+ * @author Justis
+ */
 public class TileOp
 {
 	public static final int OBSTACLE = 0;

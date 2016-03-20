@@ -1,12 +1,23 @@
-package bui.dungeon;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mysterydungeon.dungeon;
 
-import java.util.*;
-import java.io.*;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Random;
+import java.util.Scanner;
+import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.Species;
 
+/**
+ *
+ * @author Justis
+ */
 public class Dungeon
 {
 	public static final Species[] TEST_LIST = {
@@ -15,15 +26,17 @@ public class Dungeon
 		Species.ROBOT7, Species.ROBOT8, Species.ROBOT9,
 		Species.ROBOT10};
 
-	private String tilemapFilename;
+	private final String tilemapFilename;
 	private int[][] tilemap;
 	private int[][] basemap;
 	private Node[][] nodes;
-	private ArrayList<RoomNode> rooms = new ArrayList<>();
+	private final ArrayList<RoomNode> rooms = new ArrayList<>();
 
 	private Entity player;
-	private Species[] possibleSpecies;
-	private ArrayList<Entity> enemies = new ArrayList<>();
+	private final Species[] possibleSpecies;
+	private final ArrayList<Entity> enemies = new ArrayList<>();
+        
+        public Random prng = new Random();
 
 	public Dungeon(String tilemapFilename, Species[] speciesList)
 	{
@@ -62,7 +75,7 @@ public class Dungeon
 				}
 			}
 		}
-		catch(FileNotFoundException ex)
+		catch(IOException ex)
 		{
 			ex.printStackTrace();
 		}
@@ -234,12 +247,10 @@ public class Dungeon
 
 	public void spawnEnemies(int number)
 	{
-		Random prng = new Random();
 		for(int count = 0; count < number; count++)
 		{
 			Species randomSpecies = possibleSpecies[prng.nextInt(possibleSpecies.length)];
 			Entity enemy = new Entity(this, randomSpecies);
-			int iteration = 0;
 			while(!isValidPosition(enemy))
 			{
 				enemy.randomizeLocation();
@@ -315,15 +326,6 @@ public class Dungeon
 		}
 		return retList;
 	}
-
-	/*public boolean isInRoom(Node node)
-	{
-		for(RoomNode room : rooms)
-		{
-			if(room.getNodes().contains(node)){return true;}
-		}
-		return false;
-	}*/
 
 	public RoomNode getRoom(Node node)
 	{

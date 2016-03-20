@@ -1,13 +1,27 @@
-package bui.dungeon;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mysterydungeon.entity;
 
-import java.util.*;
+import java.util.ArrayList;
+import mysterydungeon.dungeon.Dungeon;
+import mysterydungeon.dungeon.Node;
+import mysterydungeon.dungeon.RoomNode;
 
+/**
+ *
+ * @author Justis
+ */
 public class MoveState extends EntityState
 {
 	private Node targetNode = null;
 
 	public static final int RANGE = 5; //If the player is this many nodes away, switch to the attack.
+        public static final int STATE_NUMBER = 0;
 
+        @Override
 	public void doState(Entity e, Dungeon d)
 	{
 		Node current = e.getCurrentNode();
@@ -70,8 +84,9 @@ public class MoveState extends EntityState
 		}
 	}
 
+        @Override
 	public int isState()
 	{
-		return 0;
+		return STATE_NUMBER;
 	}
 }
