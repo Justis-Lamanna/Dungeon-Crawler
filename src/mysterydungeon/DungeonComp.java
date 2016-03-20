@@ -37,6 +37,7 @@ public class DungeonComp extends JComponent
     private boolean drawEntity = true;
 
     private static BufferedImage attackImage;
+    private static BufferedImage arrowImage;
 
     public DungeonComp(String tileFilename, String tilemapFilename)
     {
@@ -44,6 +45,8 @@ public class DungeonComp extends JComponent
             generateTiles(tileFilename);
             try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
             catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
+            try{arrowImage = ImageIO.read(new File("Sprites/arrows.png"));}
+            catch(IOException ex){arrowImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
     }
 
     @Override
@@ -212,6 +215,14 @@ public class DungeonComp extends JComponent
                             drawX = calculateDrawPointX(entity.getX(), attackImage.getWidth());
                             drawY = calculateDrawPointY(entity.getY(), attackImage.getHeight());
                             g.drawImage(attackImage, drawX, drawY, null);
+                    }
+                    else
+                    {
+                        int facing = entity.facing;
+                        drawX = calculateDrawPointX(entity.getX(), 32);
+                        drawY = calculateDrawPointY(entity.getY(), 32);
+                        BufferedImage arrow = arrowImage.getSubimage(0, facing*32, 32, 32);
+                        g.drawImage(arrow, drawX, drawY, null);
                     }
             }
     }
