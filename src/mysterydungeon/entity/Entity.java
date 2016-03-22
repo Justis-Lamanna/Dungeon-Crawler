@@ -6,6 +6,7 @@
 package mysterydungeon.entity;
 
 import java.util.ArrayList;
+import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
@@ -21,6 +22,9 @@ public class Entity
 	private Dungeon dungeon;
 	private Species species;
 	private EntityState currentState;
+        private int currentX;
+        private int currentY;
+        private boolean locked;
 	
 	public int facing;
 
@@ -50,6 +54,8 @@ public class Entity
 	public void randomizeLocation()
 	{
 		currentNode = generateLocation();
+                currentX = currentNode.getX() * DungeonComp.TILE_SIZE;
+                currentY = currentNode.getY() * DungeonComp.TILE_SIZE;
 		gotoNode = currentNode;
 	}
 
@@ -66,6 +72,8 @@ public class Entity
 	public void setCurrentNode(Node n)
 	{
 		currentNode = n;
+                currentX = currentNode.getX() * DungeonComp.TILE_SIZE;
+                currentY = currentNode.getY() * DungeonComp.TILE_SIZE;
 	}
 
 	public Node getDestinationNode()
@@ -87,6 +95,28 @@ public class Entity
 	{
 		return currentNode.getY();
 	}
+        
+        public int getPixelX()
+        {
+            return currentX;
+        }
+        
+        public int getPixelY()
+        {
+            return currentY;
+        }
+        
+        public void setPixel(int newX, int newY)
+        {
+            currentX = newX;
+            currentY = newY;
+        }
+        
+        public void addPixel(int dx, int dy)
+        {
+            currentX += dx;
+            currentY += dy;
+        }
 
 	public void setState(EntityState state)
 	{	

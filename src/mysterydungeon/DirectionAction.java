@@ -34,13 +34,9 @@ public class DirectionAction extends AbstractAction
             Entity player = dungeon.getEntities().get(0);
             Node current = player.getCurrentNode();
             Node intended = current.getPath(direction);
-            if(intended == null)
+            if(intended != null)
             {
-                    System.out.println("Oof");
-            }
-            else
-            {
-                    player.setCurrentNode(intended);
+                    player.setDestinationNode(intended);
                     player.facing = direction;
                     dungeon.updateAll();
             }

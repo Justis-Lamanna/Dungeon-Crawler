@@ -41,7 +41,7 @@ public class DungeonComp extends JComponent
 
     public DungeonComp(String tileFilename, String tilemapFilename)
     {
-            dungeon = new Dungeon(tilemapFilename, Dungeon.TEST_LIST);
+            dungeon = new Dungeon(this, tilemapFilename, Dungeon.TEST_LIST);
             generateTiles(tileFilename);
             try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
             catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
@@ -207,34 +207,36 @@ public class DungeonComp extends JComponent
             for(Entity entity : allEntities)
             {
                     BufferedImage entityImage = entity.getSpecies().getImage();
-                    int drawX = calculateDrawPointX(entity.getX(), entityImage.getWidth());
-                    int drawY = calculateDrawPointY(entity.getY(), entityImage.getHeight());
+                    int drawX = calculateDrawPointX(entity.getPixelX(), entityImage.getWidth());
+                    int drawY = calculateDrawPointY(entity.getPixelY(), entityImage.getHeight());
                     g.drawImage(entityImage, drawX, drawY, null);
                     if(entity.getState().isState() == 1)
                     {
-                            drawX = calculateDrawPointX(entity.getX(), attackImage.getWidth());
-                            drawY = calculateDrawPointY(entity.getY(), attackImage.getHeight());
+                            //drawX = calculateDrawPointX(entity.getPixelX(), attackImage.getWidth());
+                            //drawY = calculateDrawPointY(entity.getPixelY(), attackImage.getHeight()) - 8;
+                            drawX += (entityImage.getWidth() - attackImage.getWidth()) / 2;
+                            drawY -= attackImage.getHeight();
                             g.drawImage(attackImage, drawX, drawY, null);
                     }
                     else
                     {
                         int facing = entity.facing;
-                        drawX = calculateDrawPointX(entity.getX(), 32);
-                        drawY = calculateDrawPointY(entity.getY(), 32);
+                        drawX = calculateDrawPointX(entity.getPixelX(), 32);
+                        drawY = calculateDrawPointY(entity.getPixelY(), 32);
                         BufferedImage arrow = arrowImage.getSubimage(0, facing*32, 32, 32);
                         g.drawImage(arrow, drawX, drawY, null);
                     }
             }
     }
 
-    private int calculateDrawPointX(int tileNumber, int imageWidth)
+    private int calculateDrawPointX(int pixel, int imageWidth)
     {
-            return (tileNumber * TILE_SIZE) - ((imageWidth - TILE_SIZE)/2);
+            return (pixel) - ((imageWidth - TILE_SIZE)/2);
     }
 
-    private int calculateDrawPointY(int tileNumber, int imageHeight)
+    private int calculateDrawPointY(int pixel, int imageHeight)
     {
-            return (tileNumber * TILE_SIZE) - (imageHeight - TILE_SIZE);
+            return (pixel) - (imageHeight - TILE_SIZE);
     }
 
     private void generateTiles(String filename)
@@ -332,4 +334,41 @@ public class DungeonComp extends JComponent
             dungeon.clearEnemies();
             if(repaint){repaint();}
     }   
+    
+    public void delay(long millis)
+    {
+        long time = System.currentTimeMillis() + millis;
+        while(System.currentTimeMillis() <= time)
+        {
+            
+        }
+    }
+    
+    public void moveAll()
+    {
+        ArrayList<Entity> entities = dungeon.getEntities();
+        for(int slide = 0; slide < 6; slide++)
+        {
+            for(Entity entity : entities)
+            {
+                int[] iValues = interpolate(entity);
+                entity.addPixel(iValues[0], iValues[1]);
+            }
+            paintImmediately(0, 0, getWidth(), getHeight());
+            delay(30);
+
+        }
+        for(Entity entity : entities)
+        {
+            entity.setCurrentNode(entity.getDestinationNode());
+        }
+    }
+
+    private int[] interpolate(Entity entity)
+    {
+        int[] returnPoints = new int[2];
+        returnPoints[0] = (entity.getDestinationNode().getX() - entity.getX()) * 4;
+        returnPoints[1] = (entity.getDestinationNode().getY() - entity.getY()) * 4;
+        return returnPoints;
+    }
 }

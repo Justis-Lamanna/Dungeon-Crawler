@@ -23,7 +23,7 @@ public class FollowState extends EntityState
 		Node next = nextNode(e, d, start, target);
 		if(!target.equals(next))
 		{
-			e.setCurrentNode(next);
+			e.setDestinationNode(next);
 		}
 	}
 

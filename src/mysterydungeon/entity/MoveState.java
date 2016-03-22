@@ -44,7 +44,7 @@ public class MoveState extends EntityState
 			}
 			Node nextNode = nextNode(e, d, current, targetNode);
 			e.facing = getDirection(current, nextNode);
-			e.setCurrentNode(nextNode);
+			e.setDestinationNode(nextNode);
 		}
 		else
 		{
@@ -69,13 +69,13 @@ public class MoveState extends EntityState
 					if(!randomNode.equals(exclude)){break;}
 				}
 				e.facing = getDirection(current, randomNode);
-				e.setCurrentNode(randomNode);
+				e.setDestinationNode(randomNode);
 			}
 			else if(candidateNodes.size() == 1)
 			{
 				Node next = candidateNodes.get(0);
 				e.facing = getDirection(current, next);
-				e.setCurrentNode(next);
+				e.setDestinationNode(next);
 			}
 		}
 		if(playerNearby(d, e.getCurrentNode(), RANGE))

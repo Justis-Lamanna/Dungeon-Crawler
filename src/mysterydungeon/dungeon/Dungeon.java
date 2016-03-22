@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
+import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.Species;
 
@@ -35,12 +36,14 @@ public class Dungeon
 	private Entity player;
 	private final Species[] possibleSpecies;
 	private final ArrayList<Entity> enemies = new ArrayList<>();
+        private final DungeonComp comp;
         
         public Random prng = new Random();
 
-	public Dungeon(String tilemapFilename, Species[] speciesList)
+	public Dungeon(DungeonComp comp, String tilemapFilename, Species[] speciesList)
 	{
-		this.tilemapFilename = tilemapFilename;
+		this.comp = comp;
+                this.tilemapFilename = tilemapFilename;
 		possibleSpecies = speciesList;
 		loadDungeon();
 	}
@@ -288,6 +291,7 @@ public class Dungeon
 		{
 			enemy.doState();
 		}
+                comp.moveAll();
 	}
 
 	public Node randomNode(int type)
