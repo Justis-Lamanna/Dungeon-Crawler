@@ -125,7 +125,10 @@ public class Entity
 
 	public void doState()
 	{
-		currentState.doState(this, dungeon);
+            if(currentState != null)
+            {
+                currentState.doState(this, dungeon);
+            }
 	}
 
 	public EntityState getState()

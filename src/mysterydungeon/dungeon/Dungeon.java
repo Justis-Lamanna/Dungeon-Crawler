@@ -5,6 +5,7 @@
  */
 package mysterydungeon.dungeon;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +40,9 @@ public class Dungeon
         private final DungeonComp comp;
         
         public Random prng = new Random();
+        public boolean gameRunning = true;
+        private boolean moving = false;
+        private int nextDirection = -1;
 
 	public Dungeon(DungeonComp comp, String tilemapFilename, Species[] speciesList)
 	{
@@ -46,6 +50,8 @@ public class Dungeon
                 this.tilemapFilename = tilemapFilename;
 		possibleSpecies = speciesList;
 		loadDungeon();
+                GameLoop loop = new GameLoop(comp);
+                loop.start();
 	}
 
 	public void loadDungeon()
@@ -55,7 +61,7 @@ public class Dungeon
 		findNodes();
 		findPaths();
 		findRooms();
-		player = new Entity(this, Species.PLAYER);
+		player = new Entity(this, Species.PLAYER, null);
 		enemies.clear();
 		spawnEnemies(1);
 	}
@@ -339,4 +345,14 @@ public class Dungeon
 		}
 		return null;
 	}
+        
+        public void nextDirection(int direction)
+        {
+            nextDirection = direction;
+        }
+        
+        public int getNextDirection()
+        {
+            return nextDirection;
+        }
 }

@@ -5,6 +5,8 @@
  */
 package mysterydungeon.dungeon;
 
+import mysterydungeon.DungeonComp;
+
 /**
  *
  * @author Justis
@@ -77,6 +79,12 @@ public class Node
             if(o == null){return false;}
             Node node = (Node)o;
             return (x == node.getX() && y == node.getY());
+    }
+    
+    public boolean equals(int ox, int oy)
+    {
+        return ((this.x * DungeonComp.TILE_SIZE) == ox) &&
+                ((this.y * DungeonComp.TILE_SIZE) == oy);
     }
 
     @Override

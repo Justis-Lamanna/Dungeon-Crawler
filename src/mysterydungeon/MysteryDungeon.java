@@ -106,6 +106,7 @@ public class MysteryDungeon extends JFrame{
             addInput("NUMPAD1", "goSouthEast", new DirectionAction(dungeon, 5));
             addInput("NUMPAD4", "goEast", new DirectionAction(dungeon, 6));
             addInput("NUMPAD7", "goNorthEast", new DirectionAction(dungeon, 7));
+            //addKeyListener(InputManager.getInstance());
 
             add(frame);
     }
