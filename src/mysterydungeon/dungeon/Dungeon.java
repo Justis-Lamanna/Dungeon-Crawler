@@ -26,7 +26,8 @@ public class Dungeon
 		Species.ROBOT1, Species.ROBOT2, Species.ROBOT3, 
 		Species.ROBOT4, Species.ROBOT5, Species.ROBOT6, 
 		Species.ROBOT7, Species.ROBOT8, Species.ROBOT9,
-		Species.ROBOT10};
+		Species.ROBOT10, Species.ROBOT11, Species.ROBOT12,
+                Species.ROBOT13, Species.ROBOT14};
 
 	private final String tilemapFilename;
 	private int[][] tilemap;
@@ -39,9 +40,8 @@ public class Dungeon
 	private final ArrayList<Entity> enemies = new ArrayList<>();
         private final DungeonComp comp;
         
-        public Random prng = new Random();
+        public static final Random PRNG = new Random();
         public boolean gameRunning = true;
-        private boolean moving = false;
 
 	public Dungeon(DungeonComp comp, String tilemapFilename, Species[] speciesList)
 	{
@@ -257,7 +257,7 @@ public class Dungeon
 	{
 		for(int count = 0; count < number; count++)
 		{
-			Species randomSpecies = possibleSpecies[prng.nextInt(possibleSpecies.length)];
+			Species randomSpecies = possibleSpecies[PRNG.nextInt(possibleSpecies.length)];
 			Entity enemy = new Entity(this, randomSpecies);
 			while(!isValidPosition(enemy))
 			{

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
+import mysterydungeon.move.BrawlMove;
+import mysterydungeon.move.Move;
 
 /**
  *
@@ -21,6 +23,7 @@ public class GameLoop extends Thread
     private DungeonComp comp;
     private boolean moving = false;
     int moveFrame = 0;
+    Move move = new BrawlMove(10);
     
     public GameLoop(DungeonComp dungeon)
     {

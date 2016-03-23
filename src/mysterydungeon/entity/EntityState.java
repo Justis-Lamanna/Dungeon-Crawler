@@ -24,19 +24,20 @@ public abstract class EntityState
     public Node nextNode(Entity entity, Dungeon dungeon, Node start, Node end)
     {
             LinkedList<Node> path = findShortestPath(entity, dungeon, start, end);
+            Entity player = dungeon.getEntities().get(0);
             //System.out.println(path);
-            if(path.size() > 1){return path.get(1);} //0 is the current node, so 1 is the next node to go to.
-            else
+            if(path.size() > 1 && !isOccupied(entity, dungeon, path.get(1)))
             {
-                    Node newNode;
-                    do
-                    {
-                            int randomDirection = (int)(Math.random() * 8);
-                            newNode = start.getPath(randomDirection);
-                            entity.facing = randomDirection;
-                    } while(newNode == null || !isValidNode(entity, dungeon, start, newNode));
-                    return newNode;
-            }
+                return path.get(1);
+            } //0 is the current node, so 1 is the next node to go to.
+            Node newNode;
+            do
+            {
+                    int randomDirection = (int)(dungeon.PRNG.nextInt(8));
+                    newNode = start.getPath(randomDirection);
+                    entity.facing = randomDirection;
+            } while(newNode == null || !isValidNode(entity, dungeon, start, newNode) || isOccupied(entity, dungeon, newNode));
+            return newNode;
     }
 
     public LinkedList<Node> findShortestPath(HashMap<Node, Node> map, Node start, Node end)
@@ -125,19 +126,19 @@ public abstract class EntityState
 
     protected boolean isValidNode(Entity entity, Dungeon dungeon, Node current, Node next)
     {
-        return next.getType() == Node.LAND && !isOccupied(entity, dungeon, next);
+        return next.getType() == Node.LAND;// && !isOccupied(entity, dungeon, next);
     }
 
     protected boolean isOccupied(Entity entity, Dungeon dungeon, Node node)
     {
             ArrayList<Entity> enemies = dungeon.getEntities();
-            Entity player = enemies.get(0);
             for(Entity enemy : enemies)
             {
-                    if(enemy.equals(player)){continue;}
-                    else if(enemy.equals(entity)){break;}
-                    Node enemyNode = enemy.getCurrentNode();
-                    if(enemyNode.equals(node)){return true;}
+                    Node enemyNode = enemy.getDestinationNode();
+                    if(enemyNode.equals(node))
+                    {
+                        return true;
+                    }
             }
             return false;
     }

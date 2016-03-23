@@ -33,14 +33,21 @@ public class MoveState extends EntityState
 				RoomNode currentRoom = d.getRoom(current);
 				Node randomExteriorNode;
 				Node randomInteriorNode;
-				while(true)
-				{
-					int randomPosition = (int)(Math.random() * currentRoom.getExteriorNodes().size());
-					randomExteriorNode = currentRoom.getExteriorNodes().get(randomPosition);
-					randomInteriorNode = currentRoom.getJustInteriorNodes().get(randomPosition);
-					if(!randomInteriorNode.equals(current)){break;}
-				}
-				targetNode = randomExteriorNode;
+                                if(currentRoom.getExteriorNodes().size() > 1)
+                                {
+                                    while(true)
+                                    {
+                                            int randomPosition = (int)(Math.random() * currentRoom.getExteriorNodes().size());
+                                            randomExteriorNode = currentRoom.getExteriorNodes().get(randomPosition);
+                                            randomInteriorNode = currentRoom.getJustInteriorNodes().get(randomPosition);
+                                            if(!randomInteriorNode.equals(current)){break;}
+                                    }
+                                    targetNode = randomExteriorNode;
+                                }
+                                else
+                                {
+                                    targetNode = currentRoom.getExteriorNodes().get(0);
+                                }
 			}
 			Node nextNode = nextNode(e, d, current, targetNode);
 			e.facing = getDirection(current, nextNode);

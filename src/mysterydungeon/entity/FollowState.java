@@ -25,6 +25,17 @@ public class FollowState extends EntityState
 		{
 			e.setDestinationNode(next);
 		}
+                else
+                {
+                    for(int dir = 0; dir < 8; dir++)
+                    {
+                        if(start.getPath(dir) != null)
+                        {
+                            e.setDestinationNode(start.getPath(dir));
+                            break;
+                        }
+                    }
+                }
 	}
 
         @Override

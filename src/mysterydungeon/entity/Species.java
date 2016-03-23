@@ -32,6 +32,10 @@ public class Species
     public static final Species ROBOT8 = new Species("Robot8", "Sprites/robot8.png");
     public static final Species ROBOT9 = new Species("Robot9", "Sprites/robot9.png");
     public static final Species ROBOT10 = new Species("Robot10", "Sprites/robot10.png");
+    public static final Species ROBOT11 = new Species("Robot11", "Sprites/robot11.png");
+    public static final Species ROBOT12 = new Species("Robot12", "Sprites/robot12.png");
+    public static final Species ROBOT13 = new Species("Robot13", "Sprites/robot13.png");
+    public static final Species ROBOT14 = new Species("Robot14", "Sprites/robot14.png");
 
     public Species(String name, String imageFilename)
     {

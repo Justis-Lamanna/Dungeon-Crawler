@@ -5,6 +5,7 @@
  */
 package mysterydungeon.move;
 
+import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.Entity;
 
 /**
@@ -13,8 +14,12 @@ import mysterydungeon.entity.Entity;
  */
 public interface Move
 {
-	boolean isValidAttack(Entity attacker, Entity defender);
-	void attack(Entity attacker, Entity defender);
-	String getName();
-	int getType();
+    public static final int BRAWL = 0;
+    public static final int RANGE = 1;
+    public static final int ROOM = 2;
+    
+    Entity getDefender(Dungeon dungeon, Entity attacker);
+    void attack(Entity attacker, Entity defender);
+    String getName();
+    int getType();
 }

@@ -26,6 +26,7 @@ public class Entity
         private int currentX;
         private int currentY;
         private boolean moving;
+        public String name;
         
         private int currentHP = 50;
         private int maxHP = 100;
@@ -36,6 +37,7 @@ public class Entity
 	{
 		this.dungeon = dungeon;
 		this.species = species;
+                this.name = species.getName();
 		randomizeLocation();
 		currentState = startState;
 	}
@@ -48,10 +50,10 @@ public class Entity
 	private Node generateLocation()
 	{
 		ArrayList<RoomNode> rooms = dungeon.getRooms();
-		int randomRoom = dungeon.prng.nextInt(rooms.size());
+		int randomRoom = dungeon.PRNG.nextInt(rooms.size());
 		RoomNode room = rooms.get(randomRoom);
 		ArrayList<Node> nodes = room.getNodes();
-		int randomNode = dungeon.prng.nextInt(nodes.size());
+		int randomNode = dungeon.PRNG.nextInt(nodes.size());
 		return nodes.get(randomNode);
 	}
 
@@ -189,6 +191,16 @@ public class Entity
             MysteryDungeon.HPBAR.setValue(currentHP);
             MysteryDungeon.HPBAR.setMaximum(maxHP);
             MysteryDungeon.HPBAR.setString(String.format("%d/%d", currentHP, maxHP));
+        }
+        
+        public void setName(String newname)
+        {
+            name = newname;
+        }
+        
+        public String getName()
+        {
+            return name;
         }
 
 	@Override

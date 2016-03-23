@@ -70,7 +70,8 @@ public class Node
 
     public Node getPath(int direction)
     {
-            return connections[direction];
+            if(direction >= 0 && direction < 8){return connections[direction];}
+            else{return null;}
     }
 
     @Override
