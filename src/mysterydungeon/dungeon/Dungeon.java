@@ -42,7 +42,6 @@ public class Dungeon
         public Random prng = new Random();
         public boolean gameRunning = true;
         private boolean moving = false;
-        private int nextDirection = -1;
 
 	public Dungeon(DungeonComp comp, String tilemapFilename, Species[] speciesList)
 	{
@@ -345,14 +344,4 @@ public class Dungeon
 		}
 		return null;
 	}
-        
-        public void nextDirection(int direction)
-        {
-            nextDirection = direction;
-        }
-        
-        public int getNextDirection()
-        {
-            return nextDirection;
-        }
 }

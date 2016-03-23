@@ -5,17 +5,24 @@
  */
 package mysterydungeon;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import mysterydungeon.dungeon.Node;
+import mysterydungeon.entity.Entity;
 
 /**
  *
@@ -27,6 +34,10 @@ public class MysteryDungeon extends JFrame{
     public static final int INITIAL_HEIGHT = 800;
     public static final String TILES = "Sprites/tiles.png";
     public static final String TILEMAP = "Maps/map1.txt";
+    
+    public static final JProgressBar HPBAR = new JProgressBar(0, 100);
+    public static final JTextArea LOG = new JTextArea("Entered the Dungeon.\n", 50, 10);
+    
 
     private DungeonComp dungeon;
 
@@ -97,17 +108,24 @@ public class MysteryDungeon extends JFrame{
             c = setGridBagConstraints(4, 2, 1, 1, 0.1, 0.1);
             clearEnemy.addActionListener((ActionEvent e) -> dungeon.clearEnemies(true));
             frame.add(clearEnemy, c);
-
-            addInput("NUMPAD8", "goNorth", new DirectionAction(dungeon, 0));
-            addInput("NUMPAD9", "goNorthWest", new DirectionAction(dungeon, 1));
-            addInput("NUMPAD6", "goWest", new DirectionAction(dungeon, 2));
-            addInput("NUMPAD3", "goSouthWest", new DirectionAction(dungeon, 3));
-            addInput("NUMPAD2", "goSouth", new DirectionAction(dungeon, 4));
-            addInput("NUMPAD1", "goSouthEast", new DirectionAction(dungeon, 5));
-            addInput("NUMPAD4", "goEast", new DirectionAction(dungeon, 6));
-            addInput("NUMPAD7", "goNorthEast", new DirectionAction(dungeon, 7));
-            //addKeyListener(InputManager.getInstance());
-
+            
+            JPanel hud = createHud();
+            c = setGridBagConstraints(5, 0, 1, 3, 1, 1);
+            frame.add(hud, c);
+            
+            addKeyListener(Controls.getInstance());
+            this.setFocusable(true);
+            baseMapButton.addKeyListener(Controls.getInstance());
+            regMapButton.addKeyListener(Controls.getInstance());
+            refreshButton.addKeyListener(Controls.getInstance());
+            kachunkButton.addKeyListener(Controls.getInstance());
+            retryButton.addKeyListener(Controls.getInstance());
+            pathButton.addKeyListener(Controls.getInstance());
+            roomButton.addKeyListener(Controls.getInstance());
+            showEntityButton.addKeyListener(Controls.getInstance());
+            spawnEnemy.addKeyListener(Controls.getInstance());
+            clearEnemy.addKeyListener(Controls.getInstance());
+            
             add(frame);
     }
 
@@ -126,11 +144,22 @@ public class MysteryDungeon extends JFrame{
                     0, 
                     0);
     }
-
-    private void addInput(String stroke, String name, Action action)
-    {
-            dungeon.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(stroke), name);
-            dungeon.getActionMap().put(name, action);
-    }
     
+    private JPanel createHud()
+    {
+        JPanel hud = new JPanel(new GridBagLayout());
+        hud.add(new JLabel("Player Stats"), setGridBagConstraints(0, 0, 2, 1, 1, 0.1));
+        hud.add(new JLabel("HP:"), setGridBagConstraints(0, 1, 1, 1, 0.1, 0.1));
+        hud.add(HPBAR, setGridBagConstraints(1, 1, 1, 1, 0.9, 0.1));
+        Entity player = dungeon.getDungeon().getEntities().get(0);
+        HPBAR.setMaximum(player.getMaximumHP());
+        HPBAR.setValue(player.getCurrentHP());
+        HPBAR.setString(String.format("%d/%d", player.getCurrentHP(), player.getMaximumHP()));
+        HPBAR.setStringPainted(true);
+        hud.add(new JLabel("Log:"), setGridBagConstraints(0, 2, 2, 1, 1, 0.1));
+        hud.add(LOG, setGridBagConstraints(0, 3, 2, 2, 1, 1));
+        LOG.setForeground(Color.WHITE);
+        LOG.setBackground(Color.BLACK);
+        return hud;
+    }
 }

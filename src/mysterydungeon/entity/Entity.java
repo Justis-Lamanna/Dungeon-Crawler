@@ -6,6 +6,7 @@
 package mysterydungeon.entity;
 
 import java.util.ArrayList;
+import mysterydungeon.MysteryDungeon;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
@@ -24,7 +25,10 @@ public class Entity
 	private EntityState currentState;
         private int currentX;
         private int currentY;
-        private boolean locked;
+        private boolean moving;
+        
+        private int currentHP = 50;
+        private int maxHP = 100;
 	
 	public int facing;
 
@@ -121,6 +125,10 @@ public class Entity
 	public void setState(EntityState state)
 	{	
 		currentState = state;
+                if(state.getClass().equals(FollowState.class))
+                {
+                    MysteryDungeon.LOG.append(String.format("%s gave chase!\n", species.getName()));
+                }
 	}
 
 	public void doState()
@@ -140,6 +148,48 @@ public class Entity
 	{
 		return species.isWater();
 	}
+        
+        public boolean isMoving()
+        {
+            return moving;
+        }
+        
+        public void setMoving(boolean set)
+        {
+            moving = set;
+        }
+        
+        public int getCurrentHP(){return currentHP;}
+        public int getMaximumHP(){return maxHP;}
+        
+        public void setCurrentHP(int newval)
+        {
+            if(newval > maxHP){newval = maxHP;}
+            else if(newval < 0){newval = 0;}
+            currentHP = newval;
+            updateHPBar();
+        }
+        
+        public void setMaxHP(int newval)
+        {
+            maxHP = newval;
+            updateHPBar();
+        }
+        
+        public void addHP(int dhp)
+        {
+            currentHP += dhp;
+            if(currentHP > maxHP){currentHP = maxHP;}
+            else if(currentHP < 0){currentHP = 0;}
+            updateHPBar();
+        }
+        
+        private void updateHPBar()
+        {
+            MysteryDungeon.HPBAR.setValue(currentHP);
+            MysteryDungeon.HPBAR.setMaximum(maxHP);
+            MysteryDungeon.HPBAR.setString(String.format("%d/%d", currentHP, maxHP));
+        }
 
 	@Override
 	public String toString()

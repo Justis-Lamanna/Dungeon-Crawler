@@ -6,6 +6,7 @@
 package mysterydungeon.dungeon;
 
 import java.util.ArrayList;
+import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
 
@@ -43,9 +44,11 @@ public class GameLoop extends Thread
                     updateGame(delta);
                 }
                 comp.repaint();
+                long sleepTime = (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000;
+                if(sleepTime < 10){sleepTime = 10;}
                 try
                 {
-                    Thread.sleep((lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000 );
+                    Thread.sleep(sleepTime);
                 }
                 catch(InterruptedException ex)
                 {
@@ -58,42 +61,43 @@ public class GameLoop extends Thread
         public void updateGame(double delta)
         {
             Dungeon dungeon = comp.getDungeon();
+            Controls controls = Controls.getInstance();
             ArrayList<Entity> entities = dungeon.getEntities();
             Entity player = entities.get(0);
-            if(!moving && dungeon.getNextDirection() != -1)
+            Node pNode = player.getCurrentNode();
+            for(Entity entity : entities)
             {
-                int direction = dungeon.getNextDirection();
-                dungeon.nextDirection(-1);
-                Node pNode = player.getCurrentNode();
-                if(pNode.getPath(direction) != null)
-                {
-                    player.setDestinationNode(pNode.getPath(direction));
-                    for(Entity entity : entities)
-                    {
-                        if(entity.equals(player)){continue;}
-                        entity.doState();
-                    }
-                    moving = true;
-                }
-            }
-            else if(moving)
-            {
-                for(Entity entity : entities)
+                if(entity.isMoving())
                 {
                     int[] iValues = interpolate(entity, delta);
                     entity.addPixel(iValues[0], iValues[1]);
                     if(entity.getDestinationNode().equals(entity.getPixelX(), entity.getPixelY()))
                     {
                         entity.setCurrentNode(entity.getDestinationNode());
+                        entity.setMoving(false);
                     }
                 }
-                if(player.getDestinationNode().equals(player.getCurrentNode()))
+                else if(entity.equals(player) && controls.isDirectionPressed())
                 {
-                    moving = false;
+                    if(!controls.isFacePressed() && pNode.getPath(controls.getDirection()) != null)
+                    {    
+                        player.setDestinationNode(pNode.getPath(controls.getDirection()));
+                        player.facing = controls.getDirection();
+                        controls.clearDirection();
+                        for(Entity others : entities)
+                        {
+                            others.doState();
+                            others.setMoving(true);
+                        }
+                        player.addHP(1);
+                    }
+                    else if(controls.isFacePressed())
+                    {
+                        player.facing = controls.getDirection();
+                        controls.clearDirection();
+                    }
                 }
-                
             }
-            
         }
         
         private int[] interpolate(Entity entity, double delta)
