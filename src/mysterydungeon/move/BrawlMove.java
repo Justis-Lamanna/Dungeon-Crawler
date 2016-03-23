@@ -17,11 +17,11 @@ import mysterydungeon.dungeon.Node;
  */
 public class BrawlMove implements Move
 {   
-    private int basePower;
+    private final int basePower;
     
     public BrawlMove(int basepower)
     {
-        this.basePower = basePower;
+        this.basePower = basepower;
     }
     
     @Override

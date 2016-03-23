@@ -26,34 +26,43 @@ public class Entity
         private int currentX;
         private int currentY;
         private boolean moving;
-        public String name;
+        private String name;
+        private boolean isPlayer;
         
-        private int currentHP = 50;
-        private int maxHP = 100;
+        private int currentHP;
+        private int maxHP;
 	
 	public int facing;
 
-	public Entity(Dungeon dungeon, Species species, EntityState startState)
+	public Entity(Dungeon dungeon, Species species, EntityState startState, boolean player)
 	{
 		this.dungeon = dungeon;
 		this.species = species;
                 this.name = species.getName();
+                this.isPlayer = player;
+                maxHP = species.getHP();
+                currentHP = maxHP;
 		randomizeLocation();
 		currentState = startState;
 	}
 
-	public Entity(Dungeon dungeon, Species species)
+	public Entity(Dungeon dungeon, Species species, boolean player)
 	{
-		this(dungeon, species, new MoveState());
+		this(dungeon, species, new MoveState(), player);
 	}
+        
+        public Entity(Dungeon dungeon, Species species)
+        {
+            this(dungeon, species, new MoveState(), false);
+        }
 
 	private Node generateLocation()
 	{
 		ArrayList<RoomNode> rooms = dungeon.getRooms();
-		int randomRoom = dungeon.PRNG.nextInt(rooms.size());
+		int randomRoom = Dungeon.PRNG.nextInt(rooms.size());
 		RoomNode room = rooms.get(randomRoom);
 		ArrayList<Node> nodes = room.getNodes();
-		int randomNode = dungeon.PRNG.nextInt(nodes.size());
+		int randomNode = Dungeon.PRNG.nextInt(nodes.size());
 		return nodes.get(randomNode);
 	}
 
@@ -188,9 +197,12 @@ public class Entity
         
         private void updateHPBar()
         {
-            MysteryDungeon.HPBAR.setValue(currentHP);
-            MysteryDungeon.HPBAR.setMaximum(maxHP);
-            MysteryDungeon.HPBAR.setString(String.format("%d/%d", currentHP, maxHP));
+            if(isPlayer)
+            {
+                MysteryDungeon.HPBAR.setValue(currentHP);
+                MysteryDungeon.HPBAR.setMaximum(maxHP);
+                MysteryDungeon.HPBAR.setString(String.format("%d/%d", currentHP, maxHP));
+            }
         }
         
         public void setName(String newname)

@@ -19,7 +19,6 @@ public class MoveState extends EntityState
 	private Node targetNode = null;
 
 	public static final int RANGE = 5; //If the player is this many nodes away, switch to the attack.
-        public static final int STATE_NUMBER = 0;
 
         @Override
 	public void doState(Entity e, Dungeon d)
@@ -94,6 +93,6 @@ public class MoveState extends EntityState
         @Override
 	public int isState()
 	{
-		return STATE_NUMBER;
+		return 0;
 	}
 }

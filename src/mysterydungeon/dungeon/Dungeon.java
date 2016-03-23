@@ -60,7 +60,7 @@ public class Dungeon
 		findNodes();
 		findPaths();
 		findRooms();
-		player = new Entity(this, Species.PLAYER, null);
+		player = new Entity(this, Species.PLAYER, null, true);
 		enemies.clear();
 		spawnEnemies(1);
 	}

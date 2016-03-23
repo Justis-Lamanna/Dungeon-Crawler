@@ -13,8 +13,8 @@ import mysterydungeon.dungeon.Node;
  * @author Justis
  */
 public class FollowState extends EntityState
-{
-        @Override
+{   
+    @Override
 	public void doState(Entity e, Dungeon d)
 	{
 		Entity player = d.getEntities().get(0);

@@ -20,8 +20,7 @@ public class GameLoop extends Thread
 {
     public static final int FRAMES_WALK = 6;
     
-    private DungeonComp comp;
-    private boolean moving = false;
+    private final DungeonComp comp;
     int moveFrame = 0;
     Move move = new BrawlMove(10);
     
@@ -64,15 +63,13 @@ public class GameLoop extends Thread
         public void updateGame(double delta)
         {
             Dungeon dungeon = comp.getDungeon();
-            Controls controls = Controls.getInstance();
             ArrayList<Entity> entities = dungeon.getEntities();
             Entity player = entities.get(0);
-            Node pNode = player.getCurrentNode();
             for(Entity entity : entities)
             {
                 if(entity.isMoving())
                 {
-                    int[] iValues = interpolate(entity, delta);
+                    int[] iValues = interpolate(entity, 6);
                     entity.addPixel(iValues[0], iValues[1]);
                     if(entity.getDestinationNode().equals(entity.getPixelX(), entity.getPixelY()))
                     {
@@ -80,13 +77,10 @@ public class GameLoop extends Thread
                         entity.setMoving(false);
                     }
                 }
-                else if(entity.equals(player) && controls.isDirectionPressed())
+                else if(entity.equals(player))
                 {
-                    if(!controls.isFacePressed() && pNode.getPath(controls.getDirection()) != null)
-                    {    
-                        player.setDestinationNode(pNode.getPath(controls.getDirection()));
-                        player.facing = controls.getDirection();
-                        controls.clearDirection();
+                    if(handleControls(entity))
+                    {
                         for(Entity others : entities)
                         {
                             others.doState();
@@ -94,20 +88,52 @@ public class GameLoop extends Thread
                         }
                         player.addHP(1);
                     }
-                    else if(controls.isFacePressed())
-                    {
-                        player.facing = controls.getDirection();
-                        controls.clearDirection();
-                    }
                 }
             }
         }
         
-        private int[] interpolate(Entity entity, double delta)
+        private int[] interpolate(Entity entity, int delta)
         {
             int[] returnPoints = new int[2];
-            returnPoints[0] = (entity.getDestinationNode().getX() - entity.getX()) * (24 / FRAMES_WALK);
-            returnPoints[1] = (entity.getDestinationNode().getY() - entity.getY()) * (24 / FRAMES_WALK);
+            returnPoints[0] = (entity.getDestinationNode().getX() - entity.getX()) * (24 / delta);
+            returnPoints[1] = (entity.getDestinationNode().getY() - entity.getY()) * (24 / delta);
             return returnPoints;
+        }
+        
+        private boolean handleControls(Entity player)
+        {
+            Node playerNode = player.getCurrentNode();
+            Controls controls = Controls.getInstance();
+            if(controls.isFacePressed() && controls.isDirectionPressed())
+            {
+                if(controls.getDirection() != -1)
+                {
+                    player.facing = controls.getDirection();
+                    controls.clearDirection();
+                    return false;
+                }
+                else
+                {
+                    controls.clearDirection();
+                    return true;
+                }
+            }
+            if(controls.isDirectionPressed())
+            {
+                if(controls.getDirection() != -1 && playerNode.getPath(controls.getDirection()) != null)
+                {
+                    player.setDestinationNode(playerNode.getPath(controls.getDirection()));
+                    player.facing = controls.getDirection();
+                    player.setMoving(true);
+                    controls.clearDirection();
+                    return true;
+                }
+                else if(controls.getDirection() == -1)
+                {
+                    controls.clearDirection();
+                    return true;
+                }
+            }
+            return false;
         }
 }

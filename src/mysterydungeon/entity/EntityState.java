@@ -16,7 +16,7 @@ import mysterydungeon.dungeon.Node;
  * @author Justis
  */
 public abstract class EntityState
-{
+{    
     public abstract void doState(Entity e, Dungeon d);
 
     public abstract int isState();
