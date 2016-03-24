@@ -8,20 +8,15 @@ package mysterydungeon;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import javax.swing.Action;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.Entity;
 
 /**
@@ -30,7 +25,7 @@ import mysterydungeon.entity.Entity;
  */
 public class MysteryDungeon extends JFrame{
 
-    public static final int INITIAL_WIDTH = 800;
+    public static final int INITIAL_WIDTH = 1000;
     public static final int INITIAL_HEIGHT = 800;
     public static final String TILES = "Sprites/tiles.png";
     public static final String TILEMAP = "Maps/map1.txt";
@@ -157,7 +152,7 @@ public class MysteryDungeon extends JFrame{
         HPBAR.setString(String.format("%d/%d", player.getCurrentHP(), player.getMaximumHP()));
         HPBAR.setStringPainted(true);
         hud.add(new JLabel("Log:"), setGridBagConstraints(0, 2, 2, 1, 1, 0.1));
-        hud.add(LOG, setGridBagConstraints(0, 3, 2, 2, 1, 1));
+        hud.add(new JScrollPane(LOG), setGridBagConstraints(0, 3, 2, 2, 1, 1));
         LOG.setForeground(Color.WHITE);
         LOG.setBackground(Color.BLACK);
         return hud;

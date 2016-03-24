@@ -333,42 +333,5 @@ public class DungeonComp extends JComponent
     {
             dungeon.clearEnemies();
             if(repaint){repaint();}
-    }   
-    
-    public void delay(long millis)
-    {
-        long time = System.currentTimeMillis() + millis;
-        while(System.currentTimeMillis() <= time)
-        {
-            
-        }
-    }
-    
-    public void moveAll()
-    {
-        ArrayList<Entity> entities = dungeon.getEntities();
-        for(int slide = 0; slide < 6; slide++)
-        {
-            for(Entity entity : entities)
-            {
-                int[] iValues = interpolate(entity);
-                entity.addPixel(iValues[0], iValues[1]);
-            }
-            paintImmediately(0, 0, getWidth(), getHeight());
-            delay(30);
-
-        }
-        for(Entity entity : entities)
-        {
-            entity.setCurrentNode(entity.getDestinationNode());
-        }
-    }
-
-    private int[] interpolate(Entity entity)
-    {
-        int[] returnPoints = new int[2];
-        returnPoints[0] = (entity.getDestinationNode().getX() - entity.getX()) * 4;
-        returnPoints[1] = (entity.getDestinationNode().getY() - entity.getY()) * 4;
-        return returnPoints;
     }
 }

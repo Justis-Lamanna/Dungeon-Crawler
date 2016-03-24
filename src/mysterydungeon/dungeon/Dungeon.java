@@ -271,6 +271,11 @@ public class Dungeon
 	{
 		enemies.clear();
 	}
+        
+        public void clearEnemy(Entity enemy)
+        {
+            enemies.remove(enemy);
+        }
 
 	private boolean isValidPosition(Entity newEnemy)
 	{
@@ -296,7 +301,6 @@ public class Dungeon
 		{
 			enemy.doState();
 		}
-                comp.moveAll();
 	}
 
 	public Node randomNode(int type)

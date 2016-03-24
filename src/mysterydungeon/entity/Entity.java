@@ -11,6 +11,7 @@ import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
+import mysterydungeon.move.Move;
 
 /**
  *
@@ -31,6 +32,8 @@ public class Entity
         
         private int currentHP;
         private int maxHP;
+        
+        private ArrayList<Move> knownMoves;
 	
 	public int facing;
 
@@ -42,6 +45,7 @@ public class Entity
                 this.isPlayer = player;
                 maxHP = species.getHP();
                 currentHP = maxHP;
+                knownMoves = (ArrayList<Move>)species.getMoves().clone(); //Clone so we don't modify the actual species data.
 		randomizeLocation();
 		currentState = startState;
 	}
@@ -187,12 +191,14 @@ public class Entity
             updateHPBar();
         }
         
-        public void addHP(int dhp)
+        public int addHP(int dhp)
         {
+            int oldHP = currentHP;
             currentHP += dhp;
             if(currentHP > maxHP){currentHP = maxHP;}
             else if(currentHP < 0){currentHP = 0;}
             updateHPBar();
+            return oldHP - currentHP;
         }
         
         private void updateHPBar()
@@ -213,6 +219,16 @@ public class Entity
         public String getName()
         {
             return name;
+        }
+        
+        public ArrayList<Move> getMoves()
+        {
+            return knownMoves;
+        }
+        
+        public void addMove(Move newMove)
+        {
+            knownMoves.add(newMove);
         }
 
 	@Override

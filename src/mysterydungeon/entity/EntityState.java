@@ -26,18 +26,15 @@ public abstract class EntityState
             LinkedList<Node> path = findShortestPath(entity, dungeon, start, end);
             Entity player = dungeon.getEntities().get(0);
             //System.out.println(path);
+            //if(path.size() == 1){return start;}
             if(path.size() > 1 && !isOccupied(entity, dungeon, path.get(1)))
             {
                 return path.get(1);
             } //0 is the current node, so 1 is the next node to go to.
-            Node newNode;
-            do
+            else
             {
-                    int randomDirection = (int)(dungeon.PRNG.nextInt(8));
-                    newNode = start.getPath(randomDirection);
-                    entity.facing = randomDirection;
-            } while(newNode == null || !isValidNode(entity, dungeon, start, newNode) || isOccupied(entity, dungeon, newNode));
-            return newNode;
+                return start;
+            }
     }
 
     public LinkedList<Node> findShortestPath(HashMap<Node, Node> map, Node start, Node end)

@@ -29,6 +29,7 @@ public class GameLoop extends Thread
         this.comp = dungeon;
     }
     
+    @Override
     public void run()
         {
             long lastLoopTime = System.nanoTime();
@@ -118,7 +119,7 @@ public class GameLoop extends Thread
                     return true;
                 }
             }
-            if(controls.isDirectionPressed())
+            else if(controls.isDirectionPressed())
             {
                 if(controls.getDirection() != -1 && playerNode.getPath(controls.getDirection()) != null)
                 {
@@ -131,6 +132,24 @@ public class GameLoop extends Thread
                 else if(controls.getDirection() == -1)
                 {
                     controls.clearDirection();
+                    return true;
+                }
+                else
+                {
+                    //Collision. Make a bump noise in the future, I guess?
+                }
+            }
+            else if(controls.isAttackPressed())
+            {
+                ArrayList<Move> knownMoves = player.getMoves();
+                int attackPressed = controls.attackPressed() - 1;
+                if(attackPressed < knownMoves.size())
+                {
+                    controls.clearAttackPressed(attackPressed);
+                    Move attackUsed = knownMoves.get(attackPressed);
+                    //Now, we go for the kill!
+                    Entity defender = attackUsed.getDefender(comp.getDungeon(), player);
+                    attackUsed.attack(comp.getDungeon(), player, defender);
                     return true;
                 }
             }

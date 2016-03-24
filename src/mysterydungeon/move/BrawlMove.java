@@ -37,22 +37,34 @@ public class BrawlMove implements Move
     }
     
     @Override
-    public void attack(Entity attacker, Entity defender)
+    public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
         int damage = basePower;
-        if(Dungeon.PRNG.nextInt(100) < 10)
+        if(defender == null)
         {
-            damage = (int)(damage * 1.5);
-            MysteryDungeon.LOG.append(String.format("%s felt powered-up!\n", attacker.getName()));
-        }
-        if(Dungeon.PRNG.nextInt(100) < 5)
-        {
-            MysteryDungeon.LOG.append(String.format("%s attacked %s and missed!\n", attacker.getName(), defender.getName()));
+            MysteryDungeon.LOG.append(String.format("%s attacked and missed!\n", attacker.getName()));
         }
         else
         {
-            defender.addHP(-damage);
-            MysteryDungeon.LOG.append(String.format("%s attacked %s for %dHP of damage!", attacker.getName(), defender.getName(), damage));
+            if(Dungeon.PRNG.nextInt(100) < 10)
+            {
+                damage = (int)(damage * 1.5);
+                MysteryDungeon.LOG.append(String.format("%s felt powered-up!\n", attacker.getName()));
+            }
+            if(Dungeon.PRNG.nextInt(100) < 5)
+            {
+                MysteryDungeon.LOG.append(String.format("%s attacked %s and missed!\n", attacker.getName(), defender.getName()));
+            }
+            else
+            {
+                int totalDamage = defender.addHP(-damage);
+                MysteryDungeon.LOG.append(String.format("%s attacked %s for %dHP of damage!\n", attacker.getName(), defender.getName(), totalDamage));
+            }
+            if(defender.getCurrentHP() == 0)
+            {
+                dungeon.clearEnemy(defender);
+                MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", defender.getName()));
+            }
         }
     }
     

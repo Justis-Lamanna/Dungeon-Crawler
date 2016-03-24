@@ -8,7 +8,10 @@ package mysterydungeon.entity;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import mysterydungeon.move.BrawlMove;
+import mysterydungeon.move.Move;
 
 /**
  *
@@ -21,8 +24,12 @@ public class Species
     private BufferedImage image;
     private boolean water;
     private int maxhp;
+    private ArrayList<Move> moves = new ArrayList<>();
 
-    public static final Species PLAYER = new Species("Player", "Sprites/player.png", 40);
+    public static final Species PLAYER = 
+            new SpeciesBuilder("Player", "Sprites/player.png", 40)
+            .addMove(new BrawlMove(15))
+            .make();
     public static final Species ROBOT1 = new Species("Robot1", "Sprites/robot1.png", 20);
     public static final Species ROBOT2 = new Species("Robot2", "Sprites/robot2.png", 20);
     public static final Species ROBOT3 = new Species("X0L0TL", "Sprites/robot3.png", true, 20);
@@ -78,8 +85,23 @@ public class Species
             return water;
     }
     
+    public void setWater(boolean set)
+    {
+        water = set;
+    }
+    
     public int getHP()
     {
         return maxhp;
+    }
+    
+    public void addMove(Move newMove)
+    {
+        moves.add(newMove);
+    }
+    
+    public ArrayList<Move> getMoves()
+    {
+        return moves;
     }
 }

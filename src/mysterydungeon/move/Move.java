@@ -19,7 +19,7 @@ public interface Move
     public static final int ROOM = 2;
     
     Entity getDefender(Dungeon dungeon, Entity attacker);
-    void attack(Entity attacker, Entity defender);
+    void attack(Dungeon dungeon, Entity attacker, Entity defender);
     String getName();
     int getType();
 }
