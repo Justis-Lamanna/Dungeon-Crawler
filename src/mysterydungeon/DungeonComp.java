@@ -35,6 +35,7 @@ public class DungeonComp extends JComponent
     private boolean drawPaths = false;
     private boolean drawRooms = false;
     private boolean drawEntity = true;
+    private boolean drawMask = true;
 
     private static BufferedImage attackImage;
     private static BufferedImage arrowImage;
@@ -58,6 +59,7 @@ public class DungeonComp extends JComponent
             if(drawPaths){paintPaths(g);}
             if(drawRooms){paintRooms(g);}
             if(drawEntity){paintEntities(g);}
+            if(drawMask){paintMask(g, 10);}
     }
 
     private void paintMap(Graphics g, int backgroundTile)
@@ -124,6 +126,22 @@ public class DungeonComp extends JComponent
                             }
                     }
             }
+    }
+    
+    private void paintMask(Graphics g, int maskTile)
+    {
+        BufferedImage tile = tiles[maskTile];
+        Node[][] nodes = dungeon.getNodes();
+        for(int row = 0; row < nodes.length; row++)
+        {
+            for(int col = 0; col < nodes[0].length; col++)
+            {
+                if(!dungeon.isDiscovered(row, col))
+                {
+                    g.drawImage(tile, col*TILE_SIZE, row*TILE_SIZE, null);
+                }
+            }
+        }
     }
 
     private void paintPaths(Graphics g)
@@ -333,5 +351,11 @@ public class DungeonComp extends JComponent
     {
             dungeon.clearEnemies();
             if(repaint){repaint();}
+    }
+    
+    public void toggleMask(boolean repaint)
+    {
+        drawMask = !drawMask;
+        if(repaint){repaint();}
     }
 }

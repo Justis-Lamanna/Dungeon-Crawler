@@ -34,6 +34,7 @@ public class Dungeon
 	private int[][] basemap;
 	private Node[][] nodes;
 	private final ArrayList<RoomNode> rooms = new ArrayList<>();
+        private boolean[][] mask;
 
 	private Entity player;
 	private final Species[] possibleSpecies;
@@ -98,6 +99,7 @@ public class Dungeon
 	private void findNodes()
 	{
 		nodes = new Node[basemap.length][basemap[0].length];
+                mask = new boolean[basemap.length][basemap[0].length];
 		for(int row = 0; row < basemap.length; row++)
 		{
 			for(int col = 0; col < basemap[0].length; col++)
@@ -105,6 +107,7 @@ public class Dungeon
 				if(basemap[row][col] != 0)
 				{
 					nodes[row][col] = new Node(basemap[row][col], col, row);
+                                        mask[row][col] = false;
 				}
 			}
 		}
@@ -348,4 +351,51 @@ public class Dungeon
 		}
 		return null;
 	}
+        
+        public boolean isDiscovered(int row, int col)
+        {
+            return mask[row][col];
+        }
+        
+        public void setDiscovered(int row, int col)
+        {
+            mask[row][col] = true;
+        }
+        
+        public void setDiscovered(int row, int col, int range)
+        {
+            /*for(int drow = row-range; drow < row+range; drow++)
+            {
+                for(int dcol = col-range; dcol < col+range; dcol++)
+                {
+                    try
+                    {
+                        mask[drow][dcol] = true;
+                    }
+                    catch(ArrayIndexOutOfBoundsException ex)
+                    {
+                        //Do nothing.
+                    }
+                }
+            }*/
+            setDiscovered(row, col, range, range, range, range);
+        }
+        
+        public void setDiscovered(int row, int col, int plusrow, int minusrow, int pluscol, int minuscol)
+        {
+            for(int drow = row-minusrow; drow <= row+plusrow; drow++)
+            {
+                for(int dcol = col-minuscol; dcol <= col+pluscol; dcol++)
+                {
+                    try
+                    {
+                        mask[drow][dcol] = true;
+                    }
+                    catch(ArrayIndexOutOfBoundsException ex)
+                    {
+                        //Do nothing.
+                    }
+                }
+            }
+        }
 }

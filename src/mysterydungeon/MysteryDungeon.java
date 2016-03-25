@@ -69,9 +69,9 @@ public class MysteryDungeon extends JFrame{
             refreshButton.addActionListener((ActionEvent e) -> dungeon.reopen(true));
             frame.add(refreshButton, c);
 
-            JButton kachunkButton = new JButton("Ka-Chunk!");
+            JButton kachunkButton = new JButton("Toggle Mask");
             c = setGridBagConstraints(1, 2, 1, 1, 0.1, 0.1);
-            kachunkButton.addActionListener((ActionEvent e) -> dungeon.kachunk(true));
+            kachunkButton.addActionListener((ActionEvent e) -> dungeon.toggleMask(true));
             frame.add(kachunkButton, c);
 
             JButton retryButton = new JButton("Toggle Nodes");

@@ -6,6 +6,7 @@
 package mysterydungeon.dungeon;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
@@ -36,16 +37,15 @@ public class GameLoop extends Thread
             final int TARGET_FPS = 60;
             final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
             boolean gameRunning = true;
+            while(comp.getDungeon() == null){}
+            onPlayerStep(comp.getDungeon(), comp.getDungeon().getEntities().get(0));
             while(gameRunning)
             {
                 long now = System.nanoTime();
                 long updateLength = now - lastLoopTime;
                 lastLoopTime = now;
                 double delta = updateLength / ((double)OPTIMAL_TIME); //1 if updateLength == optimal time
-                if(comp.getDungeon() != null)
-                {
-                    updateGame(delta);
-                }
+                updateGame(delta);
                 comp.repaint();
                 long sleepTime = (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000;
                 if(sleepTime < 10){sleepTime = 10;}
@@ -87,7 +87,7 @@ public class GameLoop extends Thread
                             others.doState();
                             others.setMoving(true);
                         }
-                        player.addHP(1);
+                        onPlayerStep(dungeon, player);
                     }
                 }
             }
@@ -154,5 +154,11 @@ public class GameLoop extends Thread
                 }
             }
             return false;
+        }
+        
+        private void onPlayerStep(Dungeon dungeon, Entity player)
+        {
+            dungeon.setDiscovered(player.getDestinationNode().getY(), player.getDestinationNode().getX(), 2);
+            player.addHP(1);
         }
 }
