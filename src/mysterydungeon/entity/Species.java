@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import mysterydungeon.move.BrawlMove;
 import mysterydungeon.move.Move;
+import mysterydungeon.move.RangeMove;
+import mysterydungeon.move.RoomMove;
 
 /**
  *
@@ -29,6 +31,8 @@ public class Species
     public static final Species PLAYER = 
             new SpeciesBuilder("Player", "Sprites/player.png", 40)
             .addMove(new BrawlMove(15))
+            .addMove(new RangeMove(20, 4))
+            .addMove(new RoomMove(20))
             .make();
     public static final Species ROBOT1 = new Species("Robot1", "Sprites/robot1.png", 20);
     public static final Species ROBOT2 = new Species("Robot2", "Sprites/robot2.png", 20);

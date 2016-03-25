@@ -229,10 +229,8 @@ public class DungeonComp extends JComponent
             int drawX = calculateDrawPointX(entity.getPixelX(), entityImage.getWidth());
             int drawY = calculateDrawPointY(entity.getPixelY(), entityImage.getHeight());
             g.drawImage(entityImage, drawX, drawY, null);
-            if(entity.getState() != null && entity.getClass().equals(FollowState.class))
+            if(entity.getState() != null && entity.getState().getClass().equals(FollowState.class))
             {
-                //drawX = calculateDrawPointX(entity.getPixelX(), attackImage.getWidth());
-                //drawY = calculateDrawPointY(entity.getPixelY(), attackImage.getHeight()) - 8;
                 drawX += (entityImage.getWidth() - attackImage.getWidth()) / 2;
                 drawY -= attackImage.getHeight();
                 g.drawImage(attackImage, drawX, drawY, null);

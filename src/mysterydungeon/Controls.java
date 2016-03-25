@@ -90,7 +90,6 @@ public class Controls implements KeyListener
         {
             int index = e.getKeyCode() - KeyEvent.VK_1;
             attackPressed[index] = true;
-            System.out.printf("Attack %d pressed.\n", index);
         }
         
     }

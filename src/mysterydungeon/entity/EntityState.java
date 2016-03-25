@@ -25,15 +25,27 @@ public abstract class EntityState
     {
         LinkedList<Node> path = findShortestPath(entity, dungeon, start, end);
         Entity player = dungeon.getEntities().get(0);
-        //System.out.println(path);
-        //if(path.size() == 1){return start;}
         if(path.size() > 1 && !isOccupied(entity, dungeon, path.get(1)))
         {
             return path.get(1);
         } //0 is the current node, so 1 is the next node to go to.
         else
         {
-            return start;
+            if(!isOccupied(entity, dungeon, path.get(0)))
+            {
+                return start;
+            }
+            else
+            {
+                for(int dir = 0; dir < 8; dir++)
+                {
+                    if(start.getPath(dir) != null && !isOccupied(entity, dungeon, start.getPath(dir)))
+                    {
+                        return start.getPath(dir);
+                    }
+                }
+                return start; //It shouldn't come to this, I hope?
+            }
         }
     }
 
