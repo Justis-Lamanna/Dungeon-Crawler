@@ -47,42 +47,42 @@ public class Species
 
     public Species(String name, String imageFilename, int hp)
     {
-            this(name, imageFilename, false, hp);
+        this(name, imageFilename, false, hp);
     }
 
     public Species(String name, String imageFilename, boolean water, int hp)
     {
-            this.name = name;
-            this.imageFilename = imageFilename;
-            this.image = null;
-            this.water = water;
-            this.maxhp = hp;
+        this.name = name;
+        this.imageFilename = imageFilename;
+        this.image = null;
+        this.water = water;
+        this.maxhp = hp;
     }
 
     public String getName()
     {
-            return name;
+        return name;
     }
 
     public BufferedImage getImage()
     {
-            if(image == null)
-            {	
-                    try
-                    {
-                            image = ImageIO.read(new File(imageFilename));
-                    }
-                    catch(IOException ex)
-                    {
-                            ex.printStackTrace();
-                    }
+        if(image == null)
+        {	
+            try
+            {
+                image = ImageIO.read(new File(imageFilename));
             }
-            return image;
+            catch(IOException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+        return image;
     }
 
     public boolean isWater()
     {
-            return water;
+        return water;
     }
     
     public void setWater(boolean set)

@@ -17,7 +17,7 @@ import mysterydungeon.move.Move;
  *
  * @author Justis
  */
-public class GameLoop extends Thread
+public class GameLoop implements Runnable
 {
     public static final int FRAMES_WALK = 6;
     
@@ -32,34 +32,34 @@ public class GameLoop extends Thread
     
     @Override
     public void run()
+    {
+        long lastLoopTime = System.nanoTime();
+        final int TARGET_FPS = 60;
+        final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
+        boolean gameRunning = true;
+        while(comp.getDungeon() == null){}
+        onPlayerStep(comp.getDungeon(), comp.getDungeon().getEntities().get(0));
+        while(gameRunning)
         {
-            long lastLoopTime = System.nanoTime();
-            final int TARGET_FPS = 60;
-            final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
-            boolean gameRunning = true;
-            while(comp.getDungeon() == null){}
-            onPlayerStep(comp.getDungeon(), comp.getDungeon().getEntities().get(0));
-            while(gameRunning)
+            long now = System.nanoTime();
+            long updateLength = now - lastLoopTime;
+            lastLoopTime = now;
+            double delta = updateLength / ((double)OPTIMAL_TIME); //1 if updateLength == optimal time
+            updateGame(delta);
+            comp.repaint();
+            long sleepTime = (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000;
+            if(sleepTime < 10){sleepTime = 10;}
+            try
             {
-                long now = System.nanoTime();
-                long updateLength = now - lastLoopTime;
-                lastLoopTime = now;
-                double delta = updateLength / ((double)OPTIMAL_TIME); //1 if updateLength == optimal time
-                updateGame(delta);
-                comp.repaint();
-                long sleepTime = (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000;
-                if(sleepTime < 10){sleepTime = 10;}
-                try
-                {
-                    Thread.sleep(sleepTime);
-                }
-                catch(InterruptedException ex)
-                {
-                    gameRunning = false;
-                }
+                Thread.sleep(sleepTime);
             }
-            System.exit(0);
+            catch(InterruptedException ex)
+            {
+                gameRunning = false;
+            }
         }
+        System.exit(0);
+    }
         
         public void updateGame(double delta)
         {

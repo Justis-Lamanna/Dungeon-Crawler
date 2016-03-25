@@ -13,7 +13,7 @@ import mysterydungeon.move.Move;
  */
 public class SpeciesBuilder
 {
-    private Species species;
+    private final Species species;
     
     public SpeciesBuilder(String name, String filename, int hp)
     {

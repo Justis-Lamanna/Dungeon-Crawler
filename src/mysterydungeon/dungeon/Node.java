@@ -33,53 +33,53 @@ public class Node
 
     public Node(int type, int x, int y)
     {
-            this.x = x;
-            this.y = y;
-            this.type = type;
+        this.x = x;
+        this.y = y;
+        this.type = type;
     }
 
     public int getX()
     {
-            return x;
+        return x;
     }
 
     public int getY()
     {
-            return y;
+        return y;
     }
 
     public int getType()
     {
-            return type;
+        return type;
     }
 
     public void setPath(Node connect, int direction)
     {
-            connections[direction] = connect;
+        connections[direction] = connect;
     }
 
     public void setDoublePath(Node connect, int direction)
     {
-            connections[direction] = connect;
-            int oppositeDirection = (direction + 4) % 8;
-            if(connect != null)
-            {
-                    connect.setPath(this, oppositeDirection);
-            }
+        connections[direction] = connect;
+        int oppositeDirection = (direction + 4) % 8;
+        if(connect != null)
+        {
+            connect.setPath(this, oppositeDirection);
+        }
     }
 
     public Node getPath(int direction)
     {
-            if(direction >= 0 && direction < 8){return connections[direction];}
-            else{return null;}
+        if(direction >= 0 && direction < 8){return connections[direction];}
+        else{return null;}
     }
 
     @Override
     public boolean equals(Object o)
     {
-            if(o == null){return false;}
-            Node node = (Node)o;
-            return (x == node.getX() && y == node.getY());
+        if(o == null){return false;}
+        Node node = (Node)o;
+        return (x == node.getX() && y == node.getY());
     }
     
     public boolean equals(int ox, int oy)
@@ -96,6 +96,6 @@ public class Node
     @Override
     public String toString()
     {
-            return String.format("(%d, %d, %d)", x, y, type);
+        return String.format("(%d, %d, %d)", x, y, type);
     }
 }
