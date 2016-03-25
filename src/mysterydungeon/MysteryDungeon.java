@@ -25,17 +25,43 @@ import mysterydungeon.entity.Entity;
  */
 public class MysteryDungeon extends JFrame{
 
+    /**
+     *
+     */
     public static final int INITIAL_WIDTH = 1000;
+
+    /**
+     *
+     */
     public static final int INITIAL_HEIGHT = 800;
+
+    /**
+     *
+     */
     public static final String TILES = "Sprites/tiles.png";
+
+    /**
+     *
+     */
     public static final String TILEMAP = "Maps/map1.txt";
     
+    /**
+     *
+     */
     public static final JProgressBar HPBAR = new JProgressBar(0, 100);
+
+    /**
+     *
+     */
     public static final JTextArea LOG = new JTextArea("Entered the Dungeon.\n", 50, 10);
     
 
     private DungeonComp dungeon;
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args)
     {
         MysteryDungeon frame = new MysteryDungeon(TILES, TILEMAP);
@@ -44,6 +70,11 @@ public class MysteryDungeon extends JFrame{
         frame.setVisible(true);
     }
 
+    /**
+     *
+     * @param tileFilename
+     * @param tilemapFilename
+     */
     public MysteryDungeon(String tileFilename, String tilemapFilename)
     {
         JPanel frame = new JPanel(new GridBagLayout());

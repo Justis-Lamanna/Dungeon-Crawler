@@ -19,12 +19,20 @@ import mysterydungeon.move.Move;
  */
 public class GameLoop implements Runnable
 {
+
+    /**
+     *
+     */
     public static final int FRAMES_WALK = 6;
     
     private final DungeonComp comp;
     int moveFrame = 0;
     Move move = new BrawlMove(10);
     
+    /**
+     *
+     * @param dungeon
+     */
     public GameLoop(DungeonComp dungeon)
     {
         this.comp = dungeon;
@@ -61,7 +69,11 @@ public class GameLoop implements Runnable
         System.exit(0);
     }
         
-        public void updateGame(double delta)
+    /**
+     *
+     * @param delta
+     */
+    public void updateGame(double delta)
         {
             Dungeon dungeon = comp.getDungeon();
             ArrayList<Entity> entities = dungeon.getEntities();

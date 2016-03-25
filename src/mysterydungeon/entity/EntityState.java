@@ -17,10 +17,28 @@ import mysterydungeon.dungeon.Node;
  */
 public abstract class EntityState
 {    
+
+    /**
+     *
+     * @param e
+     * @param d
+     */
     public abstract void doState(Entity e, Dungeon d);
 
+    /**
+     *
+     * @return
+     */
     public abstract int isState();
 
+    /**
+     *
+     * @param entity
+     * @param dungeon
+     * @param start
+     * @param end
+     * @return
+     */
     public Node nextNode(Entity entity, Dungeon dungeon, Node start, Node end)
     {
         LinkedList<Node> path = findShortestPath(entity, dungeon, start, end);
@@ -49,17 +67,39 @@ public abstract class EntityState
         }
     }
 
+    /**
+     *
+     * @param map
+     * @param start
+     * @param end
+     * @return
+     */
     public LinkedList<Node> findShortestPath(HashMap<Node, Node> map, Node start, Node end)
     {
         return readPath(map, start, end);
     }
 
+    /**
+     *
+     * @param entity
+     * @param dungeon
+     * @param start
+     * @param end
+     * @return
+     */
     public LinkedList<Node> findShortestPath(Entity entity, Dungeon dungeon, Node start, Node end)
     {
         LinkedList<Node> path = readPath(findShortestPath(entity, dungeon, start), start, end);
         return path;
     }
 
+    /**
+     *
+     * @param entity
+     * @param dungeon
+     * @param start
+     * @return
+     */
     public HashMap<Node, Node> findShortestPath(Entity entity, Dungeon dungeon, Node start)
     {
         HashMap<Node, Integer> dist = new HashMap<>();
@@ -112,6 +152,13 @@ public abstract class EntityState
         return minNode;
     }
 
+    /**
+     *
+     * @param map
+     * @param start
+     * @param target
+     * @return
+     */
     public LinkedList<Node> readPath(HashMap<Node, Node> map, Node start, Node target)
     {
         LinkedList<Node> ss = new LinkedList<>();
@@ -133,11 +180,26 @@ public abstract class EntityState
         }
     }
 
+    /**
+     *
+     * @param entity
+     * @param dungeon
+     * @param current
+     * @param next
+     * @return
+     */
     protected boolean isValidNode(Entity entity, Dungeon dungeon, Node current, Node next)
     {
         return next.getType() == Node.LAND;// && !isOccupied(entity, dungeon, next);
     }
 
+    /**
+     *
+     * @param entity
+     * @param dungeon
+     * @param node
+     * @return
+     */
     protected boolean isOccupied(Entity entity, Dungeon dungeon, Node node)
     {
         ArrayList<Entity> enemies = dungeon.getEntities();
@@ -152,6 +214,13 @@ public abstract class EntityState
         return false;
     }
 
+    /**
+     *
+     * @param d
+     * @param start
+     * @param range
+     * @return
+     */
     protected boolean playerNearby(Dungeon d, Node start, int range)
     {
         Entity player = d.getEntities().get(0);
@@ -178,6 +247,12 @@ public abstract class EntityState
         return false;
     }
 
+    /**
+     *
+     * @param start
+     * @param end
+     * @return
+     */
     protected int getDirection(Node start, Node end)
     {
         for(int dir = 0; dir < 8; dir++)

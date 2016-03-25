@@ -25,8 +25,20 @@ import mysterydungeon.entity.FollowState;
  */
 public class DungeonComp extends JComponent
 {
+
+    /**
+     *
+     */
     public static final int TILE_SIZE = 24;
+
+    /**
+     *
+     */
     public static final boolean BASEMAP = false;
+
+    /**
+     *
+     */
     public static final boolean TILEMAP = true;
 
     private Dungeon dungeon;
@@ -41,6 +53,11 @@ public class DungeonComp extends JComponent
     private static BufferedImage attackImage;
     private static BufferedImage arrowImage;
 
+    /**
+     *
+     * @param tileFilename
+     * @param tilemapFilename
+     */
     public DungeonComp(String tileFilename, String tilemapFilename)
     {
         dungeon = new Dungeon(this, tilemapFilename, Dungeon.TEST_LIST);
@@ -292,36 +309,61 @@ public class DungeonComp extends JComponent
         return tiles[tile];
     }
 
+    /**
+     *
+     * @param maptype
+     * @param repaint
+     */
     public void setDrawMap(boolean maptype, boolean repaint)
     {
         mapToDraw = maptype;
         if(repaint){repaint();}
     }
 
+    /**
+     *
+     * @param repaint
+     */
     public void reopen(boolean repaint)
     {
         dungeon.loadDungeon();
         if(repaint){repaint();}
     }
 
+    /**
+     *
+     * @param repaint
+     */
     public void toggleNodes(boolean repaint)
     {
         drawNodes = !drawNodes;
         if(repaint){repaint();}
     }
 
+    /**
+     *
+     * @param repaint
+     */
     public void togglePaths(boolean repaint)
     {
         drawPaths = !drawPaths;
         if(repaint){repaint();}
     }
 
+    /**
+     *
+     * @param repaint
+     */
     public void toggleRooms(boolean repaint)
     {
         drawRooms = !drawRooms;
         if(repaint){repaint();}
     }
 
+    /**
+     *
+     * @param repaint
+     */
     public void toggleEntity(boolean repaint)
     {
         drawEntity = !drawEntity;
@@ -329,29 +371,50 @@ public class DungeonComp extends JComponent
 
     }
 
+    /**
+     *
+     * @param repaint
+     */
     public void kachunk(boolean repaint)
     {
         dungeon.updateAll();
         if(repaint){repaint();}
     }
 
+    /**
+     *
+     * @return
+     */
     public Dungeon getDungeon()
     {
         return dungeon;
     }
 
+    /**
+     *
+     * @param number
+     * @param repaint
+     */
     public void spawnEnemies(int number, boolean repaint)
     {
         dungeon.spawnEnemies(number);
         if(repaint){repaint();}
     }
 
+    /**
+     *
+     * @param repaint
+     */
     public void clearEnemies(boolean repaint)
     {
         dungeon.clearEnemies();
         if(repaint){repaint();}
     }
     
+    /**
+     *
+     * @param repaint
+     */
     public void toggleMask(boolean repaint)
     {
         drawMask = !drawMask;

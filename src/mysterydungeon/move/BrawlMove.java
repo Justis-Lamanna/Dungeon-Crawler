@@ -19,23 +19,41 @@ public class BrawlMove implements Move
 {   
     private final int basePower;
     
+    /**
+     *
+     * @param basepower
+     */
     public BrawlMove(int basepower)
     {
         this.basePower = basepower;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public int getType()
     {
         return Move.BRAWL;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String getName()
     {
         return "Punch";
     }
     
+    /**
+     *
+     * @param dungeon
+     * @param attacker
+     * @param defender
+     */
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
@@ -68,6 +86,12 @@ public class BrawlMove implements Move
         }
     }
     
+    /**
+     *
+     * @param dungeon
+     * @param attacker
+     * @return
+     */
     @Override
     public Entity getDefender(Dungeon dungeon, Entity attacker)
     {

@@ -16,12 +16,21 @@ import mysterydungeon.MysteryDungeon;
  */
 public class RangeMove implements Move
 {
+
+    /**
+     *
+     */
     public static final double MULTIPLIER = 0.75;
     
     private final int power;
     private final int range;
     private int currentPower;
     
+    /**
+     *
+     * @param power
+     * @param range
+     */
     public RangeMove(int power, int range)
     {
         this.power = power;
@@ -29,18 +38,32 @@ public class RangeMove implements Move
         this.range = range;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public int getType()
     {
         return Move.RANGE;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String getName()
     {
         return "Blast";
     }
     
+    /**
+     *
+     * @param dungeon
+     * @param attacker
+     * @param defender
+     */
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
@@ -67,6 +90,12 @@ public class RangeMove implements Move
         }
     }
     
+    /**
+     *
+     * @param dungeon
+     * @param attacker
+     * @return
+     */
     @Override
     public Entity getDefender(Dungeon dungeon, Entity attacker)
     {

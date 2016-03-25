@@ -22,6 +22,10 @@ import mysterydungeon.entity.Species;
  */
 public class Dungeon
 {
+
+    /**
+     *
+     */
     public static final Species[] TEST_LIST = {
             Species.ROBOT1, Species.ROBOT2, Species.ROBOT3, 
             Species.ROBOT4, Species.ROBOT5, Species.ROBOT6, 
@@ -41,9 +45,22 @@ public class Dungeon
     private final ArrayList<Entity> enemies = new ArrayList<>();
     private final DungeonComp comp;
 
+    /**
+     *
+     */
     public static final Random PRNG = new Random();
+
+    /**
+     *
+     */
     public boolean gameRunning = true;
 
+    /**
+     *
+     * @param comp
+     * @param tilemapFilename
+     * @param speciesList
+     */
     public Dungeon(DungeonComp comp, String tilemapFilename, Species[] speciesList)
     {
         this.comp = comp;
@@ -53,6 +70,9 @@ public class Dungeon
         new Thread(new GameLoop(comp)).start();
     }
 
+    /**
+     *
+     */
     public void loadDungeon()
     {
         generateBasemap(tilemapFilename);
@@ -214,6 +234,13 @@ public class Dungeon
         }
     }
 
+    /**
+     *
+     * @param current
+     * @param direction
+     * @param nodesToVisit
+     * @param visited
+     */
     public void addUnvisitedToQueue(Node current, int direction, LinkedList<Node> nodesToVisit, boolean[][] visited)
     {
         Node nw = current.getPath(direction);
@@ -224,26 +251,46 @@ public class Dungeon
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public int[][] getBasemap()
     {
         return basemap;
     }
 
+    /**
+     *
+     * @return
+     */
     public int[][] getTilemap()
     {
         return tilemap;
     }
 
+    /**
+     *
+     * @return
+     */
     public Node[][] getNodes()
     {
         return nodes;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<RoomNode> getRooms()
     {
             return rooms;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Entity> getEntities()
     {
         ArrayList<Entity> entities = new ArrayList<>();
@@ -255,6 +302,10 @@ public class Dungeon
         return entities;
     }
 
+    /**
+     *
+     * @param number
+     */
     public void spawnEnemies(int number)
     {
         for(int count = 0; count < number; count++)
@@ -269,11 +320,18 @@ public class Dungeon
         }
     }
 
+    /**
+     *
+     */
     public void clearEnemies()
     {
         enemies.clear();
     }
 
+    /**
+     *
+     * @param enemy
+     */
     public void clearEnemy(Entity enemy)
     {
         enemies.remove(enemy);
@@ -297,6 +355,9 @@ public class Dungeon
         return true;
     }
 
+    /**
+     *
+     */
     public void updateAll()
     {
         for(Entity enemy : enemies)
@@ -305,6 +366,11 @@ public class Dungeon
         }
     }
 
+    /**
+     *
+     * @param type
+     * @return
+     */
     public Node randomNode(int type)
     {
         ArrayList<Node> list = getNodesList();
@@ -316,6 +382,12 @@ public class Dungeon
         return list.get(randomPosition);
     }
 
+    /**
+     *
+     * @param previous
+     * @param current
+     * @return
+     */
     public Node randomRoomNode(Node previous, Node current)
     {
         while(true)
@@ -326,6 +398,10 @@ public class Dungeon
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Node> getNodesList()
     {
         ArrayList<Node> retList = new ArrayList<>();
@@ -342,6 +418,11 @@ public class Dungeon
         return retList;
     }
 
+    /**
+     *
+     * @param node
+     * @return
+     */
     public RoomNode getRoom(Node node)
     {
         for(RoomNode room : rooms)
@@ -351,21 +432,47 @@ public class Dungeon
         return null;
     }
 
+    /**
+     *
+     * @param row
+     * @param col
+     * @return
+     */
     public boolean isDiscovered(int row, int col)
     {
         return mask[row][col];
     }
 
+    /**
+     *
+     * @param row
+     * @param col
+     */
     public void setDiscovered(int row, int col)
     {
         mask[row][col] = true;
     }
 
+    /**
+     *
+     * @param row
+     * @param col
+     * @param range
+     */
     public void setDiscovered(int row, int col, int range)
     {
         setDiscovered(row, col, range, range, range, range);
     }
 
+    /**
+     *
+     * @param row
+     * @param col
+     * @param plusrow
+     * @param minusrow
+     * @param pluscol
+     * @param minuscol
+     */
     public void setDiscovered(int row, int col, int plusrow, int minusrow, int pluscol, int minuscol)
     {
         for(int drow = row-minusrow; drow <= row+plusrow; drow++)

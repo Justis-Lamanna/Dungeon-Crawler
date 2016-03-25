@@ -20,6 +20,9 @@ public class RoomNode
 
     private Node centerNode;
 
+    /**
+     *
+     */
     public RoomNode()
     {
         containedNodes = new ArrayList<>();
@@ -28,27 +31,47 @@ public class RoomNode
         exteriorNodes = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param node
+     */
     public void addNode(Node node)
     {
         containedNodes.add(node);
     }
 
+    /**
+     *
+     * @param node
+     */
     public void addConnection(RoomNode node)
     {
         connections.add(node);
     }
 
+    /**
+     *
+     * @param node
+     */
     public void addDoubleConnection(RoomNode node)
     {
         connections.add(node);
         node.addConnection(this);
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Node> getNodes()
     {
         return containedNodes;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean calculateCenter()
     {
         for(Node node : containedNodes)
@@ -67,21 +90,36 @@ public class RoomNode
         return false;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getX()
     {
         return centerNode.getX();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getY()
     {
         return centerNode.getY();
     }
 
+    /**
+     *
+     * @return
+     */
     public Node getCenter()
     {
         return centerNode;
     }
 
+    /**
+     *
+     */
     public void calculateExteriorNodes()
     {
         for(Node node : containedNodes)
@@ -98,11 +136,19 @@ public class RoomNode
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Node> getExteriorNodes()
     {
         return exteriorNodes;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Node> getJustInteriorNodes()
     {
         return justInteriorNodes;

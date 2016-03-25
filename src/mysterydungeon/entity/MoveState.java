@@ -18,8 +18,16 @@ public class MoveState extends EntityState
 {
     private Node targetNode = null;
 
+    /**
+     *
+     */
     public static final int RANGE = 5; //If the player is this many nodes away, switch to the attack.
 
+    /**
+     *
+     * @param e
+     * @param d
+     */
     @Override
     public void doState(Entity e, Dungeon d)
     {
@@ -90,6 +98,10 @@ public class MoveState extends EntityState
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int isState()
     {

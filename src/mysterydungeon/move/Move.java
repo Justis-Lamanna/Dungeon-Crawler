@@ -14,12 +14,47 @@ import mysterydungeon.entity.Entity;
  */
 public interface Move
 {
+
+    /**
+     *
+     */
     public static final int BRAWL = 0;
+
+    /**
+     *
+     */
     public static final int RANGE = 1;
+
+    /**
+     *
+     */
     public static final int ROOM = 2;
     
+    /**
+     *
+     * @param dungeon
+     * @param attacker
+     * @return
+     */
     Entity getDefender(Dungeon dungeon, Entity attacker);
+
+    /**
+     *
+     * @param dungeon
+     * @param attacker
+     * @param defender
+     */
     void attack(Dungeon dungeon, Entity attacker, Entity defender);
+
+    /**
+     *
+     * @return
+     */
     String getName();
+
+    /**
+     *
+     * @return
+     */
     int getType();
 }

@@ -35,8 +35,18 @@ public class Entity
 
     private ArrayList<Move> knownMoves;
 
+    /**
+     *
+     */
     public int facing;
 
+    /**
+     *
+     * @param dungeon
+     * @param species
+     * @param startState
+     * @param player
+     */
     public Entity(Dungeon dungeon, Species species, EntityState startState, boolean player)
     {
         this.dungeon = dungeon;
@@ -50,11 +60,22 @@ public class Entity
         currentState = startState;
     }
 
+    /**
+     *
+     * @param dungeon
+     * @param species
+     * @param player
+     */
     public Entity(Dungeon dungeon, Species species, boolean player)
     {
         this(dungeon, species, new MoveState(), player);
     }
 
+    /**
+     *
+     * @param dungeon
+     * @param species
+     */
     public Entity(Dungeon dungeon, Species species)
     {
         this(dungeon, species, new MoveState(), false);
@@ -70,6 +91,9 @@ public class Entity
         return nodes.get(randomNode);
     }
 
+    /**
+     *
+     */
     public void randomizeLocation()
     {
         currentNode = generateLocation();
@@ -78,16 +102,28 @@ public class Entity
         gotoNode = currentNode;
     }
 
+    /**
+     *
+     * @return
+     */
     public Species getSpecies()
     {
         return species;
     }
 
+    /**
+     *
+     * @return
+     */
     public Node getCurrentNode()
     {
         return currentNode;
     }
 
+    /**
+     *
+     * @param n
+     */
     public void setCurrentNode(Node n)
     {
         currentNode = n;
@@ -95,48 +131,86 @@ public class Entity
         currentY = currentNode.getY() * DungeonComp.TILE_SIZE;
     }
 
+    /**
+     *
+     * @return
+     */
     public Node getDestinationNode()
     {
         return gotoNode;
     }
 
+    /**
+     *
+     * @param n
+     */
     public void setDestinationNode(Node n)
     {
         gotoNode = n;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getX()
     {
         return currentNode.getX();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getY()
     {
         return currentNode.getY();
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPixelX()
     {
         return currentX;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getPixelY()
     {
         return currentY;
     }
 
+    /**
+     *
+     * @param newX
+     * @param newY
+     */
     public void setPixel(int newX, int newY)
     {
         currentX = newX;
         currentY = newY;
     }
 
+    /**
+     *
+     * @param dx
+     * @param dy
+     */
     public void addPixel(int dx, int dy)
     {
         currentX += dx;
         currentY += dy;
     }
 
+    /**
+     *
+     * @param state
+     */
     public void setState(EntityState state)
     {	
         currentState = state;
@@ -146,6 +220,9 @@ public class Entity
         }
     }
 
+    /**
+     *
+     */
     public void doState()
     {
         if(currentState != null)
@@ -154,29 +231,58 @@ public class Entity
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public EntityState getState()
     {
         return currentState;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isWater()
     {
         return species.isWater();
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isMoving()
     {
         return moving;
     }
 
+    /**
+     *
+     * @param set
+     */
     public void setMoving(boolean set)
     {
         moving = set;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCurrentHP(){return currentHP;}
+
+    /**
+     *
+     * @return
+     */
     public int getMaximumHP(){return maxHP;}
 
+    /**
+     *
+     * @param newval
+     */
     public void setCurrentHP(int newval)
     {
         if(newval > maxHP){newval = maxHP;}
@@ -185,12 +291,21 @@ public class Entity
         updateHPBar();
     }
 
+    /**
+     *
+     * @param newval
+     */
     public void setMaxHP(int newval)
     {
         maxHP = newval;
         updateHPBar();
     }
 
+    /**
+     *
+     * @param dhp
+     * @return
+     */
     public int addHP(int dhp)
     {
         int oldHP = currentHP;
@@ -211,21 +326,37 @@ public class Entity
         }
     }
 
+    /**
+     *
+     * @param newname
+     */
     public void setName(String newname)
     {
         name = newname;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Move> getMoves()
     {
         return knownMoves;
     }
 
+    /**
+     *
+     * @param newMove
+     */
     public void addMove(Move newMove)
     {
         knownMoves.add(newMove);

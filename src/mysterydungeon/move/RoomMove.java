@@ -20,24 +20,42 @@ public class RoomMove implements Move
     private final int power;
     private final ArrayList<Entity> affected;
     
+    /**
+     *
+     * @param power
+     */
     public RoomMove(int power)
     {
         this.power = power;
         affected = new ArrayList<>();
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public int getType()
     {
         return Move.ROOM;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
     public String getName()
     {
         return "Sonic Boom";
     }
     
+    /**
+     *
+     * @param dungeon
+     * @param attacker
+     * @param defender
+     */
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
@@ -68,6 +86,12 @@ public class RoomMove implements Move
         }
     }
     
+    /**
+     *
+     * @param dungeon
+     * @param attacker
+     * @return
+     */
     @Override
     public Entity getDefender(Dungeon dungeon, Entity attacker)
     {

@@ -11,31 +11,127 @@ package mysterydungeon.dungeon;
  */
 public class TileOp
 {
+
+    /**
+     *
+     */
     public static final int OBSTACLE = 0;
+
+    /**
+     *
+     */
     public static final int LAND = 1;
+
+    /**
+     *
+     */
     public static final int WATER = 2;
 
+    /**
+     *
+     */
     public static final int O_NW = 0;
+
+    /**
+     *
+     */
     public static final int O_N = 2;
+
+    /**
+     *
+     */
     public static final int O_NE = 4;
+
+    /**
+     *
+     */
     public static final int O_W = 8;
+
+    /**
+     *
+     */
     public static final int O_C = 10;
+
+    /**
+     *
+     */
     public static final int O_E = 12;
+
+    /**
+     *
+     */
     public static final int O_SW = 16;
+
+    /**
+     *
+     */
     public static final int O_S = 18;
+
+    /**
+     *
+     */
     public static final int O_SE = 20;
+
+    /**
+     *
+     */
     public static final int O_NW_CORNER = 24;
+
+    /**
+     *
+     */
     public static final int O_NE_CORNER = 25;
+
+    /**
+     *
+     */
     public static final int O_SW_CORNER = 32;
+
+    /**
+     *
+     */
     public static final int O_SE_CORNER = 33;
+
+    /**
+     *
+     */
     public static final int O_W_HORIZONTAL = 26;
+
+    /**
+     *
+     */
     public static final int O_C_HORIZONTAL = 27;
+
+    /**
+     *
+     */
     public static final int O_E_HORIZONTAL = 28;
+
+    /**
+     *
+     */
     public static final int O_N_VERTICAL = 34;
+
+    /**
+     *
+     */
     public static final int O_C_VERTICAL = 35;
+
+    /**
+     *
+     */
     public static final int O_S_VERTICAL = 36;
+
+    /**
+     *
+     */
     public static final int O_ROCK = 29;
 
+    /**
+     *
+     * @param basemap
+     * @return
+     */
     public static int[][] convertTilemap(int[][] basemap)
     {
         int[][] newmap = new int[basemap.length][basemap[0].length];

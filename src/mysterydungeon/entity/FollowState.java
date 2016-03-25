@@ -14,6 +14,12 @@ import mysterydungeon.dungeon.Node;
  */
 public class FollowState extends EntityState
 {   
+
+    /**
+     *
+     * @param e
+     * @param d
+     */
     @Override
     public void doState(Entity e, Dungeon d)
     {
@@ -38,6 +44,10 @@ public class FollowState extends EntityState
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int isState()
     {
