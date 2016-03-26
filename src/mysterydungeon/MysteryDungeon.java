@@ -20,38 +20,40 @@ import javax.swing.JTextArea;
 import mysterydungeon.entity.Entity;
 
 /**
- *
+ * Entry point for the game. Initializes the main frame, such as the buttons,
+ * HUD, and controls.
  * @author Justis
  */
 public class MysteryDungeon extends JFrame{
 
     /**
-     *
+     * The initial width of the frame.
      */
     public static final int INITIAL_WIDTH = 1000;
 
     /**
-     *
+     * THe initial height of the frame.
      */
     public static final int INITIAL_HEIGHT = 800;
 
     /**
-     *
+     * The filename of the tiles used for this demo.
      */
     public static final String TILES = "Sprites/tiles.png";
 
     /**
-     *
+     * The filename of the base map used for this demo. In future editions,
+     * dungeons will be randomly generated.
      */
     public static final String TILEMAP = "Maps/map1.txt";
     
     /**
-     *
+     * The HP bar of the HUD. Placed as a constant for ease of access.
      */
     public static final JProgressBar HPBAR = new JProgressBar(0, 100);
 
     /**
-     *
+     * The log of the HUD. Placed as a constant for ease of access.
      */
     public static final JTextArea LOG = new JTextArea("Entered the Dungeon.\n", 50, 10);
     
@@ -59,7 +61,7 @@ public class MysteryDungeon extends JFrame{
     private DungeonComp dungeon;
 
     /**
-     *
+     * Start the game!
      * @param args
      */
     public static void main(String[] args)
@@ -71,9 +73,9 @@ public class MysteryDungeon extends JFrame{
     }
 
     /**
-     *
-     * @param tileFilename
-     * @param tilemapFilename
+     * Initializes the frame, as well as the controls.
+     * @param tileFilename Filename of the tiles to use.
+     * @param tilemapFilename Filename of the base map to use.
      */
     public MysteryDungeon(String tileFilename, String tilemapFilename)
     {

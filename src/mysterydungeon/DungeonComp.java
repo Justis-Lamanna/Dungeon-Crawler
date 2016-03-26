@@ -20,24 +20,35 @@ import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.FollowState;
 
 /**
- *
+ * The class that is used to draw an instance of Dungeon.
+ * <br><br>
+ * The base map is specified in the following format:
+ * <br>1. The width and height of the map, in number of tiles
+ * <br>2. A series of numbers, with:
+ * <br>a. 0, which means an obstacle.
+ * <br>b. 1, which means a standard floor.
+ * <br>c. 2, which means a water tile. (Not entirely working yet)
+ * <br><br>
+ * Tile maps are similar, except the tile number is used. Tile 0 is the top left
+ * corner, Tile 1 is the one immediately to the right, and so on, wrapping to
+ * the next line when the end of the row is reached.
  * @author Justis
  */
 public class DungeonComp extends JComponent
 {
 
     /**
-     *
+     * The width and height of one tile, in pixels.
      */
     public static final int TILE_SIZE = 24;
 
     /**
-     *
+     * A constant used to specify the base map should be drawn.
      */
     public static final boolean BASEMAP = false;
 
     /**
-     *
+     * A constant used to specify the tile map should be drawn.
      */
     public static final boolean TILEMAP = true;
 
@@ -54,9 +65,9 @@ public class DungeonComp extends JComponent
     private static BufferedImage arrowImage;
 
     /**
-     *
-     * @param tileFilename
-     * @param tilemapFilename
+     * Initializes a DungeonComp
+     * @param tileFilename The filename of the tiles image.
+     * @param tilemapFilename The filename of the tile map.
      */
     public DungeonComp(String tileFilename, String tilemapFilename)
     {
@@ -310,9 +321,9 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param maptype
-     * @param repaint
+     * Sets whether the base map or tile map should be drawn.
+     * @param maptype The type of map to use.
+     * @param repaint True of repaint should be called, false if not.
      */
     public void setDrawMap(boolean maptype, boolean repaint)
     {
@@ -321,8 +332,8 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param repaint
+     * Completely reloads the dungeon.
+     * @param repaint True if repaint should be called, false if not.
      */
     public void reopen(boolean repaint)
     {
@@ -331,8 +342,8 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param repaint
+     * Toggles between drawing nodes and not drawing nodes.
+     * @param repaint True if repaint should be called, false if not.
      */
     public void toggleNodes(boolean repaint)
     {
@@ -341,8 +352,8 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param repaint
+     * Toggles between drawing paths and not drawing paths.
+     * @param repaint True if repaint should be called, false if not.
      */
     public void togglePaths(boolean repaint)
     {
@@ -351,8 +362,8 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param repaint
+     * Toggles between drawing room indicators and not drawing room indicators.
+     * @param repaint True if repaint should be called, false if not.
      */
     public void toggleRooms(boolean repaint)
     {
@@ -361,8 +372,8 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param repaint
+     * Toggles between drawing entities and not drawing entities.
+     * @param repaint True if repaint should be called, false if not.
      */
     public void toggleEntity(boolean repaint)
     {
@@ -372,8 +383,8 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param repaint
+     * Updates all entities.
+     * @param repaint True if repaint should be called, false if not.
      */
     public void kachunk(boolean repaint)
     {
@@ -382,8 +393,8 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @return
+     * Gets the Dungeon that this class is responsible for painting.
+     * @return This dungeon this class is responsible for.
      */
     public Dungeon getDungeon()
     {
@@ -391,9 +402,9 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param number
-     * @param repaint
+     * Create some number of enemies.
+     * @param number Number of enemies to spawn
+     * @param repaint True if repaint should be called, false if not.
      */
     public void spawnEnemies(int number, boolean repaint)
     {
@@ -402,8 +413,8 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     *
-     * @param repaint
+     * Deletes all enemies.
+     * @param repaint True if repaint should be called, false if not.
      */
     public void clearEnemies(boolean repaint)
     {
@@ -412,8 +423,9 @@ public class DungeonComp extends JComponent
     }
     
     /**
-     *
-     * @param repaint
+     * Toggles between drawing the mask or not. The mask is the darkness that
+     * covers unexplored areas of the dungeon.
+     * @param repaint True if repaint should be called, false if not.
      */
     public void toggleMask(boolean repaint)
     {
