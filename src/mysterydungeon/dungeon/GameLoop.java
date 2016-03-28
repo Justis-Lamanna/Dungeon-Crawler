@@ -94,7 +94,7 @@ public class GameLoop implements Runnable
                 }
                 else if(entity.equals(player))
                 {
-                    if(handleControls(entity))
+                    if(handleControls(dungeon, entity))
                     {
                         for(Entity others : entities)
                         {
@@ -115,11 +115,12 @@ public class GameLoop implements Runnable
             return returnPoints;
         }
         
-        private boolean handleControls(Entity player)
+        private boolean handleControls(Dungeon dungeon, Entity player)
         {
             Node playerNode = player.getCurrentNode();
             Controls controls = Controls.getInstance();
-            if(controls.isFacePressed() && controls.isDirectionPressed())
+            ArrayList<Entity> entities = new ArrayList<>();
+            if(controls.isFacePressed())
             {
                 if(controls.getDirection() != -1)
                 {
@@ -129,8 +130,25 @@ public class GameLoop implements Runnable
                 }
                 else
                 {
-                    controls.clearDirection();
-                    return true;
+                    for(int dir = 0; dir < 8; dir++)
+                    {
+                        Node next = playerNode;
+                        for(int range = 0; range < 4; range++)
+                        {
+                            if(next == null){break;}
+                            next = next.getPath(dir);
+                            System.out.println(next);
+                            for(Entity entity : entities)
+                            {
+                                if(entity.getCurrentNode().equals(next))
+                                {
+                                    player.facing = dir;
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    return false;
                 }
             }
             else if(controls.isDirectionPressed())
