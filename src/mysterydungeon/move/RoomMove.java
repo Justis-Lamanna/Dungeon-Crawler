@@ -12,7 +12,12 @@ import mysterydungeon.entity.Entity;
 import mysterydungeon.MysteryDungeon;
 
 /**
- *
+ * A standard room-range attack.
+ * This move attacks all enemies in a room, and fail if done outside a room.
+ * The damage done is split between all enemies affected; One enemy would
+ * receive full damage, two enemies would each receive half damage, and so on.
+ * These types of moves miss 25% of the time, and have no chance for increased 
+ * damage.
  * @author Justis
  */
 public class RoomMove implements Move
@@ -21,8 +26,8 @@ public class RoomMove implements Move
     private final ArrayList<Entity> affected;
     
     /**
-     *
-     * @param power
+     * Creates a room-range move.
+     * @param power The standard damage this attack will do, against one enemy.
      */
     public RoomMove(int power)
     {
@@ -31,8 +36,8 @@ public class RoomMove implements Move
     }
     
     /**
-     *
-     * @return
+     * Get the type of move this is.
+     * @return The constant Move.ROOM, defined in the Move class.
      */
     @Override
     public int getType()
@@ -41,8 +46,8 @@ public class RoomMove implements Move
     }
     
     /**
-     *
-     * @return
+     * Get the name of this move. Not actually used.
+     * @return The string "Sonic Boom".
      */
     @Override
     public String getName()
@@ -51,10 +56,12 @@ public class RoomMove implements Move
     }
     
     /**
-     *
-     * @param dungeon
-     * @param attacker
-     * @param defender
+     * Performs the attack.
+     * Due to the method signature, this attack relies on an internally
+     * stored list of affected entities. The defender entity is ignored.
+     * @param dungeon The dungeon the attack occurs in.
+     * @param attacker The entity performing the attack.
+     * @param defender Ignored for the purposes of this attack.
      */
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
@@ -74,7 +81,8 @@ public class RoomMove implements Move
                 MysteryDungeon.LOG.append(String.format("%s let off a sonic boom!\n", attacker.getName()));
                 for(Entity entity : affected)
                 {
-                    int totalDamage = entity.addHP(-power);
+                    int newDamage = power / affected.size();
+                    int totalDamage = entity.addHP(-newDamage);
                     MysteryDungeon.LOG.append(String.format("%s recieved %dHP of damage!\n", entity.getName(), totalDamage));
                     if(entity.getCurrentHP() == 0)
                     {
@@ -87,10 +95,12 @@ public class RoomMove implements Move
     }
     
     /**
-     *
-     * @param dungeon
-     * @param attacker
-     * @return
+     * Gets the entities affected by this attack.
+     * Due to the method signature, this class stores the affected entities
+     * internally.
+     * @param dungeon The dungeon this attack occurs in.
+     * @param attacker The entity performing the attack.
+     * @return Null. The affected entities are stored internally.
      */
     @Override
     public Entity getDefender(Dungeon dungeon, Entity attacker)

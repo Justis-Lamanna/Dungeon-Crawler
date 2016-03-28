@@ -6,89 +6,90 @@
 package mysterydungeon.dungeon;
 
 /**
- *
+ * A class representing tile operations; More specifically, this translates
+ * the base map into the prettier tile map. I hate this class dearly.
  * @author Justis
  */
 public class TileOp
 {
 
     /**
-     *
+     * A constant representing an obstacle.
      */
     public static final int OBSTACLE = 0;
 
     /**
-     *
+     * A constant representing a non-obstacle.
      */
     public static final int LAND = 1;
 
     /**
-     *
+     * A constant representing water.
      */
     public static final int WATER = 2;
 
     /**
-     *
+     * A constant representing the tile number of the northwest cliff corner.
      */
     public static final int O_NW = 0;
 
     /**
-     *
+     * A constant representing the tile number of the north cliff edge.
      */
     public static final int O_N = 2;
 
     /**
-     *
+     * A constant representing the tile number of the northeast cliff corner.
      */
     public static final int O_NE = 4;
 
     /**
-     *
+     * A constant representing the tile number of the west cliff edge.
      */
     public static final int O_W = 8;
 
     /**
-     *
+     * A constant representing the tile number of the center of a cliff.
      */
     public static final int O_C = 10;
 
     /**
-     *
+     * A constant representing the tile number of the east cliff edge.
      */
     public static final int O_E = 12;
 
     /**
-     *
+     * A constant representing the tile number of the southwest cliff corner.
      */
     public static final int O_SW = 16;
 
     /**
-     *
+     * A constant representing the tile number of the south cliff edge.
      */
     public static final int O_S = 18;
 
     /**
-     *
+     * A constant representing the tile number of the southeast cliff corner.
      */
     public static final int O_SE = 20;
 
     /**
-     *
+     * A constant representing the tile number of the northwest cliff reverse corner.
      */
     public static final int O_NW_CORNER = 24;
 
     /**
-     *
+     * A constant representing the tile number of the northeast cliff reverse corner.
      */
     public static final int O_NE_CORNER = 25;
 
     /**
-     *
+     * A constant representing the tile number of the southwest cliff reverse corner.
      */
     public static final int O_SW_CORNER = 32;
 
     /**
-     *
+     * A constant representing the tile number of the southeast cliff reverse corner.
      */
     public static final int O_SE_CORNER = 33;
 

@@ -12,32 +12,40 @@ import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 
 /**
- *
+ * An abstract class, for use in defining states. Many helpful functions are
+ * included in this superclass, such as determining the quickest path between
+ * two nodes. A state, in this game, defines how the character will behave.
  * @author Justis
  */
 public abstract class EntityState
 {    
 
     /**
-     *
-     * @param e
-     * @param d
+     * The state logic, to be defined by concrete classes.
+     * @param e The entity this state refers to.
+     * @param d The dungeon this entity is in.
      */
     public abstract void doState(Entity e, Dungeon d);
 
     /**
-     *
-     * @return
+     * An arbitrary value, used to distinguish between different states.
+     * @return Some integer, which should uniquely identify this state.
      */
     public abstract int isState();
 
     /**
-     *
-     * @param entity
-     * @param dungeon
-     * @param start
-     * @param end
-     * @return
+     * Finds the next node the Entity should travel to.
+     * This finds the shortest path from this node to another, then returns
+     * the node that should be traveled to next. If that node is occupied, a
+     * nearby node will be checked. If the node it is currently on is unoccupied
+     * by another entity, it will return the start node. If the node it is currently on
+     * is occupied, it will return an unoccupied node somewhere surrounding the
+     * current node.
+     * @param entity The entity this state refers to.
+     * @param dungeon The dungeon the entity is in.
+     * @param start The start node, where the path will begin.
+     * @param end The end node, where the path will terminate.
+     * @return The next valid node the Entity can travel to.
      */
     public Node nextNode(Entity entity, Dungeon dungeon, Node start, Node end)
     {
@@ -68,11 +76,11 @@ public abstract class EntityState
     }
 
     /**
-     *
-     * @param map
-     * @param start
-     * @param end
-     * @return
+     * Find the shortest path from one node to another.
+     * @param map A hashmap linking all nodes with the nodes that are immediately closest to them.
+     * @param start The node to begin the path at.
+     * @param end The node to end the path at.
+     * @return A linked list, in the order of path traversal.
      */
     public LinkedList<Node> findShortestPath(HashMap<Node, Node> map, Node start, Node end)
     {
@@ -80,12 +88,12 @@ public abstract class EntityState
     }
 
     /**
-     *
-     * @param entity
-     * @param dungeon
-     * @param start
-     * @param end
-     * @return
+     * Find the shortest path from one node to another.
+     * @param entity The entity this state refers to.
+     * @param dungeon The dungeon this entity is in.
+     * @param start The node to begin the path at.
+     * @param end The node to end the path at.
+     * @return A linked list, in the order of path traversal.
      */
     public LinkedList<Node> findShortestPath(Entity entity, Dungeon dungeon, Node start, Node end)
     {
@@ -94,11 +102,11 @@ public abstract class EntityState
     }
 
     /**
-     *
-     * @param entity
-     * @param dungeon
-     * @param start
-     * @return
+     * Generate a map linking all nodes to the node closest to it.
+     * @param entity The entity this state refers to.
+     * @param dungeon The dungeon this entity is in.
+     * @param start The node to begin the path at.
+     * @return A hashmap, linking all nodes to the ones closest to them.
      */
     public HashMap<Node, Node> findShortestPath(Entity entity, Dungeon dungeon, Node start)
     {
@@ -153,11 +161,11 @@ public abstract class EntityState
     }
 
     /**
-     *
-     * @param map
-     * @param start
-     * @param target
-     * @return
+     * Translates a hashmap of all nodes to their closest neighbors into a path.
+     * @param map The hashmap of all nodes to their closest neighbors, generated from one of the other functions.
+     * @param start The node this path should begin at.
+     * @param target The node this path should end at.
+     * @return A linked list, containing the path that should be traversed.
      */
     public LinkedList<Node> readPath(HashMap<Node, Node> map, Node start, Node target)
     {
@@ -181,12 +189,14 @@ public abstract class EntityState
     }
 
     /**
-     *
-     * @param entity
-     * @param dungeon
-     * @param current
-     * @param next
-     * @return
+     * Determine if a node is a legal node to move to.
+     * This does not check if the node is unoccupied, just that it is a node this entity
+     * could travel on if given the opportunity.
+     * @param entity The entity this state refers to.
+     * @param dungeon The dungeon this entity resides in.
+     * @param current The current node. Actually is unused.
+     * @param next The node to check the legality of.
+     * @return True if the node is valid, false if it is not.
      */
     protected boolean isValidNode(Entity entity, Dungeon dungeon, Node current, Node next)
     {
@@ -194,11 +204,11 @@ public abstract class EntityState
     }
 
     /**
-     *
-     * @param entity
-     * @param dungeon
-     * @param node
-     * @return
+     * Determines if a node is occupied.
+     * @param entity The entity this state refers to.
+     * @param dungeon The dungeon this entity resides in.
+     * @param node The node the test the occupancy of.
+     * @return True if the node is occupied, false if it isn't
      */
     protected boolean isOccupied(Entity entity, Dungeon dungeon, Node node)
     {
@@ -215,10 +225,12 @@ public abstract class EntityState
     }
 
     /**
-     *
-     * @param d
-     * @param start
-     * @param range
+     * Determines if the player is a certain number of nodes away.
+     * While this could be done by generating a path and testing the length, I wanted
+     * to try another method, which may involve less computations.
+     * @param d The dungeon the player is in.
+     * @param start The initial node.
+     * @param range The "radius" of search.
      * @return
      */
     protected boolean playerNearby(Dungeon d, Node start, int range)
@@ -248,10 +260,12 @@ public abstract class EntityState
     }
 
     /**
-     *
-     * @param start
-     * @param end
-     * @return
+     * Return the direction one would be traveling if you went from one node to another.
+     * This tests specifically for a path of length one.
+     * @param start The node to start at.
+     * @param end The node to be traveling to.
+     * @return A direction which corresponds to the directions in the Node class, or -1 if
+     * there is no path of length one between the two nodes.
      */
     protected int getDirection(Node start, Node end)
     {

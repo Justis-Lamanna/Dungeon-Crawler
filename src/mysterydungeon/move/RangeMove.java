@@ -11,14 +11,19 @@ import mysterydungeon.entity.Entity;
 import mysterydungeon.MysteryDungeon;
 
 /**
- *
+ * A standard long-range move.
+ * This move affects entities the attacker is facing, but may be some distance
+ * away. The farther the enemy is, the weaker the attack: It is at 100% power
+ * at one tile away, 75% power at two tiles away, 56.25% power at three tiles away,
+ * and so on. These moves have a 15% chance of missing, and no chance of doing
+ * increased damage.
  * @author Justis
  */
 public class RangeMove implements Move
 {
 
     /**
-     *
+     * The value multiplied by this base power with each tile traveled.
      */
     public static final double MULTIPLIER = 0.75;
     
@@ -27,9 +32,9 @@ public class RangeMove implements Move
     private int currentPower;
     
     /**
-     *
-     * @param power
-     * @param range
+     * Creates a ranged move.
+     * @param power The standard damage this attack will do, at one tile away.
+     * @param range The farthest the attack will go before dying.
      */
     public RangeMove(int power, int range)
     {
@@ -39,8 +44,8 @@ public class RangeMove implements Move
     }
     
     /**
-     *
-     * @return
+     * Get the type of move this is.
+     * @return The constant Move.RANGE, defined in the Move class.
      */
     @Override
     public int getType()
@@ -49,8 +54,8 @@ public class RangeMove implements Move
     }
     
     /**
-     *
-     * @return
+     * Get the name of this move. Not actually used.
+     * @return The string "Blast".
      */
     @Override
     public String getName()
@@ -59,10 +64,10 @@ public class RangeMove implements Move
     }
     
     /**
-     *
-     * @param dungeon
-     * @param attacker
-     * @param defender
+     * Performs the actual attack.
+     * @param dungeon The dungeon this attack occurs in.
+     * @param attacker The entity performing the attack.
+     * @param defender The entity being attacked.
      */
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
@@ -91,10 +96,10 @@ public class RangeMove implements Move
     }
     
     /**
-     *
-     * @param dungeon
-     * @param attacker
-     * @return
+     * Gets the entity affected by this attack.
+     * @param dungeon The dungeon this attack occurs in.
+     * @param attacker The entity performing the attack.
+     * @return The entity receiving the attack, or null if there is nobody.
      */
     @Override
     public Entity getDefender(Dungeon dungeon, Entity attacker)

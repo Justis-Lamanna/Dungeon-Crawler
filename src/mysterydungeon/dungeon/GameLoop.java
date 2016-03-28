@@ -6,7 +6,6 @@
 package mysterydungeon.dungeon;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
@@ -21,7 +20,7 @@ public class GameLoop implements Runnable
 {
 
     /**
-     *
+     * The number of frames that should be used to walk one tile.
      */
     public static final int FRAMES_WALK = 6;
     
@@ -30,14 +29,17 @@ public class GameLoop implements Runnable
     Move move = new BrawlMove(10);
     
     /**
-     *
-     * @param dungeon
+     * Creates an instance of this GameLoop.
+     * @param comp The DungeonComp used to paint the dungeon.
      */
-    public GameLoop(DungeonComp dungeon)
+    public GameLoop(DungeonComp comp)
     {
-        this.comp = dungeon;
+        this.comp = comp;
     }
     
+    /**
+     * Begins running this GameLoop, in a separate thread.
+     */
     @Override
     public void run()
     {
@@ -70,8 +72,8 @@ public class GameLoop implements Runnable
     }
         
     /**
-     *
-     * @param delta
+     * Updates the game using whatever game logic is programmed in.
+     * @param delta A fraction representing the actual loop time, divided by the optimal time (One second).
      */
     public void updateGame(double delta)
         {
@@ -82,7 +84,7 @@ public class GameLoop implements Runnable
             {
                 if(entity.isMoving())
                 {
-                    int[] iValues = interpolate(entity, 6);
+                    int[] iValues = interpolate(entity, FRAMES_WALK);
                     entity.addPixel(iValues[0], iValues[1]);
                     if(entity.getDestinationNode().equals(entity.getPixelX(), entity.getPixelY()))
                     {

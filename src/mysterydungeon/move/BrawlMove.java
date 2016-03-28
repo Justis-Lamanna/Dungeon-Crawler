@@ -12,7 +12,10 @@ import mysterydungeon.MysteryDungeon;
 import mysterydungeon.dungeon.Node;
 
 /**
- *
+ * A standard close-range move.
+ * This type of move affects enemies the player is facing toward, and who are
+ * one tile away. This class of moves has a 5% chance of missing, and a 10%
+ * chance of doing 50% more damage.
  * @author Justis
  */
 public class BrawlMove implements Move
@@ -20,8 +23,8 @@ public class BrawlMove implements Move
     private final int basePower;
     
     /**
-     *
-     * @param basepower
+     * Creates an instance of a brawl-type move.
+     * @param basepower The standard amount of damage this attack will do.
      */
     public BrawlMove(int basepower)
     {
@@ -29,8 +32,8 @@ public class BrawlMove implements Move
     }
     
     /**
-     *
-     * @return
+     * Get the type of move this is
+     * @return The constant Move.BRAWL, defined in the Move class.
      */
     @Override
     public int getType()
@@ -39,8 +42,8 @@ public class BrawlMove implements Move
     }
     
     /**
-     *
-     * @return
+     * Get the name of this attack. Not actually used.
+     * @return The string "Punch".
      */
     @Override
     public String getName()
@@ -49,10 +52,10 @@ public class BrawlMove implements Move
     }
     
     /**
-     *
-     * @param dungeon
-     * @param attacker
-     * @param defender
+     * Performs the actual attack.
+     * @param dungeon The dungeon this attack is happening in.
+     * @param attacker The entity doing the attack.
+     * @param defender The entity receiving the attack.
      */
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
@@ -87,10 +90,10 @@ public class BrawlMove implements Move
     }
     
     /**
-     *
-     * @param dungeon
-     * @param attacker
-     * @return
+     * Gets the entity affected by this attack.
+     * @param dungeon The dungeon this attack happens in.
+     * @param attacker The entity using the attack.
+     * @return The entity who will receive the attack, or null if there is nobody.
      */
     @Override
     public Entity getDefender(Dungeon dungeon, Entity attacker)

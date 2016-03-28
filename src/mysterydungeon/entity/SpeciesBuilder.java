@@ -8,7 +8,10 @@ package mysterydungeon.entity;
 import mysterydungeon.move.Move;
 
 /**
- *
+ * A builder pattern to assist with development of species.
+ * As species grow more complex, a builder pattern may be more useful. Species
+ * in the future should have many different aspects, and creating a long constructor
+ * is impractical. 
  * @author Justis
  */
 public class SpeciesBuilder
@@ -16,10 +19,10 @@ public class SpeciesBuilder
     private final Species species;
     
     /**
-     *
-     * @param name
-     * @param filename
-     * @param hp
+     * Begin building a species.
+     * @param name The name of this species.
+     * @param filename The filename of this species image.
+     * @param hp The maximum HP of this species.
      */
     public SpeciesBuilder(String name, String filename, int hp)
     {
@@ -27,9 +30,9 @@ public class SpeciesBuilder
     }
     
     /**
-     *
-     * @param newMove
-     * @return
+     * Add a usable move to this species.
+     * @param newMove The move to allow this species to use.
+     * @return This builder, for chaining.
      */
     public SpeciesBuilder addMove(Move newMove)
     {
@@ -38,9 +41,9 @@ public class SpeciesBuilder
     }
     
     /**
-     *
-     * @param set
-     * @return
+     * Set if this species can walk over water.
+     * @param set True if it should walk over water, false if not.
+     * @return This builder, for chaining.
      */
     public SpeciesBuilder setWater(boolean set)
     {
@@ -49,8 +52,8 @@ public class SpeciesBuilder
     }
     
     /**
-     *
-     * @return
+     * Create the final species.
+     * @return The built species.
      */
     public Species make()
     {

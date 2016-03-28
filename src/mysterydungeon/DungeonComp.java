@@ -72,6 +72,7 @@ public class DungeonComp extends JComponent
     public DungeonComp(String tileFilename, String tilemapFilename)
     {
         dungeon = new Dungeon(this, tilemapFilename, Dungeon.TEST_LIST);
+        dungeon.startDungeon();
         generateTiles(tileFilename);
         try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
         catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}

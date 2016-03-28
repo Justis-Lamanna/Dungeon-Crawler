@@ -9,16 +9,18 @@ import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 
 /**
- *
+ * A state which actively pursues the player.
  * @author Justis
  */
 public class FollowState extends EntityState
 {   
 
     /**
-     *
-     * @param e
-     * @param d
+     * Generates the behavior of this entity.
+     * More specifically, it finds the shortest path to the player, and
+     * follows it.
+     * @param e The entity this state is attached to.
+     * @param d The dungeon this entity resides in.
      */
     @Override
     public void doState(Entity e, Dungeon d)
@@ -45,8 +47,8 @@ public class FollowState extends EntityState
     }
 
     /**
-     *
-     * @return
+     * Returns an integer representing this state.
+     * @return The constant number 1.
      */
     @Override
     public int isState()

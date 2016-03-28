@@ -22,7 +22,7 @@ public class Controls implements KeyListener
     private boolean directionPressed = false;
     private int direction = -1;
     
-    private boolean[] attackPressed = new boolean[NUM_ATTACKS];
+    private final boolean[] attackPressed = new boolean[NUM_ATTACKS];
     
     private boolean facePressed = false;
     

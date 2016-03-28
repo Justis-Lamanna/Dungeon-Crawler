@@ -5,7 +5,6 @@
  */
 package mysterydungeon.dungeon;
 
-import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,14 +16,15 @@ import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.Species;
 
 /**
- *
+ * Class that's responsible for handling stuff related to the Dungeon, such as
+ * finding nodes, paths, and rooms, as well as entity spawning and removing.
  * @author Justis
  */
 public class Dungeon
 {
 
     /**
-     *
+     * A sample list containing all enemy Species.
      */
     public static final Species[] TEST_LIST = {
             Species.ROBOT1, Species.ROBOT2, Species.ROBOT3, 
@@ -33,7 +33,7 @@ public class Dungeon
             Species.ROBOT10, Species.ROBOT11, Species.ROBOT12,
             Species.ROBOT13, Species.ROBOT14};
 
-    private final String tilemapFilename;
+    private final String basemapFilename;
     private int[][] tilemap;
     private int[][] basemap;
     private Node[][] nodes;
@@ -46,43 +46,45 @@ public class Dungeon
     private final DungeonComp comp;
 
     /**
-     *
+     * The random number generator, used in all instances of randomness in-game.
      */
     public static final Random PRNG = new Random();
 
     /**
-     *
+     * Creates an instance of a Dungeon.
+     * @param comp The DungeonComp that this dungeon is linked to.
+     * @param basemapFilename The filename of the base map this dungeon should display.
+     * @param speciesList A list of possible species that may appear in the dungeon.
      */
-    public boolean gameRunning = true;
-
-    /**
-     *
-     * @param comp
-     * @param tilemapFilename
-     * @param speciesList
-     */
-    public Dungeon(DungeonComp comp, String tilemapFilename, Species[] speciesList)
+    public Dungeon(DungeonComp comp, String basemapFilename, Species[] speciesList)
     {
         this.comp = comp;
-        this.tilemapFilename = tilemapFilename;
+        this.basemapFilename = basemapFilename;
         possibleSpecies = speciesList;
+    }
+    
+    /**
+     * Calculates the relevant data for the dungeon, loads the player and enemies, and starts the game loop.
+     */
+    public void startDungeon()
+    {
         loadDungeon();
+        player = new Entity(this, Species.PLAYER, null, true);
+        enemies.clear();
+        spawnEnemies(1);
         new Thread(new GameLoop(comp)).start();
     }
 
     /**
-     *
+     * Calculates the relevant data for the dungeon.
      */
     public void loadDungeon()
     {
-        generateBasemap(tilemapFilename);
+        generateBasemap(basemapFilename);
         generateTilemap(basemap);
         findNodes();
         findPaths();
         findRooms();
-        player = new Entity(this, Species.PLAYER, null, true);
-        enemies.clear();
-        spawnEnemies(1);
     }
 
     private void generateBasemap(String filename)
@@ -233,15 +235,8 @@ public class Dungeon
             rooms.add(room);
         }
     }
-
-    /**
-     *
-     * @param current
-     * @param direction
-     * @param nodesToVisit
-     * @param visited
-     */
-    public void addUnvisitedToQueue(Node current, int direction, LinkedList<Node> nodesToVisit, boolean[][] visited)
+    
+    private void addUnvisitedToQueue(Node current, int direction, LinkedList<Node> nodesToVisit, boolean[][] visited)
     {
         Node nw = current.getPath(direction);
         if(nw != null && !visited[nw.getY()][nw.getX()] && isRoom(nw.getY(), nw.getX()))
@@ -252,8 +247,8 @@ public class Dungeon
     }
 
     /**
-     *
-     * @return
+     * Returns the base map of this dungeon.
+     * @return A 2-dimensional array of the current map, with:<br>0 meaning obstacle<br>1 meaning passable<br>2 meaning water
      */
     public int[][] getBasemap()
     {
@@ -261,8 +256,8 @@ public class Dungeon
     }
 
     /**
-     *
-     * @return
+     * Returns the tile map of this dungeon.
+     * @return A 2-dimensional array of the current map, with each value representing the tile number.
      */
     public int[][] getTilemap()
     {
@@ -270,8 +265,8 @@ public class Dungeon
     }
 
     /**
-     *
-     * @return
+     * Returns all the nodes of this dungeon, in array form.
+     * @return A 2-dimensional array of the current map, with a node on every passable space, and null on an obstacle.
      */
     public Node[][] getNodes()
     {
@@ -279,8 +274,8 @@ public class Dungeon
     }
 
     /**
-     *
-     * @return
+     * Returns all the rooms of this dungeon.
+     * @return List of RoomNodes contained in this dungeon.
      */
     public ArrayList<RoomNode> getRooms()
     {
@@ -288,8 +283,8 @@ public class Dungeon
     }
 
     /**
-     *
-     * @return
+     * Returns all the entities in this dungeon.
+     * @return List of all entities, with the player occupying slot 0.
      */
     public ArrayList<Entity> getEntities()
     {
@@ -303,8 +298,8 @@ public class Dungeon
     }
 
     /**
-     *
-     * @param number
+     * Spawns some number of enemies in this dungeon.
+     * @param number The number of enemies to spawn.
      */
     public void spawnEnemies(int number)
     {
@@ -319,9 +314,18 @@ public class Dungeon
             enemies.add(enemy);
         }
     }
+    
+    /**
+     * Spawns a specific enemy in this dungeon.
+     * @param entity The entity to spawn.
+     */
+    public void spawnEnemy(Entity entity)
+    {
+        enemies.add(entity);
+    }
 
     /**
-     *
+     * Destroy all enemies in this dungeon.
      */
     public void clearEnemies()
     {
@@ -329,8 +333,8 @@ public class Dungeon
     }
 
     /**
-     *
-     * @param enemy
+     * Destroy a specific enemy in this dungeon.
+     * @param enemy The enemy to destroy.
      */
     public void clearEnemy(Entity enemy)
     {
@@ -356,7 +360,7 @@ public class Dungeon
     }
 
     /**
-     *
+     * Causes each entity to act for its current turn, according to their state.
      */
     public void updateAll()
     {
@@ -367,9 +371,9 @@ public class Dungeon
     }
 
     /**
-     *
-     * @param type
-     * @return
+     * Generates a random node contained in the map.
+     * @param type The type of node desired.
+     * @return A random node of the specified type.
      */
     public Node randomNode(int type)
     {
@@ -377,30 +381,30 @@ public class Dungeon
         int randomPosition;
         do
         {
-            randomPosition = (int)(Math.random() * list.size());
+            randomPosition = (int)(PRNG.nextInt(list.size()));
         } while (list.get(randomPosition).getType() != type);
         return list.get(randomPosition);
     }
 
     /**
-     *
-     * @param previous
-     * @param current
-     * @return
+     * Generates a random node in a room.
+     * @param previous The previous node used, which is disqualified from randomness.
+     * @param current The current node used, which is disqualified from randomness.
+     * @return A random Node, guaranteed to be in a room.
      */
     public Node randomRoomNode(Node previous, Node current)
     {
         while(true)
         {
-            int randomPosition = (int)(Math.random() * rooms.size());
+            int randomPosition = (int)(PRNG.nextInt(rooms.size()));
             Node randomNode = rooms.get(randomPosition).getCenter();
             if(!randomNode.equals(previous) && !randomNode.equals(current)){return randomNode;}
         }
     }
 
     /**
-     *
-     * @return
+     * Returns all the nodes in a map, this time in a list.
+     * @return A list of all nodes in this Dungeon.
      */
     public ArrayList<Node> getNodesList()
     {
@@ -419,9 +423,9 @@ public class Dungeon
     }
 
     /**
-     *
-     * @param node
-     * @return
+     * Determines the room a specific node is in.
+     * @param node The node, which is used to find its room.
+     * @return The RoomNode that the specified Node is contained in, or null if it's not in a room.
      */
     public RoomNode getRoom(Node node)
     {
@@ -433,10 +437,10 @@ public class Dungeon
     }
 
     /**
-     *
-     * @param row
-     * @param col
-     * @return
+     * Checks if a certain tile has been seen by the player or not.
+     * @param row The row of the tile to check.
+     * @param col The column of the tile to check.
+     * @return True if the tile has been seen, false if it hasn't
      */
     public boolean isDiscovered(int row, int col)
     {
@@ -444,9 +448,9 @@ public class Dungeon
     }
 
     /**
-     *
-     * @param row
-     * @param col
+     * Sets a certain tile as having been seen by the player.
+     * @param row The row of the tile to set as discovered.
+     * @param col The column of the tile to set as discovered.
      */
     public void setDiscovered(int row, int col)
     {
@@ -454,10 +458,11 @@ public class Dungeon
     }
 
     /**
-     *
-     * @param row
-     * @param col
-     * @param range
+     * Sets a chunk of tiles, centered at a certain tile, and extending a
+     * certain range away, as discovered.
+     * @param row The row of the tile to set as the center point.
+     * @param col The column of the tile to set as the center point.
+     * @param range The width and height of the surrounding tiles to be set as discovered also.
      */
     public void setDiscovered(int row, int col, int range)
     {
@@ -465,13 +470,13 @@ public class Dungeon
     }
 
     /**
-     *
-     * @param row
-     * @param col
-     * @param plusrow
-     * @param minusrow
-     * @param pluscol
-     * @param minuscol
+     * Sets a certain rectangle of tiles as discovered.
+     * @param row The row of the tile to set as the center point.
+     * @param col The column of the tile to set as the center point.
+     * @param plusrow The number of tiles down to be set as discovered also.
+     * @param minusrow The number of tiles up to be set as discovered also.
+     * @param pluscol The number of tiles to the right to be set as discovered also.
+     * @param minuscol The number of tiles to the left to be set as discovered also.
      */
     public void setDiscovered(int row, int col, int plusrow, int minusrow, int pluscol, int minuscol)
     {

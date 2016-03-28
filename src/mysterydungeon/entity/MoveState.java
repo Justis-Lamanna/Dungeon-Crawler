@@ -11,7 +11,7 @@ import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
 
 /**
- *
+ * A state which meanders around the dungeon until the player is found.
  * @author Justis
  */
 public class MoveState extends EntityState
@@ -19,14 +19,16 @@ public class MoveState extends EntityState
     private Node targetNode = null;
 
     /**
-     *
+     * A constant representing the range at which this entity should begin to attack.
      */
     public static final int RANGE = 5; //If the player is this many nodes away, switch to the attack.
 
     /**
-     *
-     * @param e
-     * @param d
+     * Generates the behavior of this entity.
+     * More specifically, it follows hallways, and turns at random on junctions.
+     * In rooms, it travels to a randomly-chosen exit.
+     * @param e The entity this state is attached to.
+     * @param d The dungeon this entity resides in.
      */
     @Override
     public void doState(Entity e, Dungeon d)
@@ -99,8 +101,8 @@ public class MoveState extends EntityState
     }
 
     /**
-     *
-     * @return
+     * Returns an integer representing this state.
+     * @return The constant integer 0.
      */
     @Override
     public int isState()

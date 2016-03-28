@@ -8,7 +8,8 @@ package mysterydungeon.dungeon;
 import java.util.ArrayList;
 
 /**
- *
+ * A class that represents a room. Contains all nodes in the room, as well as
+ * exits outside of the room.
  * @author Justis
  */
 public class RoomNode
@@ -21,7 +22,7 @@ public class RoomNode
     private Node centerNode;
 
     /**
-     *
+     * Creates an empty room.
      */
     public RoomNode()
     {
@@ -32,8 +33,8 @@ public class RoomNode
     }
 
     /**
-     *
-     * @param node
+     * Add a node to this room.
+     * @param node The node to add to this room.
      */
     public void addNode(Node node)
     {
@@ -41,8 +42,9 @@ public class RoomNode
     }
 
     /**
-     *
-     * @param node
+     * Adds a directed connection between this room and another.
+     * @param node The room to connect to.
+     * @deprecated This method of joining rooms is no longer used.
      */
     public void addConnection(RoomNode node)
     {
@@ -50,8 +52,9 @@ public class RoomNode
     }
 
     /**
-     *
-     * @param node
+     * Adds an undirected connection between this room and another.
+     * @param node The room to connect to.
+     * @deprecated This method of joining rooms is no longer used.
      */
     public void addDoubleConnection(RoomNode node)
     {
@@ -60,8 +63,8 @@ public class RoomNode
     }
 
     /**
-     *
-     * @return
+     * Get all nodes contained in this room.
+     * @return A list of all nodes in the room.
      */
     public ArrayList<Node> getNodes()
     {
@@ -69,8 +72,8 @@ public class RoomNode
     }
 
     /**
-     *
-     * @return
+     * Finds the center of a room.
+     * @return True if a center was calculated, or false if there was no viable center.
      */
     public boolean calculateCenter()
     {
@@ -91,7 +94,7 @@ public class RoomNode
     }
 
     /**
-     *
+     * Gets the X value of the center of the room.
      * @return
      */
     public int getX()
@@ -100,7 +103,7 @@ public class RoomNode
     }
 
     /**
-     *
+     * Gets the Y value of the center of the room.
      * @return
      */
     public int getY()
@@ -109,7 +112,7 @@ public class RoomNode
     }
 
     /**
-     *
+     * Gets the node representing the center of the room.
      * @return
      */
     public Node getCenter()
@@ -118,7 +121,11 @@ public class RoomNode
     }
 
     /**
-     *
+     * Determines the nodes signifying the exits out of the dungeon.
+     * More specifically, this determines exterior nodes, which are the true
+     * exits, and are not contained in the room. This also determines "just
+     * interior" nodes, which are directly connected to the exterior nodes, and
+     * are contained in the room.
      */
     public void calculateExteriorNodes()
     {
@@ -137,8 +144,8 @@ public class RoomNode
     }
 
     /**
-     *
-     * @return
+     * Get the list of exterior nodes.
+     * @return The list of exterior nodes, with indices that correspond to their just interior nodes.
      */
     public ArrayList<Node> getExteriorNodes()
     {
@@ -146,14 +153,18 @@ public class RoomNode
     }
 
     /**
-     *
-     * @return
+     * Get a list of just interior nodes.
+     * @return The list of just interior nodes, with indices that correspond to their exterior nodes.
      */
     public ArrayList<Node> getJustInteriorNodes()
     {
         return justInteriorNodes;
     }
 
+    /**
+     * Returns a String representation of this Room.
+     * @return A string, listing all nodes in the form of X-Y pairs.
+     */
     @Override
     public String toString()
     {

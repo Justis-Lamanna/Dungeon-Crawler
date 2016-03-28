@@ -14,7 +14,7 @@ import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.move.Move;
 
 /**
- *
+ * A class representing an entity. An entity is any moving object in a dungeon.
  * @author Justis
  */
 public class Entity
@@ -36,16 +36,17 @@ public class Entity
     private ArrayList<Move> knownMoves;
 
     /**
-     *
+     * The direction this entity is facing.
      */
     public int facing;
 
     /**
-     *
-     * @param dungeon
-     * @param species
-     * @param startState
-     * @param player
+     * Creates an entity.
+     * Remember, the entity will only be drawn when it's added to the dungeon!
+     * @param dungeon The dungeon this entity resides in.
+     * @param species The species this entity is.
+     * @param startState The initial state of this entity.
+     * @param player True if this entity is the player, false if not.
      */
     public Entity(Dungeon dungeon, Species species, EntityState startState, boolean player)
     {
@@ -61,10 +62,13 @@ public class Entity
     }
 
     /**
-     *
-     * @param dungeon
-     * @param species
-     * @param player
+     * Creates an entity.
+     * This entity will be initialized with a default state of MoveState, causing
+     * it to wander the dungeons until it sees the player. Remember, the entity will
+     * only be drawn when it's added to the dungeon!
+     * @param dungeon The dungeon this entity resides in.
+     * @param species The species this entity is.
+     * @param player True if this entity is the player, false if not.
      */
     public Entity(Dungeon dungeon, Species species, boolean player)
     {
@@ -72,9 +76,13 @@ public class Entity
     }
 
     /**
-     *
-     * @param dungeon
-     * @param species
+     * Creates an entity.
+     * This entity will be initialized with a default state of MoveState, causing
+     * it to wander the dungeons until it sees the player. It is also, by default,
+     * not the player. Remember, the entity will only be drawn when it's added to
+     * the dungeon!
+     * @param dungeon The dungeon this entity resides in.
+     * @param species The species this entity is.
      */
     public Entity(Dungeon dungeon, Species species)
     {
@@ -92,7 +100,7 @@ public class Entity
     }
 
     /**
-     *
+     * Places this entity on a random node in a random room.
      */
     public void randomizeLocation()
     {
@@ -103,8 +111,8 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Get the species of this entity.
+     * @return This entity's species.
      */
     public Species getSpecies()
     {
@@ -112,8 +120,8 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Get the current node this entity is on.
+     * @return The entity's current node.
      */
     public Node getCurrentNode()
     {
@@ -121,8 +129,10 @@ public class Entity
     }
 
     /**
-     *
-     * @param n
+     * Set the current node this entity is on.
+     * This method results in an immediate warp. If you want to slide to
+     * a new node, you must use setDestinationNode.
+     * @param n The node this entity should move to.
      */
     public void setCurrentNode(Node n)
     {
@@ -132,8 +142,8 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Get the node this entity is traveling to.
+     * @return The destination node of this entity.
      */
     public Node getDestinationNode()
     {
@@ -141,8 +151,8 @@ public class Entity
     }
 
     /**
-     *
-     * @param n
+     * Set the node this entity should travel to.
+     * @param n The node this entity should be traveling to.
      */
     public void setDestinationNode(Node n)
     {
@@ -150,7 +160,7 @@ public class Entity
     }
 
     /**
-     *
+     * Get the X position, in tiles, of this Entity.
      * @return
      */
     public int getX()
@@ -159,7 +169,7 @@ public class Entity
     }
 
     /**
-     *
+     * Get the Y position, in tiles, of this Entity.
      * @return
      */
     public int getY()
@@ -168,7 +178,7 @@ public class Entity
     }
 
     /**
-     *
+     * Get the X position, in pixels, of this Entity.
      * @return
      */
     public int getPixelX()
@@ -177,7 +187,7 @@ public class Entity
     }
 
     /**
-     *
+     * Get the Y position, in pixels, of this entity.
      * @return
      */
     public int getPixelY()
@@ -186,7 +196,7 @@ public class Entity
     }
 
     /**
-     *
+     * Set the current X-Y position of this sprite, in pixels.
      * @param newX
      * @param newY
      */
@@ -197,7 +207,8 @@ public class Entity
     }
 
     /**
-     *
+     * Add a certain value to the X and Y position of this sprite.
+     * IN PIXELS!
      * @param dx
      * @param dy
      */
@@ -208,8 +219,8 @@ public class Entity
     }
 
     /**
-     *
-     * @param state
+     * Sets the state of this Entity.
+     * @param state THe new state this Entity should have.
      */
     public void setState(EntityState state)
     {	
@@ -221,7 +232,7 @@ public class Entity
     }
 
     /**
-     *
+     * Causes this entity to act in its current state.
      */
     public void doState()
     {
@@ -232,8 +243,8 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Get this entity's state.
+     * @return The entity's current state.
      */
     public EntityState getState()
     {
@@ -241,8 +252,8 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Check if this entity can walk over water.
+     * @return True if it can move over water, false if not.
      */
     public boolean isWater()
     {
@@ -250,8 +261,8 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Check if this sprite is in the process of moving.
+     * @return True if the sprite is in motion, false if not.
      */
     public boolean isMoving()
     {
@@ -259,8 +270,8 @@ public class Entity
     }
 
     /**
-     *
-     * @param set
+     * Set this sprite as moving.
+     * @param set True if this sprite should be in motion, false if not.
      */
     public void setMoving(boolean set)
     {
@@ -268,20 +279,23 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Get the current HP of this entity.
+     * @return This entity's current HP.
      */
     public int getCurrentHP(){return currentHP;}
 
     /**
-     *
-     * @return
+     * Get the maximum HP of this entity.
+     * @return The entity's maximum HP.
      */
     public int getMaximumHP(){return maxHP;}
 
     /**
-     *
-     * @param newval
+     * Set the current HP of this entity.
+     * If the new value is below zero, it is set to zero. If the new value is
+     * higher than the maximum HP, it's set to the maximum HP.
+     * Updates the HP bar if this is the player.
+     * @param newval This entity's new current HP.
      */
     public void setCurrentHP(int newval)
     {
@@ -292,8 +306,9 @@ public class Entity
     }
 
     /**
-     *
-     * @param newval
+     * Set the maximum HP of this entity.
+     * Updates the HP bar if this is the player.
+     * @param newval This entity's new maximum HP.
      */
     public void setMaxHP(int newval)
     {
@@ -302,9 +317,11 @@ public class Entity
     }
 
     /**
-     *
-     * @param dhp
-     * @return
+     * Adds a certain amount to the current HP.
+     * If the resulting HP is below zero, it's set to zero. If the resulting
+     * HP is greater than the maximum HP, it's set to the maximum HP.
+     * @param dhp The amount of HP to add to the current HP.
+     * @return The amount of HP that was actually added.
      */
     public int addHP(int dhp)
     {
@@ -327,8 +344,8 @@ public class Entity
     }
 
     /**
-     *
-     * @param newname
+     * Set the name of this entity.
+     * @param newname The new name of this entity.
      */
     public void setName(String newname)
     {
@@ -336,8 +353,8 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Get the name of this entity.
+     * @return The name of this entity.
      */
     public String getName()
     {
@@ -345,8 +362,8 @@ public class Entity
     }
 
     /**
-     *
-     * @return
+     * Get a list of moves this Entity has.
+     * @return A list of moves this entity can use.
      */
     public ArrayList<Move> getMoves()
     {
@@ -354,8 +371,8 @@ public class Entity
     }
 
     /**
-     *
-     * @param newMove
+     * Adds a new move to this entity's arsenal.
+     * @param newMove The new move this entity can use.
      */
     public void addMove(Move newMove)
     {
