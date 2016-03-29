@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import mysterydungeon.animation.Animation;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.entity.Entity;
@@ -61,6 +62,7 @@ public class DungeonComp extends JComponent
     private boolean drawRooms = false;
     private boolean drawEntity = true;
     private boolean drawMask = true;
+    private ArrayList<Animation> animations = new ArrayList<>();
 
     private static BufferedImage attackImage;
     private static BufferedImage arrowImage;
@@ -91,6 +93,10 @@ public class DungeonComp extends JComponent
         if(drawRooms){paintRooms(g);}
         if(drawEntity){paintEntities(g);}
         if(drawMask){paintMask(g);}
+        for(Animation anim : animations)
+        {
+            g.drawImage(anim.getImage(), anim.getX(), anim.getY(), null);
+        }
         paintMoves(g);
     }
 
@@ -337,6 +343,16 @@ public class DungeonComp extends JComponent
     {
         int tile = tilemap[row][col];
         return tiles[tile];
+    }
+    
+    public void addAnimation(Animation anim)
+    {
+        animations.add(anim);
+    }
+    
+    public void removeAnimation(Animation anim)
+    {
+        animations.remove(anim);
     }
 
     /**
