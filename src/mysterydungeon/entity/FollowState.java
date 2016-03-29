@@ -5,6 +5,9 @@
  */
 package mysterydungeon.entity;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.move.Move;
@@ -29,7 +32,9 @@ public class FollowState extends EntityState
         if(e.getCurrentHP() > 0)
         {
             Entity player = d.getEntities().get(0);
-            for(Move move : e.getMoves())
+            ArrayList<Move> moves = (ArrayList<Move>)e.getMoves().clone();
+            Collections.sort((List)moves);
+            for(Move move : moves)
             {
                 if(move.getType() == Move.BRAWL && canDoBrawlMove(e, d))
                 {

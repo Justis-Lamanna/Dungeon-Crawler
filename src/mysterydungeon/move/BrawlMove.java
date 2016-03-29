@@ -18,7 +18,7 @@ import mysterydungeon.dungeon.Node;
  * chance of doing 50% more damage.
  * @author Justis
  */
-public class BrawlMove implements Move
+public class BrawlMove implements Move, Comparable
 {   
     private final int basePower;
     
@@ -49,6 +49,16 @@ public class BrawlMove implements Move
     public String getName()
     {
         return "Punch";
+    }
+    
+    /**
+     * Get the base power of this attack.
+     * @return An integer, representing the amount of HP this attack does.
+     */
+    @Override
+    public int getPower()
+    {
+        return basePower;
     }
     
     /**
@@ -113,5 +123,41 @@ public class BrawlMove implements Move
             }
         }
         return null;
+    }
+    
+    /**
+     * Compare this move to another move.
+     * In the hierarchy, RoomMove > RangeMove > BrawlMove.
+     * Individually, higher base power > lower base power.
+     * @param o The object to compare to.
+     * @return 
+     */
+    @Override
+    public int compareTo(Object o)
+    {
+        Move other = (Move)o;
+        if(other.getType() > this.getType())
+        {
+            return 1;
+        }
+        else if(other.getType() < this.getType())
+        {
+            return -1;
+        }
+        else
+        {
+            if(other.getPower() > this.getPower())
+            {
+                return 1;
+            }
+            else if(other.getPower() < this.getPower())
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

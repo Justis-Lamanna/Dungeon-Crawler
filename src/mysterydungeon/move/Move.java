@@ -57,4 +57,10 @@ public interface Move
      * @return An integer representing what type of attack this is (Short-range, etc)
      */
     int getType();
+    
+    /**
+     * Get the base power of this attack.
+     * @return An integer, representing the amount of HP this attack does.
+     */
+    int getPower();
 }

@@ -20,7 +20,7 @@ import mysterydungeon.MysteryDungeon;
  * damage.
  * @author Justis
  */
-public class RoomMove implements Move
+public class RoomMove implements Move, Comparable
 {
     private final int power;
     private final ArrayList<Entity> affected;
@@ -53,6 +53,16 @@ public class RoomMove implements Move
     public String getName()
     {
         return "Sonic Boom";
+    }
+    
+    /**
+     * Get the base power of this attack.
+     * @return An integer, representing the amount of HP this attack does.
+     */
+    @Override
+    public int getPower()
+    {
+        return power;
     }
     
     /**
@@ -120,5 +130,41 @@ public class RoomMove implements Move
             }
         }
         return null;
+    }
+    
+    /**
+     * Compare this move to another move.
+     * In the hierarchy, RoomMove > RangeMove > BrawlMove.
+     * Individually, higher base power > lower base power.
+     * @param o The object to compare to.
+     * @return 
+     */
+    @Override
+    public int compareTo(Object o)
+    {
+        Move other = (Move)o;
+        if(other.getType() > this.getType())
+        {
+            return 1;
+        }
+        else if(other.getType() < this.getType())
+        {
+            return -1;
+        }
+        else
+        {
+            if(other.getPower() > this.getPower())
+            {
+                return 1;
+            }
+            else if(other.getPower() < this.getPower())
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

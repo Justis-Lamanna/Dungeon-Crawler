@@ -19,7 +19,7 @@ import mysterydungeon.MysteryDungeon;
  * increased damage.
  * @author Justis
  */
-public class RangeMove implements Move
+public class RangeMove implements Move, Comparable
 {
 
     /**
@@ -62,6 +62,17 @@ public class RangeMove implements Move
     {
         return "Blast";
     }
+    
+    /**
+     * Get the base power of this attack.
+     * @return An integer, representing the amount of HP this attack does.
+     */
+    @Override
+    public int getPower()
+    {
+        return power;
+    }
+    
     
     /**
      * Performs the actual attack.
@@ -121,5 +132,41 @@ public class RangeMove implements Move
             currentPower = (int)(currentPower * MULTIPLIER); //Reduces by 25% the farther away you go.
         }
         return null;
+    }
+    
+    /**
+     * Compare this move to another move.
+     * In the hierarchy, RoomMove > RangeMove > BrawlMove.
+     * Individually, higher base power > lower base power.
+     * @param o The object to compare to.
+     * @return 
+     */
+    @Override
+    public int compareTo(Object o)
+    {
+        Move other = (Move)o;
+        if(other.getType() > this.getType())
+        {
+            return 1;
+        }
+        else if(other.getType() < this.getType())
+        {
+            return -1;
+        }
+        else
+        {
+            if(other.getPower() > this.getPower())
+            {
+                return 1;
+            }
+            else if(other.getPower() < this.getPower())
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }
