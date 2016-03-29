@@ -198,7 +198,12 @@ public class GameLoop implements Runnable
         
         private void onPlayerStep(Dungeon dungeon, Entity player)
         {
-            dungeon.setDiscovered(player.getDestinationNode().getY(), player.getDestinationNode().getX(), 2);
+            int playerCenterX = (player.getDestinationNode().getY() * 24 + 8);
+            int playerCenterY = (player.getDestinationNode().getX() * 24 + 8);
+            dungeon.setDiscovered(
+                    playerCenterX, 
+                    playerCenterY, 
+                    Dungeon.MASK);
             player.addHP(1);
         }
 }

@@ -196,7 +196,6 @@ public class Species
         this.image = null;
         this.water = water;
         this.maxhp = hp;
-        moves.add(new BrawlMove(5)); //All species have access to some sort of wimpy attack.
     }
 
     /**

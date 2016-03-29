@@ -5,6 +5,7 @@
  */
 package mysterydungeon.entity;
 
+import mysterydungeon.move.BrawlMove;
 import mysterydungeon.move.Move;
 
 /**
@@ -57,6 +58,10 @@ public class SpeciesBuilder
      */
     public Species make()
     {
+        if(species.getMoves().isEmpty())
+        {
+            species.addMove(new BrawlMove(5)); //Wimpy attack if there is no other.
+        }
         return species;
     }
     

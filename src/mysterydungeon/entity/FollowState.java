@@ -26,30 +26,33 @@ public class FollowState extends EntityState
     @Override
     public void doState(Entity e, Dungeon d)
     {
-        Entity player = d.getEntities().get(0);
-        for(Move move : e.getMoves())
+        if(e.getCurrentHP() > 0)
         {
-            if(move.getType() == Move.BRAWL && canDoBrawlMove(e, d))
+            Entity player = d.getEntities().get(0);
+            for(Move move : e.getMoves())
             {
-                move.attack(d, e, player);
-                return;
-            }
-        }
-        Node target = player.getDestinationNode();
-        Node start = e.getCurrentNode();
-        Node next = nextNode(e, d, start, target);
-        if(!target.equals(next))
-        {
-            e.setDestinationNode(next);
-        }
-        else
-        {
-            for(int dir = 0; dir < 8; dir++)
-            {
-                if(start.getPath(dir) != null)
+                if(move.getType() == Move.BRAWL && canDoBrawlMove(e, d))
                 {
-                    e.setDestinationNode(start.getPath(dir));
-                    break;
+                    move.attack(d, e, player);
+                    return;
+                }
+            }
+            Node target = player.getDestinationNode();
+            Node start = e.getCurrentNode();
+            Node next = nextNode(e, d, start, target);
+            if(!target.equals(next))
+            {
+                e.setDestinationNode(next);
+            }
+            else
+            {
+                for(int dir = 0; dir < 8; dir++)
+                {
+                    if(start.getPath(dir) != null)
+                    {
+                        e.setDestinationNode(start.getPath(dir));
+                        break;
+                    }
                 }
             }
         }

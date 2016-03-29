@@ -18,6 +18,7 @@ import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.FollowState;
+import mysterydungeon.move.Move;
 
 /**
  * The class that is used to draw an instance of Dungeon.
@@ -89,7 +90,8 @@ public class DungeonComp extends JComponent
         if(drawPaths){paintPaths(g);}
         if(drawRooms){paintRooms(g);}
         if(drawEntity){paintEntities(g);}
-        if(drawMask){paintMask(g, 10);}
+        if(drawMask){paintMask(g);}
+        paintMoves(g);
     }
 
     private void paintMap(Graphics g, int backgroundTile)
@@ -158,17 +160,17 @@ public class DungeonComp extends JComponent
         }
     }
     
-    private void paintMask(Graphics g, int maskTile)
+    private void paintMask(Graphics g)
     {
-        BufferedImage tile = tiles[maskTile];
-        Node[][] nodes = dungeon.getNodes();
-        for(int row = 0; row < nodes.length; row++)
+        boolean[][] mask = dungeon.getDiscovered();
+        g.setColor(Color.BLACK);
+        for(int row = 0; row < mask.length; row++)
         {
-            for(int col = 0; col < nodes[0].length; col++)
+            for(int col = 0; col < mask[0].length; col++)
             {
-                if(!dungeon.isDiscovered(row, col))
+                if(!mask[row][col])
                 {
-                    g.drawImage(tile, col*TILE_SIZE, row*TILE_SIZE, null);
+                    g.fillRect(col, row, 1, 1);
                 }
             }
         }
@@ -272,6 +274,22 @@ public class DungeonComp extends JComponent
                 BufferedImage arrow = arrowImage.getSubimage(0, facing*32, 32, 32);
                 g.drawImage(arrow, drawX, drawY, null);
             }
+        }
+    }
+    
+    private void paintMoves(Graphics g)
+    {
+        ArrayList<Move> moves = dungeon.getEntities().get(0).getMoves();
+        int keyWidth = getWidth() / Controls.NUM_ATTACKS;
+        for(int index = 0; index < moves.size(); index++)
+        {
+            int startX = index * keyWidth;
+            g.setColor(Color.WHITE);
+            g.fillRect(startX, getHeight() - 40, keyWidth, 40);
+            g.setColor(Color.RED);
+            g.drawRect(startX, getHeight() - 40, keyWidth, 40);
+            g.setColor(Color.BLACK);
+            g.drawString(String.format("%d. %s", index+1, moves.get(index).getName()), startX + 10, getHeight() - 20);
         }
     }
 

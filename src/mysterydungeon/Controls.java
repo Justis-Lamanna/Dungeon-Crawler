@@ -17,7 +17,11 @@ public class Controls implements KeyListener
 {
     private static Controls singleton = null;
     private static final int[] CONVERSION = {5, 4, 3, 6, -1, 2, 7, 0, 1}; //Converts Num1-Num9 to direction
-    private static final int NUM_ATTACKS = 3; //NUM_ATTACKS should be somewhere between 1 and 9, for logic's sake.
+    
+    /**
+     * The number of attacks the player can learn.
+     */
+    public static final int NUM_ATTACKS = 3; //NUM_ATTACKS should be somewhere between 1 and 9, for logic's sake.
     
     private boolean directionPressed = false;
     private int direction = -1;
