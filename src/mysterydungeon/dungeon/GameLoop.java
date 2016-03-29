@@ -119,8 +119,8 @@ public class GameLoop implements Runnable
         {
             Node playerNode = player.getCurrentNode();
             Controls controls = Controls.getInstance();
-            ArrayList<Entity> entities = new ArrayList<>();
-            if(controls.isFacePressed())
+            ArrayList<Entity> entities = dungeon.getEntities();
+            if(controls.isFacePressed() && controls.isDirectionPressed())
             {
                 if(controls.getDirection() != -1)
                 {
@@ -137,7 +137,6 @@ public class GameLoop implements Runnable
                         {
                             if(next == null){break;}
                             next = next.getPath(dir);
-                            System.out.println(next);
                             for(Entity entity : entities)
                             {
                                 if(entity.getCurrentNode().equals(next))

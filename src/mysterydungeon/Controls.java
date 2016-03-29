@@ -125,7 +125,7 @@ public class Controls implements KeyListener
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if(e.getKeyCode() >= KeyEvent.VK_NUMPAD1 && e.getKeyCode() < KeyEvent.VK_NUMPAD9)
+        if(e.getKeyCode() >= KeyEvent.VK_NUMPAD1 && e.getKeyCode() <= KeyEvent.VK_NUMPAD9)
         {
             directionPressed = true;
             int index = e.getKeyCode() - KeyEvent.VK_NUMPAD1;
@@ -146,7 +146,7 @@ public class Controls implements KeyListener
     @Override
     public void keyReleased(KeyEvent e)
     {
-        if(e.getKeyCode() >= KeyEvent.VK_NUMPAD1 && e.getKeyCode() < KeyEvent.VK_NUMPAD9)
+        if(e.getKeyCode() >= KeyEvent.VK_NUMPAD1 && e.getKeyCode() <= KeyEvent.VK_NUMPAD9)
         {
             directionPressed = false;
             direction = -1;
