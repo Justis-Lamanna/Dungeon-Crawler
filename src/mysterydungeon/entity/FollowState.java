@@ -7,6 +7,7 @@ package mysterydungeon.entity;
 
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
+import mysterydungeon.move.Move;
 
 /**
  * A state which actively pursues the player.
@@ -26,7 +27,15 @@ public class FollowState extends EntityState
     public void doState(Entity e, Dungeon d)
     {
         Entity player = d.getEntities().get(0);
-        Node target = player.getCurrentNode();
+        for(Move move : e.getMoves())
+        {
+            if(move.getType() == Move.BRAWL && canDoBrawlMove(e, d))
+            {
+                move.attack(d, e, player);
+                return;
+            }
+        }
+        Node target = player.getDestinationNode();
         Node start = e.getCurrentNode();
         Node next = nextNode(e, d, start, target);
         if(!target.equals(next))
@@ -54,5 +63,21 @@ public class FollowState extends EntityState
     public int isState()
     {
         return 1;
+    }
+    
+    private boolean canDoBrawlMove(Entity entity, Dungeon dungeon)
+    {
+        Node player = dungeon.getEntities().get(0).getDestinationNode();
+        Node start = entity.getCurrentNode();
+        for(int dir = 0; dir < 8; dir++)
+        {
+            Node next = start.getPath(dir);
+            if(player.equals(next))
+            {
+                entity.facing = dir;
+                return true;
+            }
+        }
+        return false;
     }
 }

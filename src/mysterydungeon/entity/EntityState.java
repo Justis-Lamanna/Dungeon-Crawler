@@ -110,19 +110,19 @@ public abstract class EntityState
      */
     public HashMap<Node, Node> findShortestPath(Entity entity, Dungeon dungeon, Node start)
     {
-        HashMap<Node, Integer> dist = new HashMap<>();
+        HashMap<Node, Double> dist = new HashMap<>();
         HashMap<Node, Node> prev = new HashMap<>();
         LinkedList<Node> queue = new LinkedList<>();
         ArrayList<Node> graph = dungeon.getNodesList();
 
         for(Node node : graph)
         {
-            dist.put(node, Integer.MAX_VALUE);
+            dist.put(node, Double.MAX_VALUE);
             prev.put(node, null);
             queue.add(node);
         }
 
-        dist.put(start, 0);
+        dist.put(start, 0.0);
 
         while(queue.size() > 0)
         {
@@ -132,7 +132,8 @@ public abstract class EntityState
             {
                 Node vv = uu.getPath(dir);
                 if(vv == null || !isValidNode(entity, dungeon, uu, vv)){continue;}
-                int alt = dist.get(uu) + 1;
+                double weight = (dir % 2 == 0 ? 1 : 1.5);
+                double alt = dist.get(uu) + weight;
                 if(alt < dist.get(vv))
                 {
                     dist.put(vv, alt);
@@ -144,13 +145,13 @@ public abstract class EntityState
         return prev;
     }
 
-    private Node minimumDistance(LinkedList<Node> queue, HashMap<Node, Integer> dist)
+    private Node minimumDistance(LinkedList<Node> queue, HashMap<Node, Double> dist)
     {
-        int min = Integer.MAX_VALUE;
+        double min = Double.MAX_VALUE;
         Node minNode = queue.get(0);
         for(Node node : queue)
         {
-            int nodeDist = dist.get(node);
+            double nodeDist = dist.get(node);
             if(nodeDist < min)
             {
                 min = nodeDist;
@@ -215,6 +216,7 @@ public abstract class EntityState
         ArrayList<Entity> enemies = dungeon.getEntities();
         for(Entity enemy : enemies)
         {
+            if(enemy.equals(entity)){continue;}
             Node enemyNode = enemy.getDestinationNode();
             if(enemyNode.equals(node))
             {

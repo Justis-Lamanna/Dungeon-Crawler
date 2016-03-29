@@ -46,72 +46,129 @@ public class Species
     /**
      * A constant representing the Robot1 species.
      */
-    public static final Species ROBOT1 = new Species("Robot1", "Sprites/robot1.png", 20);
+    public static final Species ROBOT1 = 
+            new SpeciesBuilder("Robot1", "Sprites/robot1.png", 20)
+            .addMove(new BrawlMove(5))
+            .make();
 
     /**
      * A constant representing the Robot2 species.
      */
-    public static final Species ROBOT2 = new Species("Robot2", "Sprites/robot2.png", 20);
+    public static final Species ROBOT2 = 
+            new SpeciesBuilder("Robot2", "Sprites/robot2.png", 20)
+            .make();
 
     /**
      * A constant representing the X0L0TL species.
      */
-    public static final Species ROBOT3 = new Species("X0L0TL", "Sprites/robot3.png", true, 20);
+    public static final Species ROBOT3 = 
+            new SpeciesBuilder("X0L0TL", "Sprites/robot3.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot4 species.
      */
-    public static final Species ROBOT4 = new Species("Robot4", "Sprites/robot4.png", true, 20);
+    public static final Species ROBOT4 = 
+            new SpeciesBuilder("Robot4", "Sprites/robot4.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot5 species.
      */
-    public static final Species ROBOT5 = new Species("Robot5", "Sprites/robot5.png", true, 20);
+    public static final Species ROBOT5 = 
+            new SpeciesBuilder("Robot5", "Sprites/robot5.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot6 species.
      */
-    public static final Species ROBOT6 = new Species("Robot6", "Sprites/robot6.png", true, 20);
+    public static final Species ROBOT6 = 
+            new SpeciesBuilder("Robot6", "Sprites/robot6.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot7 species.
      */
-    public static final Species ROBOT7 = new Species("Robot7", "Sprites/robot7.png", 20);
+    public static final Species ROBOT7 = 
+            new SpeciesBuilder("Robot7", "Sprites/robot7.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot8 species.
      */
-    public static final Species ROBOT8 = new Species("Robot8", "Sprites/robot8.png", 20);
+    public static final Species ROBOT8 = 
+            new SpeciesBuilder("Robot8", "Sprites/robot8.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot9 species.
      */
-    public static final Species ROBOT9 = new Species("Robot9", "Sprites/robot9.png", 20);
+    public static final Species ROBOT9 = 
+            new SpeciesBuilder("Robot9", "Sprites/robot9.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot10 species.
      */
-    public static final Species ROBOT10 = new Species("Robot10", "Sprites/robot10.png", 20);
+    public static final Species ROBOT10 = 
+            new SpeciesBuilder("Robot10", "Sprites/robot10.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot11 species.
      */
-    public static final Species ROBOT11 = new Species("Robot11", "Sprites/robot11.png", 20);
+    public static final Species ROBOT11 = 
+            new SpeciesBuilder("Robot11", "Sprites/robot11.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot12 species.
      */
-    public static final Species ROBOT12 = new Species("Robot12", "Sprites/robot12.png", 20);
+    public static final Species ROBOT12 = 
+            new SpeciesBuilder("Robot12", "Sprites/robot12.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot13 species.
      */
-    public static final Species ROBOT13 = new Species("Robot13", "Sprites/robot13.png", 20);
+    public static final Species ROBOT13 = 
+            new SpeciesBuilder("Robot13", "Sprites/robot13.png", 20)
+            .make();
 
     /**
      * A constant representing the Robot14 species.
      */
-    public static final Species ROBOT14 = new Species("Robot14", "Sprites/robot14.png", 20);
+    public static final Species ROBOT14 = 
+            new SpeciesBuilder("Robot14", "Sprites/robot14.png", 20)
+            .make();
+    
+    /**
+     * A constant representing the Robot15 species.
+     */
+    public static final Species ROBOT15 = 
+            new SpeciesBuilder("Robot15", "Sprites/robot15.png", 20)
+            .make();
+    
+    /**
+     * A constant representing the Robot16 species.
+     */
+    public static final Species ROBOT16 = 
+            new SpeciesBuilder("Robot16", "Sprites/robot16.png", 20)
+            .make();
+    
+    /**
+     * A constant representing the Robot17 species.
+     */
+    public static final Species ROBOT17 = 
+            new SpeciesBuilder("Robot17", "Sprites/robot17.png", 20)
+            .make();
+    
+    /**
+     * A constant representing the Robot18 species.
+     */
+    public static final Species ROBOT18 = 
+            new SpeciesBuilder("Robot18", "Sprites/robot18.png", 20)
+            .make();
 
     /**
      * Generate a custom species.
@@ -139,6 +196,7 @@ public class Species
         this.image = null;
         this.water = water;
         this.maxhp = hp;
+        moves.add(new BrawlMove(5)); //All species have access to some sort of wimpy attack.
     }
 
     /**

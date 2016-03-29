@@ -92,7 +92,7 @@ public class GameLoop implements Runnable
                         entity.setMoving(false);
                     }
                 }
-                else if(entity.equals(player))
+                /*else if(entity.equals(player))
                 {
                     if(handleControls(dungeon, entity))
                     {
@@ -103,7 +103,16 @@ public class GameLoop implements Runnable
                         }
                         onPlayerStep(dungeon, player);
                     }
+                }*/
+            }
+            if(handleControls(dungeon, player))
+            {
+                for(Entity others : entities)
+                {
+                    others.doState();
+                    others.setMoving(true);
                 }
+                onPlayerStep(dungeon, player);
             }
         }
         
