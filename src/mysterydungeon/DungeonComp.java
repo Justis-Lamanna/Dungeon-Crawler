@@ -356,7 +356,7 @@ public class DungeonComp extends JComponent
      */
     public void reopen(boolean repaint)
     {
-        dungeon.loadDungeon();
+        dungeon.startDungeon();
         if(repaint){repaint();}
     }
 

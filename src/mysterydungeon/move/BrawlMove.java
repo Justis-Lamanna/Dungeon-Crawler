@@ -117,7 +117,7 @@ public class BrawlMove implements Move, Comparable
         ArrayList<Entity> entities = dungeon.getEntities();
         for(Entity entity : entities)
         {
-            if(entity.getCurrentNode().equals(facingNode))
+            if(entity.getDestinationNode().equals(facingNode))
             {
                 return entity;
             }

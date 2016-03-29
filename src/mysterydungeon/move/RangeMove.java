@@ -124,7 +124,7 @@ public class RangeMove implements Move, Comparable
             if(start == null){break;}
             for(Entity entity : dungeon.getEntities())
             {
-                if(entity.getCurrentNode().equals(start))
+                if(entity.getDestinationNode().equals(start))
                 {
                     return entity;
                 }

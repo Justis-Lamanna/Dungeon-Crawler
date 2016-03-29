@@ -36,7 +36,17 @@ public class FollowState extends EntityState
             Collections.sort((List)moves);
             for(Move move : moves)
             {
-                if(move.getType() == Move.BRAWL && canDoBrawlMove(e, d))
+                if(move.getType() == Move.ROOM && canDoRoomMove(move, e, d))
+                {
+                    move.attack(d, e, player);
+                    return;
+                }
+                else if(move.getType() == Move.RANGE && canDoRangeMove(move, e, d))
+                {
+                    move.attack(d, e, player);
+                    return;
+                }
+                else if(move.getType() == Move.BRAWL && canDoBrawlMove(move, e, d))
                 {
                     move.attack(d, e, player);
                     return;
@@ -73,19 +83,50 @@ public class FollowState extends EntityState
         return 1;
     }
     
-    private boolean canDoBrawlMove(Entity entity, Dungeon dungeon)
+    private boolean canDoRoomMove(Move move, Entity entity, Dungeon dungeon)
     {
         Node player = dungeon.getEntities().get(0).getDestinationNode();
-        Node start = entity.getCurrentNode();
+        Node user = entity.getCurrentNode();
+        if(dungeon.getRoom(player) != null)
+        {
+            move.getDefender(dungeon, entity);
+            return dungeon.getRoom(player).equals(dungeon.getRoom(user));
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    private boolean canDoRangeMove(Move move, Entity entity, Dungeon dungeon)
+    {
+        int oldFacing = entity.facing;
+        Entity player = dungeon.getEntities().get(0);
         for(int dir = 0; dir < 8; dir++)
         {
-            Node next = start.getPath(dir);
-            if(player.equals(next))
+            entity.facing = dir;
+            if(player.equals(move.getDefender(dungeon, entity)))
             {
-                entity.facing = dir;
                 return true;
             }
         }
+        entity.facing = oldFacing;
+        return false;
+    }
+    
+    private boolean canDoBrawlMove(Move move, Entity entity, Dungeon dungeon)
+    {
+        int oldFacing = entity.facing;
+        Entity player = dungeon.getEntities().get(0);
+        for(int dir = 0; dir < 8; dir++)
+        {
+            entity.facing = dir;
+            if(player.equals(move.getDefender(dungeon, entity)))
+            {
+                return true;
+            }
+        }
+        entity.facing = oldFacing;
         return false;
     }
 }

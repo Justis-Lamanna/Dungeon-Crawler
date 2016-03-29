@@ -7,6 +7,8 @@ package mysterydungeon.entity;
 
 import mysterydungeon.move.BrawlMove;
 import mysterydungeon.move.Move;
+import mysterydungeon.move.RangeMove;
+import mysterydungeon.move.RoomMove;
 
 /**
  * A builder pattern to assist with development of species.
@@ -60,7 +62,7 @@ public class SpeciesBuilder
     {
         if(species.getMoves().isEmpty())
         {
-            species.addMove(new BrawlMove(5)); //Wimpy attack if there is no other.
+            species.addMove(new RangeMove(5, 4)); //Wimpy attack if there is no other.
         }
         return species;
     }

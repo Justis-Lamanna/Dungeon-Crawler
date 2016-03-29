@@ -123,7 +123,7 @@ public class RoomMove implements Move, Comparable
             for(Entity entity : dungeon.getEntities())
             {
                 if(entity.equals(attacker)){continue;}
-                if(room.equals(dungeon.getRoom(entity.getCurrentNode())))
+                if(room.equals(dungeon.getRoom(entity.getDestinationNode())))
                 {
                     affected.add(entity);
                 }
