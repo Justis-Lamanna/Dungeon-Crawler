@@ -447,15 +447,14 @@ public class Dungeon
 
     /**
      * Sets a certain tile as having been seen by the player.
-     * @param row The row of the tile to set as discovered.
-     * @param col The column of the tile to set as discovered.
+     * @param x The row of the tile to set as discovered.
+     * @param y The column of the tile to set as discovered.
      */
-    public void setDiscovered(int row, int col)
+    public void setDiscovered(int x, int y)
     {
-        //mask[row][col] = true;
-        //Calculate where the new circle should be drawn
-        int circleX = col * DungeonComp.TILE_SIZE;
-        int circleY = row * DungeonComp.TILE_SIZE;
+        int offset = 50 - DungeonComp.TILE_SIZE / 2;
+        int circleX = x * DungeonComp.TILE_SIZE - offset;
+        int circleY = y * DungeonComp.TILE_SIZE - offset;
         comp.appendMask(circleX, circleY);
     }
     

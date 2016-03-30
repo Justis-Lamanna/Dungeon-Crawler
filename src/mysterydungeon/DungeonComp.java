@@ -91,8 +91,8 @@ public class DungeonComp extends JComponent
     
     public void initializeMask()
     {
-        int width = dungeon.getBasemap()[0].length;
-        int height = dungeon.getBasemap().length;
+        int width = dungeon.getBasemap()[0].length * TILE_SIZE;
+        int height = dungeon.getBasemap().length * TILE_SIZE;
         currentMask = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         for(int xx = 0; xx < width; xx++)
         {
@@ -112,7 +112,7 @@ public class DungeonComp extends JComponent
                 try
                 {
                     int shadowRGB = shadowImage.getRGB(xx, yy);
-                    int maskRGB = currentMask.getRGB(x+xx, y+yy);
+                    int maskRGB = currentMask.getRGB(x+xx, y+yy) & 0xFF000000;
                     currentMask.setRGB(x+xx, y+yy, shadowRGB & maskRGB);
                 }
                 catch(ArrayIndexOutOfBoundsException ex)
