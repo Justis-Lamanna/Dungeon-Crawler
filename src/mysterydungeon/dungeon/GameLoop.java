@@ -94,7 +94,6 @@ public class GameLoop implements Runnable
                     {
                         entity.setCurrentNode(entity.getDestinationNode());
                         entity.setMoving(false);
-                        doneMoving = true;
                     }
                 }
             }

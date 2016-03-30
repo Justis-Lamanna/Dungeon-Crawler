@@ -112,7 +112,7 @@ public class DungeonComp extends JComponent
                 try
                 {
                     int shadowRGB = shadowImage.getRGB(xx, yy);
-                    int maskRGB = currentMask.getRGB(x+xx, y+yy) & 0xFF000000;
+                    int maskRGB = currentMask.getRGB(x+xx, y+yy);
                     currentMask.setRGB(x+xx, y+yy, shadowRGB & maskRGB);
                 }
                 catch(ArrayIndexOutOfBoundsException ex)
