@@ -66,6 +66,8 @@ public class DungeonComp extends JComponent
 
     private static BufferedImage attackImage;
     private static BufferedImage arrowImage;
+    private static BufferedImage shadowImage;
+    private BufferedImage currentMask;
 
     /**
      * Initializes a DungeonComp
@@ -74,13 +76,51 @@ public class DungeonComp extends JComponent
      */
     public DungeonComp(String tileFilename, String tilemapFilename)
     {
+        super();
         dungeon = new Dungeon(this, tilemapFilename, Dungeon.TEST_LIST);
         dungeon.startDungeon();
+        initializeMask();
         generateTiles(tileFilename);
         try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
         catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
         try{arrowImage = ImageIO.read(new File("Sprites/arrows.png"));}
         catch(IOException ex){arrowImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
+        try{shadowImage = ImageIO.read(new File("Sprites/shadow.png"));}
+        catch(IOException ex){shadowImage = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);}
+    }
+    
+    public void initializeMask()
+    {
+        int width = dungeon.getBasemap()[0].length;
+        int height = dungeon.getBasemap().length;
+        currentMask = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+        for(int xx = 0; xx < width; xx++)
+        {
+            for(int yy = 0; yy < height; yy++)
+            {
+                currentMask.setRGB(xx, yy, 0xFF000000);
+            }
+        }
+    }
+    
+    public void appendMask(int x, int y)
+    {
+        for(int xx = 0; xx < shadowImage.getWidth(); xx++)
+        {
+            for(int yy = 0; yy < shadowImage.getHeight(); yy++)
+            {
+                try
+                {
+                    int shadowRGB = shadowImage.getRGB(xx, yy);
+                    int maskRGB = currentMask.getRGB(x+xx, y+yy);
+                    currentMask.setRGB(x+xx, y+yy, shadowRGB & maskRGB);
+                }
+                catch(ArrayIndexOutOfBoundsException ex)
+                {
+                    //Nothing
+                }
+            }
+        }
     }
 
     @Override
@@ -115,7 +155,8 @@ public class DungeonComp extends JComponent
                 }
                 catch(IndexOutOfBoundsException ex)
                 {
-                    g.drawImage(bgTile, col*TILE_SIZE, row*TILE_SIZE, null);
+                    g.setColor(Color.BLACK);
+                    g.fillRect(col*TILE_SIZE, row*TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 }
             }
         }
@@ -168,18 +209,7 @@ public class DungeonComp extends JComponent
     
     private void paintMask(Graphics g)
     {
-        boolean[][] mask = dungeon.getDiscovered();
-        g.setColor(Color.BLACK);
-        for(int row = 0; row < mask.length; row++)
-        {
-            for(int col = 0; col < mask[0].length; col++)
-            {
-                if(!mask[row][col])
-                {
-                    g.fillRect(col, row, 1, 1);
-                }
-            }
-        }
+        g.drawImage(currentMask, 0, 0, null);
     }
 
     private void paintPaths(Graphics g)
@@ -286,7 +316,7 @@ public class DungeonComp extends JComponent
     private void paintMoves(Graphics g)
     {
         ArrayList<Move> moves = dungeon.getEntities().get(0).getMoves();
-        int keyWidth = getWidth() / Controls.NUM_ATTACKS;
+        int keyWidth = getWidth() / 4;
         for(int index = 0; index < moves.size(); index++)
         {
             int startX = index * keyWidth;

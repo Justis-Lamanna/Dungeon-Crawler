@@ -5,6 +5,7 @@
  */
 package mysterydungeon.dungeon;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
@@ -27,6 +28,7 @@ public class GameLoop implements Runnable
     private final DungeonComp comp;
     int moveFrame = 0;
     Move move = new BrawlMove(10);
+    Controls controls = Controls.getInstance();
     
     /**
      * Creates an instance of this GameLoop.
@@ -38,7 +40,7 @@ public class GameLoop implements Runnable
     }
     
     /**
-     * Begins running this GameLoop, in a separate thread.
+     * Begins running this GameLoop.
      */
     @Override
     public void run()
@@ -56,6 +58,7 @@ public class GameLoop implements Runnable
             lastLoopTime = now;
             double delta = updateLength / ((double)OPTIMAL_TIME); //1 if updateLength == optimal time
             updateGame(delta);
+            controls.update();
             comp.repaint();
             long sleepTime = (lastLoopTime-System.nanoTime() + OPTIMAL_TIME)/1000000;
             if(sleepTime < 10){sleepTime = 10;}
@@ -80,32 +83,23 @@ public class GameLoop implements Runnable
             Dungeon dungeon = comp.getDungeon();
             ArrayList<Entity> entities = dungeon.getEntities();
             Entity player = entities.get(0);
+            boolean doneMoving = true;
             for(Entity entity : entities)
             {
                 if(entity.isMoving())
                 {
+                    doneMoving = false;
                     int[] iValues = interpolate(entity, FRAMES_WALK);
                     entity.addPixel(iValues[0], iValues[1]);
                     if(entity.getDestinationNode().equals(entity.getPixelX(), entity.getPixelY()))
                     {
                         entity.setCurrentNode(entity.getDestinationNode());
                         entity.setMoving(false);
+                        doneMoving = true;
                     }
                 }
-                /*else if(entity.equals(player))
-                {
-                    if(handleControls(dungeon, entity))
-                    {
-                        for(Entity others : entities)
-                        {
-                            others.doState();
-                            others.setMoving(true);
-                        }
-                        onPlayerStep(dungeon, player);
-                    }
-                }*/
             }
-            if(handleControls(dungeon, player))
+            if(doneMoving && handleControls(dungeon, player))
             {
                 for(Entity others : entities)
                 {
@@ -129,12 +123,13 @@ public class GameLoop implements Runnable
             Node playerNode = player.getCurrentNode();
             Controls controls = Controls.getInstance();
             ArrayList<Entity> entities = dungeon.getEntities();
-            if(controls.isFacePressed() && controls.isDirectionPressed())
+            int directionPressed = getDirectionPressed();
+            int attackPressed = getAttackPressed();
+            if(controls.isKeyDown(KeyEvent.VK_CONTROL))
             {
-                if(controls.getDirection() != -1)
+                if(directionPressed != -1)
                 {
-                    player.facing = controls.getDirection();
-                    controls.clearDirection();
+                    player.facing = directionPressed;
                     return false;
                 }
                 else
@@ -159,19 +154,13 @@ public class GameLoop implements Runnable
                     return false;
                 }
             }
-            else if(controls.isDirectionPressed())
+            else if(directionPressed != -1)
             {
-                if(controls.getDirection() != -1 && playerNode.getPath(controls.getDirection()) != null)
+                if(playerNode.getPath(directionPressed) != null)
                 {
-                    player.setDestinationNode(playerNode.getPath(controls.getDirection()));
-                    player.facing = controls.getDirection();
+                    player.setDestinationNode(playerNode.getPath(directionPressed));
+                    player.facing = directionPressed;
                     player.setMoving(true);
-                    controls.clearDirection();
-                    return true;
-                }
-                else if(controls.getDirection() == -1)
-                {
-                    controls.clearDirection();
                     return true;
                 }
                 else
@@ -179,13 +168,11 @@ public class GameLoop implements Runnable
                     //Collision. Make a bump noise in the future, I guess?
                 }
             }
-            else if(controls.isAttackPressed())
+            else if(attackPressed != -1)
             {
                 ArrayList<Move> knownMoves = player.getMoves();
-                int attackPressed = controls.attackPressed() - 1;
                 if(attackPressed < knownMoves.size())
                 {
-                    controls.clearAttackPressed(attackPressed);
                     Move attackUsed = knownMoves.get(attackPressed);
                     //Now, we go for the kill!
                     Entity defender = attackUsed.getDefender(comp.getDungeon(), player);
@@ -196,14 +183,33 @@ public class GameLoop implements Runnable
             return false;
         }
         
+        private int getDirectionPressed()
+        {
+            if(controls.isKeyDown(KeyEvent.VK_NUMPAD4)){return 6;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD6)){return 2;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD8)){return 0;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD2)){return 4;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD7)){return 7;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD9)){return 1;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD3)){return 3;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD1)){return 5;}
+            else{return -1;}
+        }
+        
+        private int getAttackPressed()
+        {
+            if(controls.isKeyDown(KeyEvent.VK_1)){return 1;}
+            else if(controls.isKeyDown(KeyEvent.VK_2)){return 2;}
+            else if(controls.isKeyDown(KeyEvent.VK_3)){return 3;}
+            else if(controls.isKeyDown(KeyEvent.VK_4)){return 4;}
+            else{return -1;}
+        }
+        
         private void onPlayerStep(Dungeon dungeon, Entity player)
         {
-            int playerCenterX = (player.getDestinationNode().getY() * 24 + 8);
-            int playerCenterY = (player.getDestinationNode().getX() * 24 + 8);
-            dungeon.setDiscovered(
-                    playerCenterX, 
-                    playerCenterY, 
-                    Dungeon.MASK);
+            int playerCenterX = player.getDestinationNode().getX();
+            int playerCenterY = player.getDestinationNode().getY();
+            dungeon.setDiscovered(playerCenterX, playerCenterY);
             player.addHP(1);
         }
 }

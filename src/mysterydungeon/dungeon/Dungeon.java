@@ -32,11 +32,6 @@ public class Dungeon
             Species.ROBOT7, Species.ROBOT8, Species.ROBOT9,
             Species.ROBOT10, Species.ROBOT11, Species.ROBOT12,
             Species.ROBOT13, Species.ROBOT14};
-    
-    /**
-     * A sample mask, a circle of radius 100.
-     */
-    public static boolean[][] MASK = calculateCircle(100);
 
     private final String basemapFilename;
     private int[][] tilemap;
@@ -77,7 +72,6 @@ public class Dungeon
         player = new Entity(this, Species.PLAYER, null, true);
         enemies.clear();
         spawnEnemies(1);
-        new Thread(new GameLoop(comp)).start();
     }
 
     /**
@@ -125,7 +119,7 @@ public class Dungeon
     private void findNodes()
     {
         nodes = new Node[basemap.length][basemap[0].length];
-        mask = new boolean[basemap.length * DungeonComp.TILE_SIZE][basemap[0].length * DungeonComp.TILE_SIZE];
+        mask = new boolean[basemap.length][basemap[0].length];
         for(int row = 0; row < basemap.length; row++)
         {
             for(int col = 0; col < basemap[0].length; col++)
@@ -458,92 +452,11 @@ public class Dungeon
      */
     public void setDiscovered(int row, int col)
     {
-        mask[row][col] = true;
-    }
-
-    /**
-     * Sets a chunk of tiles, centered at a certain tile, and extending a
-     * certain range away, as discovered.
-     * @param row The row of the tile to set as the center point.
-     * @param col The column of the tile to set as the center point.
-     * @param range The width and height of the surrounding tiles to be set as discovered also.
-     */
-    public void setDiscovered(int row, int col, int range)
-    {
-        setDiscovered(row, col, range, range, range, range);
-    }
-
-    /**
-     * Sets a certain rectangle of tiles as discovered.
-     * @param row The row of the tile to set as the center point.
-     * @param col The column of the tile to set as the center point.
-     * @param plusrow The number of tiles down to be set as discovered also.
-     * @param minusrow The number of tiles up to be set as discovered also.
-     * @param pluscol The number of tiles to the right to be set as discovered also.
-     * @param minuscol The number of tiles to the left to be set as discovered also.
-     */
-    public void setDiscovered(int row, int col, int plusrow, int minusrow, int pluscol, int minuscol)
-    {
-        for(int drow = row-minusrow; drow <= row+plusrow; drow++)
-        {
-            for(int dcol = col-minuscol; dcol <= col+pluscol; dcol++)
-            {
-                try
-                {
-                    mask[drow][dcol] = true;
-                }
-                catch(ArrayIndexOutOfBoundsException ex)
-                {
-                    //Do nothing.
-                }
-            }
-        }
-    }
-    
-    /**
-     * Sets a certain group of tiles as discovered.
-     * This function takes a square mask, and applies it to the current position.
-     * In the submask, true will reveal the tile, and false will do nothing.
-     * @param row The row value of the center of where the mask should be applied
-     * @param col The column value of the center of where the mask should be applied
-     * @param subMask The mask that should be applied, with true revealing the space, and false doing nothing.
-     */
-    public void setDiscovered(int row, int col, boolean[][] subMask)
-    {
-        int startRow = row - (subMask.length / 2);
-        int startCol = col - (subMask.length / 2);
-        for(int rw = startRow; rw < startRow + subMask.length; rw++)
-        {
-            for(int cl = startCol; cl < startCol + subMask.length; cl++)
-            {
-                try
-                {
-                    mask[rw][cl] |= subMask[rw - startRow][cl - startCol];
-                }
-                catch(ArrayIndexOutOfBoundsException ex)
-                {
-                    //Do nothing.
-                }
-            }
-        }
-    }
-    
-    public static boolean[][] calculateCircle(int size)
-    {
-        boolean[][] returnMatrix = new boolean[size][size];
-        int center = size / 2;
-        for(int row = 0; row < size; row++)
-        {
-            for(int col = 0; col < size; col++)
-            {
-                double distance = Math.sqrt(((row - center) * (row - center)) + ((col - center) * (col - center)));
-                if(distance <= size / 2)
-                {
-                    returnMatrix[row][col] = true;
-                }
-            }
-        }
-        return returnMatrix;
+        //mask[row][col] = true;
+        //Calculate where the new circle should be drawn
+        int circleX = col * DungeonComp.TILE_SIZE;
+        int circleY = row * DungeonComp.TILE_SIZE;
+        comp.appendMask(circleX, circleY);
     }
     
     public boolean[][] getDiscovered()

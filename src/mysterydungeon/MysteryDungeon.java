@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import mysterydungeon.dungeon.GameLoop;
 import mysterydungeon.entity.Entity;
 
 /**
@@ -70,6 +71,7 @@ public class MysteryDungeon extends JFrame{
         frame.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        new Thread(new GameLoop(frame.getComponent())).start();
     }
 
     /**
@@ -189,5 +191,10 @@ public class MysteryDungeon extends JFrame{
         LOG.setForeground(Color.WHITE);
         LOG.setBackground(Color.BLACK);
         return hud;
+    }
+    
+    public DungeonComp getComponent()
+    {
+        return dungeon;
     }
 }

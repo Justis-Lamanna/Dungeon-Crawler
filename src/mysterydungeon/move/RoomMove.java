@@ -98,6 +98,10 @@ public class RoomMove implements Move, Comparable
                     {
                         dungeon.clearEnemy(entity);
                         MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", entity.getName()));
+                        if(entity.isPlayer())
+                        {
+                            System.exit(0);
+                        }
                     }
                 }
             }

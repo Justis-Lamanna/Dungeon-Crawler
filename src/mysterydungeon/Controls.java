@@ -15,160 +15,136 @@ import java.awt.event.KeyListener;
  */
 public class Controls implements KeyListener
 {
-    private static Controls singleton = null;
-    private static final int[] CONVERSION = {5, 4, 3, 6, -1, 2, 7, 0, 1}; //Converts Num1-Num9 to direction
-    
-    /**
-     * The number of attacks the player can learn.
-     */
-    public static final int NUM_ATTACKS = 3; //NUM_ATTACKS should be somewhere between 1 and 9, for logic's sake.
-    
-    private boolean directionPressed = false;
-    private int direction = -1;
-    
-    private final boolean[] attackPressed = new boolean[NUM_ATTACKS];
-    
-    private boolean facePressed = false;
-    
-    private Controls(){}
-    
-    /**
-     * Get the current instance of the Control class.
-     * @return An instance of the this class.
-     */
-    public static Controls getInstance()
-    {
-        if(singleton == null)
-        {
-            singleton = new Controls();
-        }
-        return singleton;
-    }
-    
-    /**
-     * Returns a boolean on whether a direction key is pressed.
-     * @return True if a direction key is pressed, and false if not.
-     */
-    public boolean isDirectionPressed(){return directionPressed;}
+    //array of key states made as integers for more possible states. 
+	private int[] keys = new int[256];
+	
+	//one for each ascii character.
+	private boolean[] key_state_up = new boolean[256];  //true if pressed
+	private boolean[] key_state_down = new boolean[256]; //true if not pressed
+	
+	//variable that indicates when any key(s) are being pressed.
+	private boolean keyPressed = false;
+	
+	//variable that indicates that some key was released this frame.
+	private boolean keyReleased = false; //cleared every frame.
+	
+	//a string used as a buffer by widgets or other text input controls
+	private String keyCache = "";
+	
+	//the only instantiated object
+	private static Controls instance = new Controls();
+	
+	/**
+	 * Empty Constructor: nothing really needed here.
+	 */
+	protected Controls() {
+	}
 
-    /**
-     * Overrides whether a direction was pressed or not.
-     * @param set True to force a direction pressed, false to force it released.
-     */
-    public void setDirectionPressed(boolean set){directionPressed = set;}
-    
-    /**
-     * Get the current direction pressed.
-     * @return Direction that was pressed, with 0 being north, 1 being northeast, and so on.
-     */
-    public int getDirection(){return direction;}
+	/**
+	 * Singleton accessor the only means of getting the instantiated object.
+	 * @return One and only InputManager object.
+	 */
+	public static Controls getInstance() {
+		return instance;
+	}
+	
+	/**
+	 * This function is specified in the KeyListener interface. It sets the 
+	 * state elements for whatever key was pressed.
+	 * 
+	 * @param e The KeyEvent fired by the awt Toolkit
+	 */
+	public void keyPressed(KeyEvent e) {
+		//System.out.println("InputManager: A key has been pressed code=" + e.getKeyCode());
+		if( e.getKeyCode() >= 0 && e.getKeyCode() < 256 ) {
+			keys[e.getKeyCode()] = (int) System.currentTimeMillis();
+			key_state_down[e.getKeyCode()] = true;
+			key_state_up[e.getKeyCode()] = false;
+			keyPressed = true;
+			keyReleased = false;
+		}
+	}
 
-    /**
-     * Sets the direction pressed to something else.
-     * @param newdirection The new direction.
-     */
-    public void setDirection(int newdirection){direction = newdirection;}
-    
-    /**
-     * Returns whether Ctrl was pressed, signifying to stand still in-game.
-     * @return True if Ctrl is pressed, and false if it is not pressed.
-     */
-    public boolean isFacePressed(){return facePressed;}
+	/**
+	 * This function is specified in the KeyListener interface. It sets the 
+	 * state elements for whatever key was released.
+	 * 
+	 * @param e The KeyEvent fired by the awt Toolkit.
+	 */
+	public void keyReleased(KeyEvent e) {
+		//System.out.println("InputManager: A key has been released code=" + e.getKeyCode());
+		if( e.getKeyCode() >= 0 && e.getKeyCode() < 256 ) {
+			keys[e.getKeyCode()] = 0;
+			key_state_up[e.getKeyCode()] = true;
+			key_state_down[e.getKeyCode()] = false;
+			keyPressed = false;
+			keyReleased = true;
+		}
+	}
 
-    /**
-     * Override whether Ctrl was pressed or not.
-     * @param set True if Ctrl should read as pressed, false if it should read as released.
-     */
-    public void setFacePressed(boolean set){facePressed = set;}
-    
-    /**
-     * Check whether an attack was pressed or not.
-     * @return True if an attack was pressed, false if one was not.
-     */
-    public boolean isAttackPressed()
-    {
-        boolean returnValue = false;
-        for(boolean slot : attackPressed)
-        {
-            returnValue |= slot;
-        }
-        return returnValue;
-    }
+	/**
+	 * This function is called if certain keys are pressed namely those used
+	 * for text input.
+	 * 
+	 * @param e The KeyEvent fired by the awt Toolkit.
+	 */
+	public void keyTyped(KeyEvent e) {	
+		keyCache += e.getKeyChar();
+		
+	}
+	
+	/**
+	 * Returns true if the key (0-256) is being pressed use the KeyEvent.VK_
+	 * key variables to check specific keys.
+	 * 
+	 * @param key The ascii value of the keyboard key being checked
+	 * @return true is that key is currently being pressed.
+	 */
+	public boolean isKeyDown( int key ) {
+		return key_state_down[key];
+	}
+	
+	/**
+	 * Returns true if the key (0-256) is being pressed use the KeyEvent.VK_
+	 * key variables to check specific keys.
+	 * 
+	 * @param key The ascii value of the keyboard key being checked
+	 * @return true is that key is currently being pressed.
+	 */
+	public boolean isKeyUp( int key ) {
+		return key_state_up[key];
+	}
 
-    /**
-     * Return which attack was pressed.
-     * @return The attack pressed. 0 if none were pressed, or attack slot + 1 otherwise.
-     */
-    public int attackPressed()
-    {
-        for(int attack = 0; attack < attackPressed.length; attack++)
-        {
-            if(attackPressed[attack]){return attack + 1;}
-        }
-        return 0;
-    }
-
-    /**
-     * Disable an attack slot from being pressed.
-     * @param slot The attack slot to disable.
-     */
-    public void clearAttackPressed(int slot)
-    {
-        attackPressed[slot] = false;
-    }
-    
-    /**
-     * Resets the direction keys. Call after reading direction to prevent sliding.
-     */
-    public void clearDirection()
-    {
-        direction = -1;
-        directionPressed = false;
-    }
-    
-    @Override
-    public void keyPressed(KeyEvent e)
-    {
-        if(e.getKeyCode() >= KeyEvent.VK_NUMPAD1 && e.getKeyCode() <= KeyEvent.VK_NUMPAD9)
-        {
-            directionPressed = true;
-            int index = e.getKeyCode() - KeyEvent.VK_NUMPAD1;
-            direction = CONVERSION[index];
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_CONTROL)
-        {
-            facePressed = true;
-        }
-        else if(e.getKeyCode() >= KeyEvent.VK_1 && e.getKeyCode() < (KeyEvent.VK_1 + NUM_ATTACKS))
-        {
-            int index = e.getKeyCode() - KeyEvent.VK_1;
-            attackPressed[index] = true;
-        }
-        
-    }
-    
-    @Override
-    public void keyReleased(KeyEvent e)
-    {
-        if(e.getKeyCode() >= KeyEvent.VK_NUMPAD1 && e.getKeyCode() <= KeyEvent.VK_NUMPAD9)
-        {
-            directionPressed = false;
-            direction = -1;
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_CONTROL)
-        {
-            facePressed = false;
-        }
-        else if(e.getKeyCode() >= KeyEvent.VK_1 && e.getKeyCode() < (KeyEvent.VK_1 + NUM_ATTACKS))
-        {
-            int index = e.getKeyCode() - KeyEvent.VK_1;
-            attackPressed[index] = false;
-        }
-    }
-    
-    @Override
-    public void keyTyped(KeyEvent e)
-    {
-        //Nothing I guess?
-    }
+	/**
+	 * In case you want to know if a user is pressing a key but don't care which
+	 * one.
+	 * 
+	 * @return true if one or more keys are currently being pressed.
+	 */
+	public boolean isAnyKeyDown() {
+		return keyPressed;
+	}
+	
+	/**
+	 * In case you want to know if a user released a key but don't care which
+	 * one.
+	 * 
+	 * @return true if one or more keys have been released this frame. 
+	 */
+	public boolean isAnyKeyUp() {
+		return keyReleased;
+	}
+	
+	/**
+	 * Only resets the key state up because you don't want keys to be showing
+	 * as up forever which is what will happen unless the array is cleared.
+	 */
+	public void update() {
+		//clear out the key up states
+		key_state_up = new boolean[256];
+		keyReleased = false;
+		if( keyCache.length() > 1024 ) {
+			keyCache = "";
+		}
+	}
 }

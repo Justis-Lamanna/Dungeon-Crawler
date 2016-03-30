@@ -378,6 +378,11 @@ public class Entity
     {
         knownMoves.add(newMove);
     }
+    
+    public boolean isPlayer()
+    {
+        return isPlayer;
+    }
 
     @Override
     public String toString()

@@ -101,6 +101,10 @@ public class RangeMove implements Move, Comparable
                 {
                     dungeon.clearEnemy(defender);
                     MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", defender.getName()));
+                    if(defender.isPlayer())
+                    {
+                        System.exit(0);
+                    }
                 }
             }
         }
