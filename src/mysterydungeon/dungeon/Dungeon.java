@@ -5,12 +5,14 @@
  */
 package mysterydungeon.dungeon;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.Species;
@@ -39,12 +41,13 @@ public class Dungeon
     private int[][] basemap;
     private Node[][] nodes;
     private final ArrayList<RoomNode> rooms = new ArrayList<>();
-    private boolean[][] mask;
 
     private Entity player;
     private final Species[] possibleSpecies;
     private final ArrayList<Entity> enemies = new ArrayList<>();
-    private final DungeonComp comp;
+    //private final DungeonComp comp;
+    private BufferedImage mask = null;
+    private BufferedImage shadow = null;
 
     /**
      * The random number generator, used in all instances of randomness in-game.
@@ -59,9 +62,10 @@ public class Dungeon
      */
     public Dungeon(DungeonComp comp, String basemapFilename, Species[] speciesList)
     {
-        this.comp = comp;
         this.basemapFilename = basemapFilename;
         possibleSpecies = speciesList;
+        try{shadow = ImageIO.read(new File("Sprites/shadow.png"));}
+        catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
     }
     
     /**
@@ -74,6 +78,7 @@ public class Dungeon
         player = new Entity(this, Species.PLAYER, null, true);
         enemies.clear();
         spawnEnemies(1);
+        initializeMask();
     }
 
     /**
@@ -121,7 +126,6 @@ public class Dungeon
     private void findNodes()
     {
         nodes = new Node[basemap.length][basemap[0].length];
-        mask = new boolean[basemap.length][basemap[0].length];
         for(int row = 0; row < basemap.length; row++)
         {
             for(int col = 0; col < basemap[0].length; col++)
@@ -437,30 +441,47 @@ public class Dungeon
     }
 
     /**
-     * Checks if a certain tile has been seen by the player or not.
-     * @param row The row of the tile to check.
-     * @param col The column of the tile to check.
-     * @return True if the tile has been seen, false if it hasn't
-     */
-    public boolean isDiscovered(int row, int col)
-    {
-        return mask[row][col];
-    }
-
-    /**
      * Sets a certain tile as having been seen by the player.
+     * More specifically, this calls appendMask() in the DungeonComp
+     * class, after calculating the coordinates of the circle.
      * @param x The row of the tile to set as discovered.
      * @param y The column of the tile to set as discovered.
      */
     public void setDiscovered(int x, int y)
     {
-        int offset = 50 - DungeonComp.TILE_SIZE / 2;
-        int circleX = x * DungeonComp.TILE_SIZE - offset;
-        int circleY = y * DungeonComp.TILE_SIZE - offset;
-        comp.appendMask(circleX, circleY);
+        int circleX = x * DungeonComp.TILE_SIZE - 38;
+        int circleY = y * DungeonComp.TILE_SIZE - 38;
+        for(int xx = 0; xx < shadow.getWidth(); xx++)
+        {
+            for(int yy = 0; yy < shadow.getHeight(); yy++)
+            {
+                try
+                {
+                    int shadowRGB = shadow.getRGB(xx, yy);
+                    int maskRGB = mask.getRGB(circleX+xx, circleY+yy);
+                    mask.setRGB(circleX+xx, circleY+yy, shadowRGB & maskRGB);
+                }
+                catch(ArrayIndexOutOfBoundsException ex)
+                {
+                    //Nothing
+                }
+            }
+        }
     }
     
-    public boolean[][] getDiscovered()
+    private void initializeMask()
+    {
+        mask = new BufferedImage(tilemap[0].length * DungeonComp.TILE_SIZE, tilemap.length * DungeonComp.TILE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
+        for(int xx = 0; xx < mask.getWidth(); xx++)
+        {
+            for(int yy = 0; yy < mask.getHeight(); yy++)
+            {
+                mask.setRGB(xx, yy, 0xFF000000);
+            }
+        }
+    }
+    
+    public BufferedImage getMask()
     {
         return mask;
     }

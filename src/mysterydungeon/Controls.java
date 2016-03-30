@@ -11,7 +11,13 @@ import java.awt.event.KeyListener;
 /**
  * Class that keeps track of keys pressed and released. This class is used as a medium
  * between key-based interrupts and key polling, used in other games.
- * @author Justis
+ * 
+ * This file is free to use and modify as it is for educational use.
+ * brought to you by Game Programming Snippets (http://gpsnippets.blogspot.com/)
+ * 
+ * Revisions:
+ * 1.1 Initial Revision 
+ * 
  */
 public class Controls implements KeyListener
 {

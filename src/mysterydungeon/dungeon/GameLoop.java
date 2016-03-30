@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
-import mysterydungeon.move.BrawlMove;
 import mysterydungeon.move.Move;
 
 /**
@@ -23,11 +22,16 @@ public class GameLoop implements Runnable
     /**
      * The number of frames that should be used to walk one tile.
      */
-    public static final int FRAMES_WALK = 6;
+    public static final int FRAMES_WALK = 12;
+    
+    /**
+     * The number of frames that should be used to run one tile.
+     */
+    public static final int FRAMES_RUN = 6;
     
     private boolean useMove = true;
     private final DungeonComp comp;
-    private Controls controls = Controls.getInstance();
+    private final Controls controls = Controls.getInstance();
     
     /**
      * Creates an instance of this GameLoop.
@@ -48,7 +52,6 @@ public class GameLoop implements Runnable
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
         boolean gameRunning = true;
-        while(comp.getDungeon() == null){}
         onPlayerStep(comp.getDungeon(), comp.getDungeon().getEntities().get(0));
         while(gameRunning)
         {
@@ -83,12 +86,13 @@ public class GameLoop implements Runnable
             ArrayList<Entity> entities = dungeon.getEntities();
             Entity player = entities.get(0);
             boolean doneMoving = true;
+            boolean isRunning = controls.isKeyDown(KeyEvent.VK_NUMPAD5);
             for(Entity entity : entities)
             {
                 if(entity.isMoving())
                 {
                     doneMoving = false;
-                    int[] iValues = interpolate(entity, FRAMES_WALK);
+                    int[] iValues = interpolate(entity, isRunning ? FRAMES_RUN : FRAMES_WALK);
                     entity.addPixel(iValues[0], iValues[1]);
                     if(entity.getDestinationNode().equals(entity.getPixelX(), entity.getPixelY()))
                     {
