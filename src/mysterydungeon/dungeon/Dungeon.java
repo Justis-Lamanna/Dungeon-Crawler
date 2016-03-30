@@ -14,6 +14,7 @@ import java.util.Scanner;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.Species;
+import mysterydungeon.MysteryDungeon;
 
 /**
  * Class that's responsible for handling stuff related to the Dungeon, such as
@@ -69,6 +70,7 @@ public class Dungeon
     public void startDungeon()
     {
         loadDungeon();
+        MysteryDungeon.LOG.setText("");
         player = new Entity(this, Species.PLAYER, null, true);
         enemies.clear();
         spawnEnemies(1);

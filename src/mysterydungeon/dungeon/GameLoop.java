@@ -25,10 +25,9 @@ public class GameLoop implements Runnable
      */
     public static final int FRAMES_WALK = 6;
     
+    private boolean useMove = true;
     private final DungeonComp comp;
-    int moveFrame = 0;
-    Move move = new BrawlMove(10);
-    Controls controls = Controls.getInstance();
+    private Controls controls = Controls.getInstance();
     
     /**
      * Creates an instance of this GameLoop.
@@ -108,6 +107,10 @@ public class GameLoop implements Runnable
                 }
                 onPlayerStep(dungeon, player);
             }
+            if(getAttackPressed() == -1)
+            {
+                useMove = true;
+            }
         }
         
         private int[] interpolate(Entity entity, int delta)
@@ -168,12 +171,13 @@ public class GameLoop implements Runnable
                     //Collision. Make a bump noise in the future, I guess?
                 }
             }
-            else if(attackPressed != -1)
+            else if(attackPressed != -1 && useMove)
             {
                 ArrayList<Move> knownMoves = player.getMoves();
                 if(attackPressed < knownMoves.size())
                 {
                     Move attackUsed = knownMoves.get(attackPressed);
+                    useMove = false;
                     //Now, we go for the kill!
                     Entity defender = attackUsed.getDefender(comp.getDungeon(), player);
                     attackUsed.attack(comp.getDungeon(), player, defender);
@@ -198,10 +202,10 @@ public class GameLoop implements Runnable
         
         private int getAttackPressed()
         {
-            if(controls.isKeyDown(KeyEvent.VK_1)){return 1;}
-            else if(controls.isKeyDown(KeyEvent.VK_2)){return 2;}
-            else if(controls.isKeyDown(KeyEvent.VK_3)){return 3;}
-            else if(controls.isKeyDown(KeyEvent.VK_4)){return 4;}
+            if(controls.isKeyDown(KeyEvent.VK_1)){return 0;}
+            else if(controls.isKeyDown(KeyEvent.VK_2)){return 1;}
+            else if(controls.isKeyDown(KeyEvent.VK_3)){return 2;}
+            else if(controls.isKeyDown(KeyEvent.VK_4)){return 3;}
             else{return -1;}
         }
         

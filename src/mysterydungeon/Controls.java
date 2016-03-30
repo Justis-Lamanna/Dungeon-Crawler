@@ -142,6 +142,8 @@ public class Controls implements KeyListener
 	public void update() {
 		//clear out the key up states
 		key_state_up = new boolean[256];
+                //key_state_down = new boolean[256];
+                keyPressed = false;
 		keyReleased = false;
 		if( keyCache.length() > 1024 ) {
 			keyCache = "";
