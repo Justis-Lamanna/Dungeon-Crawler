@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.GameLoop;
 import mysterydungeon.entity.Entity;
 

@@ -5,10 +5,14 @@
  */
 package mysterydungeon.move;
 
+import mysterydungeon.Controls;
+import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.Animation;
+import mysterydungeon.animation.RangeAnimation;
 
 /**
  * A standard long-range move.
@@ -30,6 +34,7 @@ public class RangeMove implements Move, Comparable
     private final int power;
     private final int range;
     private int currentPower;
+    private int currentRange;
     
     /**
      * Creates a ranged move.
@@ -95,6 +100,7 @@ public class RangeMove implements Move, Comparable
             }
             else
             {
+                doAnimation(dungeon.getComponent(), attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
                 int totalDamage = defender.addHP(-currentPower);
                 MysteryDungeon.LOG.append(String.format("%s attacked %s for %dHP of damage!\n", attacker.getName(), defender.getName(), totalDamage));
                 if(defender.getCurrentHP() == 0)
@@ -103,7 +109,12 @@ public class RangeMove implements Move, Comparable
                     MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", defender.getName()));
                     if(defender.isPlayer())
                     {
-                        System.exit(0);
+                        MysteryDungeon.LOG.append("Press any key...");
+                        while(!Controls.getInstance().isAnyKeyDown())
+                        {
+                            
+                        }
+                        dungeon.startDungeon();
                     }
                 }
             }
@@ -130,6 +141,7 @@ public class RangeMove implements Move, Comparable
             {
                 if(entity.getDestinationNode().equals(start))
                 {
+                    currentRange = ds;
                     return entity;
                 }
             }
@@ -172,5 +184,18 @@ public class RangeMove implements Move, Comparable
                 return 0;
             }
         }
+    }
+    
+    private void doAnimation(DungeonComp component, int startX, int startY, int direction, int range)
+    {
+        Animation anim = new RangeAnimation(startX, startY, direction, range);
+        component.addAnimation(anim);
+        int windowX = startX - (range * 24);
+        int windowY = startY - (range * 24);
+        do
+        {
+            component.paintImmediately(windowX, windowY, range*48, range*48);
+        } while (!anim.animate());
+        component.removeAnimation(anim);
     }
 }

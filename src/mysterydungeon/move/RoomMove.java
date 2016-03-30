@@ -6,6 +6,7 @@
 package mysterydungeon.move;
 
 import java.util.ArrayList;
+import mysterydungeon.Controls;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.entity.Entity;
@@ -100,7 +101,12 @@ public class RoomMove implements Move, Comparable
                         MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", entity.getName()));
                         if(entity.isPlayer())
                         {
-                            System.exit(0);
+                            MysteryDungeon.LOG.append("Press any key...");
+                            while(Controls.getInstance().isAnyKeyDown())
+                            {
+
+                            }
+                            dungeon.startDungeon();
                         }
                     }
                 }

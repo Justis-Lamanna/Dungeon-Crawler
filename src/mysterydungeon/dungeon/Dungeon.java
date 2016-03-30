@@ -45,9 +45,10 @@ public class Dungeon
     private Entity player;
     private final Species[] possibleSpecies;
     private final ArrayList<Entity> enemies = new ArrayList<>();
-    //private final DungeonComp comp;
     private BufferedImage mask = null;
     private BufferedImage shadow = null;
+    
+    private DungeonComp comp;
 
     /**
      * The random number generator, used in all instances of randomness in-game.
@@ -56,16 +57,25 @@ public class Dungeon
 
     /**
      * Creates an instance of a Dungeon.
-     * @param comp The DungeonComp that this dungeon is linked to.
      * @param basemapFilename The filename of the base map this dungeon should display.
      * @param speciesList A list of possible species that may appear in the dungeon.
      */
-    public Dungeon(DungeonComp comp, String basemapFilename, Species[] speciesList)
+    public Dungeon(String basemapFilename, Species[] speciesList)
     {
         this.basemapFilename = basemapFilename;
         possibleSpecies = speciesList;
         try{shadow = ImageIO.read(new File("Sprites/shadow.png"));}
         catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
+    }
+    
+    public void attachComponent(DungeonComp c)
+    {
+        comp = c;
+    }
+    
+    public DungeonComp getComponent()
+    {
+        return comp;
     }
     
     /**

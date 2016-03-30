@@ -6,6 +6,7 @@
 package mysterydungeon.move;
 
 import java.util.ArrayList;
+import mysterydungeon.Controls;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.MysteryDungeon;
@@ -97,7 +98,12 @@ public class BrawlMove implements Move, Comparable
                 MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", defender.getName()));
                 if(defender.isPlayer())
                 {
-                    System.exit(0);
+                    MysteryDungeon.LOG.append("Press any key...");
+                    while(Controls.getInstance().isAnyKeyDown())
+                    {
+
+                    }
+                    dungeon.startDungeon();
                 }
             }
         }

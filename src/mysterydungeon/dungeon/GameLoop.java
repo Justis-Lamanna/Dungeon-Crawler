@@ -127,7 +127,6 @@ public class GameLoop implements Runnable
         private boolean handleControls(Dungeon dungeon, Entity player)
         {
             Node playerNode = player.getCurrentNode();
-            Controls controls = Controls.getInstance();
             ArrayList<Entity> entities = dungeon.getEntities();
             int directionPressed = getDirectionPressed();
             int attackPressed = getAttackPressed();

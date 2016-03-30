@@ -5,7 +5,6 @@
  */
 package mysterydungeon.animation;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

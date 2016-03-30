@@ -53,6 +53,8 @@ public class DungeonComp extends JComponent
      * A constant used to specify the tile map should be drawn.
      */
     public static final boolean TILEMAP = true;
+    
+    private static DungeonComp singleton = null;
 
     private Dungeon dungeon;
     private BufferedImage[] tiles;
@@ -62,6 +64,7 @@ public class DungeonComp extends JComponent
     private boolean drawRooms = false;
     private boolean drawEntity = true;
     private boolean drawMask = true;
+    
     private ArrayList<Animation> animations = new ArrayList<>();
 
     private static BufferedImage attackImage;
@@ -75,7 +78,8 @@ public class DungeonComp extends JComponent
     public DungeonComp(String tileFilename, String tilemapFilename)
     {
         super();
-        dungeon = new Dungeon(this, tilemapFilename, Dungeon.TEST_LIST);
+        dungeon = new Dungeon(tilemapFilename, Dungeon.TEST_LIST);
+        dungeon.attachComponent(this);
         dungeon.startDungeon();
         generateTiles(tileFilename);
         try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
