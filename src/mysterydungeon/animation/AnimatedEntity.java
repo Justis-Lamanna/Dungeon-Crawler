@@ -9,7 +9,11 @@ import java.awt.image.BufferedImage;
 import mysterydungeon.entity.Entity;
 
 /**
- *
+ * A wrapper class, which wraps an Entity inside an Animation.
+ * This class adds an animation to an entity, to make it more visually interesting.
+ * Currently, this causes the entity to bounce up and down every so often.
+ * While this could conceivably handle the sliding between tiles, it doesn't because
+ * reasons.
  * @author jlamanna
  */
 public class AnimatedEntity implements Animation
@@ -17,7 +21,7 @@ public class AnimatedEntity implements Animation
     private final Entity entity;
     private int counter;
     
-    private static final int FRAMES_BETWEEN_STEP = 16;
+    private static final int FRAMES_BETWEEN_STEP = 24;
     
     public AnimatedEntity(Entity entity)
     {
