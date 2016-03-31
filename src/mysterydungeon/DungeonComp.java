@@ -123,6 +123,7 @@ public class DungeonComp extends JComponent
             g.drawImage(anim.getImage(), anim.getX(), anim.getY(), null);
         }
         paintMoves(g);
+        g.drawImage(Animation.scale(attackImage, 2.5, 2.5), 0, 0, null);
     }
 
     private void paintMap(Graphics g, int backgroundTile)

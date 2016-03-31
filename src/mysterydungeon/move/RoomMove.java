@@ -80,6 +80,7 @@ public class RoomMove implements Move, Comparable
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
+        doAnimation(attacker.getPixelX(), attacker.getPixelY());
         if(affected.isEmpty())
         {
             MysteryDungeon.LOG.append(String.format("%s boomed and missed!\n", attacker.getName()));
@@ -93,7 +94,7 @@ public class RoomMove implements Move, Comparable
             else
             {
                 MysteryDungeon.LOG.append(String.format("%s let off a sonic boom!\n", attacker.getName()));
-                doAnimation(attacker.getPixelX(), attacker.getPixelY());
+                //
                 for(Entity entity : affected)
                 {
                     int newDamage = power / affected.size();

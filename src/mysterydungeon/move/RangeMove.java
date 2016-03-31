@@ -6,7 +6,6 @@
 package mysterydungeon.move;
 
 import mysterydungeon.Controls;
-import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.Entity;
@@ -88,6 +87,7 @@ public class RangeMove implements Move, Comparable
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
+        doAnimation(attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
         if(defender == null)
         {
             MysteryDungeon.LOG.append(String.format("%s fired and missed!\n", attacker.getName()));
@@ -100,7 +100,7 @@ public class RangeMove implements Move, Comparable
             }
             else
             {
-                doAnimation(attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
+                //
                 int totalDamage = defender.addHP(-currentPower);
                 MysteryDungeon.LOG.append(String.format("%s attacked %s for %dHP of damage!\n", attacker.getName(), defender.getName(), totalDamage));
                 if(defender.getCurrentHP() == 0)
@@ -189,6 +189,6 @@ public class RangeMove implements Move, Comparable
     private void doAnimation(int startX, int startY, int direction, int range)
     {
         Animation anim = new RangeAnimation(startX, startY, direction, range);
-        Move.animate(anim, 5);
+        Move.animate(anim, 1);
     }
 }

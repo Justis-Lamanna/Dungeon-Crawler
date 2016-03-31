@@ -81,8 +81,8 @@ public interface Move
         component.addAnimation(anim);
         do
         {
-            component.paintImmediately(0, 0, component.getWidth(), component.getHeight());
-            Move.delay(delay);
+            component.repaint();
+            delay(delay);
         } while (!anim.animate());
         component.removeAnimation(anim);
     }

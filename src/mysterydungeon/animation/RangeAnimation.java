@@ -46,14 +46,14 @@ public class RangeAnimation implements Animation
     @Override
     public boolean animate()
     {
-        if(counter == 24 * range)
+        if(counter == 8 * (range + 1))
         {
             return true;
         }
         else
         {
-            xx += dx[direction];
-            yy += dy[direction];
+            xx += dx[direction] * 3;
+            yy += dy[direction] * 3;
             counter++;
             return false;
         }
