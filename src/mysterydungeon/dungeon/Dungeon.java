@@ -17,6 +17,7 @@ import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.Species;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.AnimatedEntity;
 
 /**
  * Class that's responsible for handling stuff related to the Dungeon, such as
@@ -42,13 +43,12 @@ public class Dungeon
     private Node[][] nodes;
     private final ArrayList<RoomNode> rooms = new ArrayList<>();
 
-    private Entity player;
+    private AnimatedEntity player;
     private final Species[] possibleSpecies;
-    private final ArrayList<Entity> enemies = new ArrayList<>();
+    private final ArrayList<AnimatedEntity> enemies = new ArrayList<>();
+    
     private BufferedImage mask = null;
     private BufferedImage shadow = null;
-    
-    private DungeonComp comp;
 
     /**
      * The random number generator, used in all instances of randomness in-game.
@@ -75,7 +75,7 @@ public class Dungeon
     {
         loadDungeon();
         MysteryDungeon.LOG.setText("");
-        player = new Entity(this, Species.PLAYER, null, true);
+        player = new AnimatedEntity(new Entity(this, Species.PLAYER, null, true));
         enemies.clear();
         spawnEnemies(1);
         initializeMask();
@@ -293,8 +293,19 @@ public class Dungeon
     public ArrayList<Entity> getEntities()
     {
         ArrayList<Entity> entities = new ArrayList<>();
+        entities.add(player.getEntity());
+        for(AnimatedEntity enemy : enemies)
+        {
+                entities.add(enemy.getEntity());
+        }
+        return entities;
+    }
+    
+    public ArrayList<AnimatedEntity> getAnimatedEntities()
+    {
+        ArrayList<AnimatedEntity> entities = new ArrayList<>();
         entities.add(player);
-        for(Entity enemy : enemies)
+        for(AnimatedEntity enemy : enemies)
         {
                 entities.add(enemy);
         }
@@ -315,7 +326,7 @@ public class Dungeon
             {
                 enemy.randomizeLocation();
             }
-            enemies.add(enemy);
+            enemies.add(new AnimatedEntity(enemy));
         }
     }
     
@@ -325,7 +336,7 @@ public class Dungeon
      */
     public void spawnEnemy(Entity entity)
     {
-        enemies.add(entity);
+        enemies.add(new AnimatedEntity(entity));
     }
 
     /**
@@ -353,9 +364,9 @@ public class Dungeon
         {
             return false;
         }
-        for(Entity enemy : enemies)
+        for(AnimatedEntity enemy : enemies)
         {
-            if(newEnemyX == enemy.getX() && newEnemyY == enemy.getY())
+            if(newEnemyX == enemy.getEntity().getX() && newEnemyY == enemy.getEntity().getY())
             {
                 return false;
             }
@@ -368,9 +379,9 @@ public class Dungeon
      */
     public void updateAll()
     {
-        for(Entity enemy : enemies)
+        for(AnimatedEntity enemy : enemies)
         {
-            enemy.doState();
+            enemy.getEntity().doState();
         }
     }
 

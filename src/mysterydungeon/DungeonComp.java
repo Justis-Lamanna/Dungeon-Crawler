@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import mysterydungeon.animation.Animation;
+import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.entity.Entity;
@@ -275,12 +276,13 @@ public class DungeonComp extends JComponent
 
     private void paintEntities(Graphics g)
     {
-        ArrayList<Entity> allEntities = dungeon.getEntities();
-        for(Entity entity : allEntities)
+        ArrayList<AnimatedEntity> allEntities = dungeon.getAnimatedEntities();
+        for(AnimatedEntity anim : allEntities)
         {
-            BufferedImage entityImage = entity.getSpecies().getImage();
-            int drawX = calculateDrawPointX(entity.getPixelX(), entityImage.getWidth());
-            int drawY = calculateDrawPointY(entity.getPixelY(), entityImage.getHeight());
+            Entity entity = anim.getEntity();
+            BufferedImage entityImage = anim.getImage();
+            int drawX = calculateDrawPointX(anim.getX(), entityImage.getWidth());
+            int drawY = calculateDrawPointY(anim.getY(), entityImage.getHeight());
             g.drawImage(entityImage, drawX, drawY, null);
             if(entity.getState() != null && entity.getState().getClass().equals(FollowState.class))
             {
@@ -296,6 +298,7 @@ public class DungeonComp extends JComponent
                 BufferedImage arrow = arrowImage.getSubimage(0, facing*32, 32, 32);
                 g.drawImage(arrow, drawX, drawY, null);
             }
+            anim.animate();
         }
     }
     
