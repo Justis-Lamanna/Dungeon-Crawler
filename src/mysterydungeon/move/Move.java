@@ -5,6 +5,8 @@
  */
 package mysterydungeon.move;
 
+import mysterydungeon.DungeonComp;
+import mysterydungeon.animation.Animation;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.Entity;
 
@@ -63,4 +65,25 @@ public interface Move
      * @return An integer, representing the amount of HP this attack does.
      */
     int getPower();
+    
+    public static void delay(long millis)
+    {
+        long waitUntil = System.currentTimeMillis() + millis;
+        while(System.currentTimeMillis() < waitUntil)
+        {
+            //Waiting...
+        }
+    }
+    
+    public static void animate(Animation anim, long delay)
+    {
+        DungeonComp component = DungeonComp.getInstance();
+        component.addAnimation(anim);
+        do
+        {
+            component.paintImmediately(0, 0, component.getWidth(), component.getHeight());
+            Move.delay(delay);
+        } while (!anim.animate());
+        component.removeAnimation(anim);
+    }
 }

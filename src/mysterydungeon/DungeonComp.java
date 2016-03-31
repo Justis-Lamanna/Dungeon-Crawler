@@ -70,22 +70,42 @@ public class DungeonComp extends JComponent
     private static BufferedImage attackImage;
     private static BufferedImage arrowImage;
 
-    /**
-     * Initializes a DungeonComp
-     * @param tileFilename The filename of the tiles image.
-     * @param tilemapFilename The filename of the tile map.
-     */
-    public DungeonComp(String tileFilename, String tilemapFilename)
+    private DungeonComp(String tileFilename, String tilemapFilename)
     {
         super();
         dungeon = new Dungeon(tilemapFilename, Dungeon.TEST_LIST);
-        dungeon.attachComponent(this);
         dungeon.startDungeon();
         generateTiles(tileFilename);
         try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
         catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
         try{arrowImage = ImageIO.read(new File("Sprites/arrows.png"));}
         catch(IOException ex){arrowImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
+    }
+    
+    private DungeonComp(String tiles, Dungeon dungeon)
+    {
+        super();
+        this.dungeon = dungeon;
+        dungeon.startDungeon();
+        generateTiles(tiles);
+        try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
+        catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
+        try{arrowImage = ImageIO.read(new File("Sprites/arrows.png"));}
+        catch(IOException ex){arrowImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
+    }
+    
+    public static DungeonComp getInstance(String tiles, Dungeon dungeon)
+    {
+        if(singleton == null)
+        {
+            singleton = new DungeonComp(tiles, dungeon);
+        }
+        return singleton;
+    }
+    
+    public static DungeonComp getInstance()
+    {
+        return singleton;
     }
 
     @Override

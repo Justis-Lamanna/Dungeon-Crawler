@@ -68,16 +68,6 @@ public class Dungeon
         catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
     }
     
-    public void attachComponent(DungeonComp c)
-    {
-        comp = c;
-    }
-    
-    public DungeonComp getComponent()
-    {
-        return comp;
-    }
-    
     /**
      * Calculates the relevant data for the dungeon, loads the player and enemies, and starts the game loop.
      */

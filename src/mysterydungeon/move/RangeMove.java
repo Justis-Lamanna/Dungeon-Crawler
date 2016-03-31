@@ -100,7 +100,7 @@ public class RangeMove implements Move, Comparable
             }
             else
             {
-                doAnimation(dungeon.getComponent(), attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
+                doAnimation(attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
                 int totalDamage = defender.addHP(-currentPower);
                 MysteryDungeon.LOG.append(String.format("%s attacked %s for %dHP of damage!\n", attacker.getName(), defender.getName(), totalDamage));
                 if(defender.getCurrentHP() == 0)
@@ -186,16 +186,9 @@ public class RangeMove implements Move, Comparable
         }
     }
     
-    private void doAnimation(DungeonComp component, int startX, int startY, int direction, int range)
+    private void doAnimation(int startX, int startY, int direction, int range)
     {
         Animation anim = new RangeAnimation(startX, startY, direction, range);
-        component.addAnimation(anim);
-        int windowX = startX - (range * 24);
-        int windowY = startY - (range * 24);
-        do
-        {
-            component.paintImmediately(windowX, windowY, range*48, range*48);
-        } while (!anim.animate());
-        component.removeAnimation(anim);
+        Move.animate(anim, 5);
     }
 }

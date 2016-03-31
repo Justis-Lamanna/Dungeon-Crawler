@@ -7,10 +7,13 @@ package mysterydungeon.move;
 
 import java.util.ArrayList;
 import mysterydungeon.Controls;
+import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.Animation;
+import mysterydungeon.animation.RoomAnimation;
 
 /**
  * A standard room-range attack.
@@ -90,6 +93,7 @@ public class RoomMove implements Move, Comparable
             else
             {
                 MysteryDungeon.LOG.append(String.format("%s let off a sonic boom!\n", attacker.getName()));
+                doAnimation(attacker.getPixelX(), attacker.getPixelY());
                 for(Entity entity : affected)
                 {
                     int newDamage = power / affected.size();
@@ -176,5 +180,11 @@ public class RoomMove implements Move, Comparable
                 return 0;
             }
         }
+    }
+    
+    private void doAnimation(int startX, int startY)
+    {
+        Animation anim = new RoomAnimation(startX - 16, startY - 16);
+        Move.animate(anim, 5);
     }
 }
