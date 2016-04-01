@@ -11,6 +11,7 @@ import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
+import mysterydungeon.item.Item;
 import mysterydungeon.move.Move;
 
 /**
@@ -34,6 +35,7 @@ public class Entity
     private int maxHP;
 
     private ArrayList<Move> knownMoves;
+    private ArrayList<Item> heldItems;
 
     /**
      * The direction this entity is facing.
@@ -57,6 +59,7 @@ public class Entity
         maxHP = species.getHP();
         currentHP = maxHP;
         knownMoves = (ArrayList<Move>)species.getMoves().clone(); //Clone so we don't modify the actual species data.
+        heldItems = new ArrayList<>();
         randomizeLocation();
         currentState = startState;
     }
@@ -382,6 +385,22 @@ public class Entity
     public boolean isPlayer()
     {
         return isPlayer;
+    }
+    
+    public void addItem(Item newItem)
+    {
+        heldItems.add(newItem);
+    }
+    
+    public void useItem(int itemSlot)
+    {
+        boolean remove = heldItems.get(itemSlot).useItem(this);
+        if(remove){heldItems.remove(itemSlot);}
+    }
+    
+    public ArrayList<Item> getItems()
+    {
+        return heldItems;
     }
 
     @Override
