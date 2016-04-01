@@ -22,14 +22,20 @@ import mysterydungeon.dungeon.Node;
 public class BrawlMove implements Move, Comparable
 {   
     private final int basePower;
+    private final int stamina;
+    private final String name;
     
     /**
      * Creates an instance of a brawl-type move.
+     * @param name The name of this move.
      * @param basepower The standard amount of damage this attack will do.
+     * @param stamina The amount of stamina this attack needs.
      */
-    public BrawlMove(int basepower)
+    public BrawlMove(String name, int basepower, int stamina)
     {
         this.basePower = basepower;
+        this.stamina = stamina;
+        this.name = name;
     }
     
     /**
@@ -49,7 +55,7 @@ public class BrawlMove implements Move, Comparable
     @Override
     public String getName()
     {
-        return "Punch";
+        return name;
     }
     
     /**
@@ -72,6 +78,12 @@ public class BrawlMove implements Move, Comparable
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
         int damage = basePower;
+        if(attacker.getCurrentStamina() < stamina)
+        {
+            MysteryDungeon.LOG.append(String.format("%s doesn't have enough stamina!\n", attacker.getName()));
+            return;
+        }
+        attacker.addStamina(-getStamina());
         if(defender == null)
         {
             MysteryDungeon.LOG.append(String.format("%s attacked and missed!\n", attacker.getName()));
@@ -133,6 +145,12 @@ public class BrawlMove implements Move, Comparable
             }
         }
         return null;
+    }
+    
+    @Override
+    public int getStamina()
+    {
+        return stamina;
     }
     
     /**

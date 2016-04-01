@@ -33,6 +33,8 @@ public class Entity
 
     private int currentHP;
     private int maxHP;
+    private int currentStamina;
+    private int maxStamina;
 
     private ArrayList<Move> knownMoves;
     private ArrayList<Item> heldItems;
@@ -56,8 +58,10 @@ public class Entity
         this.species = species;
         this.name = species.getName();
         this.isPlayer = player;
-        maxHP = species.getHP();
-        currentHP = maxHP;
+        this.maxHP = species.getHP();
+        this.currentHP = maxHP;
+        this.maxStamina = 40;
+        this.currentStamina = 40; //Flat value of 40.
         knownMoves = (ArrayList<Move>)species.getMoves().clone(); //Clone so we don't modify the actual species data.
         heldItems = new ArrayList<>();
         randomizeLocation();
@@ -345,6 +349,77 @@ public class Entity
             MysteryDungeon.HPBAR.setString(String.format("%d/%d", currentHP, maxHP));
         }
     }
+    
+    /**
+     * Gets the current stamina value of this entity.
+     * @return This entity's current stamina.
+     */
+    public int getCurrentStamina()
+    {
+        return this.currentStamina;
+    }
+    
+    /**
+     * Gets the maximum stamina value of this entity.
+     * @return This entity's current stamina.
+     */
+    public int getMaximumStamina()
+    {
+        return this.maxStamina;
+    }
+    
+    /**
+     * Sets this entity's current stamina to a new value.
+     * If this value is set to a negative value, it's truncated to 0.
+     * If this value is set to something over the maximum stamina, it's
+     * truncated to the maximum value.
+     * @param value The new current stamina.
+     */
+    public void setCurrentStamina(int value)
+    {
+        if(value < 0){value = 0;}
+        else if(value > maxStamina){value = maxStamina;}
+        this.currentStamina = value;
+        updateStaminaBar();
+    }
+    
+    /**
+     * Sets this entity's maximum stamina to a new value.
+     * @param value The new maximum stamina of this entity.
+     */
+    public void setMaximumStamina(int value)
+    {
+        maxStamina = value;
+        updateStaminaBar();
+    }
+    
+    /**
+     * Add some amount of stamina to this entity's current stamina.
+     * If the new amount causes the stamina to go below zero, the stamina
+     * value is set to zero. If the new amount causes the stamina to go above
+     * the maximum stamina, the current stamina is set to the maximum stamina value.
+     * @param ds The number of stamina to add.
+     * @return The number of stamina actually added.
+     */
+    public int addStamina(int ds)
+    {
+        int oldStamina = currentStamina;
+        currentStamina += ds;
+        if(currentStamina > maxStamina){currentStamina = maxStamina;}
+        else if(currentStamina < 0){currentStamina = 0;}
+        updateStaminaBar();
+        return oldStamina - currentStamina;
+    }
+    
+    private void updateStaminaBar()
+    {
+        if(isPlayer)
+        {
+            MysteryDungeon.STAMINABAR.setValue(currentStamina);
+            MysteryDungeon.STAMINABAR.setMaximum(maxStamina);
+            MysteryDungeon.STAMINABAR.setString(String.format("%d/%d", currentStamina, maxStamina));
+        }
+    }
 
     /**
      * Set the name of this entity.
@@ -419,6 +494,16 @@ public class Entity
     public ArrayList<Item> getItems()
     {
         return heldItems;
+    }
+    
+    /**
+     * Checks if this entity has a certain type of item.
+     * @param item The item to check for.
+     * @return True if this entity has the item, false if not.
+     */
+    public boolean hasItem(Item item)
+    {
+        return heldItems.contains(item);
     }
 
     @Override

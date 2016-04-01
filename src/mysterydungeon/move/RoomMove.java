@@ -26,15 +26,21 @@ import mysterydungeon.animation.RoomAnimation;
 public class RoomMove implements Move, Comparable
 {
     private final int power;
+    private final int stamina;
+    private final String name;
     private final ArrayList<Entity> affected;
     
     /**
      * Creates a room-range move.
+     * @param name The name of this move.
      * @param power The standard damage this attack will do, against one enemy.
+     * @param stamina The amount of stamina this attack will take.
      */
-    public RoomMove(int power)
+    public RoomMove(String name, int power, int stamina)
     {
         this.power = power;
+        this.stamina = stamina;
+        this.name = name;
         affected = new ArrayList<>();
     }
     
@@ -55,7 +61,7 @@ public class RoomMove implements Move, Comparable
     @Override
     public String getName()
     {
-        return "Sonic Boom";
+        return name;
     }
     
     /**
@@ -79,6 +85,12 @@ public class RoomMove implements Move, Comparable
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
+        if(attacker.getCurrentStamina() < stamina)
+        {
+            MysteryDungeon.LOG.append(String.format("%s doesn't have enough stamina!\n", attacker.getName()));
+            return;
+        }
+        attacker.addStamina(-getStamina());
         doAnimation(attacker.getPixelX(), attacker.getPixelY());
         if(affected.isEmpty())
         {
@@ -144,6 +156,12 @@ public class RoomMove implements Move, Comparable
             }
         }
         return null;
+    }
+    
+    @Override
+    public int getStamina()
+    {
+        return stamina;
     }
     
     /**

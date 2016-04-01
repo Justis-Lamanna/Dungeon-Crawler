@@ -53,6 +53,11 @@ public class MysteryDungeon extends JFrame{
      * The HP bar of the HUD. Placed as a constant for ease of access.
      */
     public static final JProgressBar HPBAR = new JProgressBar(0, 100);
+    
+    /**
+     * The stamina bar of the HUD. Places as a constant for ease of access.
+     */
+    public static final JProgressBar STAMINABAR = new JProgressBar(0, 100);
 
     /**
      * The log of the HUD. Placed as a constant for ease of access.
@@ -189,8 +194,14 @@ public class MysteryDungeon extends JFrame{
         HPBAR.setValue(player.getCurrentHP());
         HPBAR.setString(String.format("%d/%d", player.getCurrentHP(), player.getMaximumHP()));
         HPBAR.setStringPainted(true);
-        hud.add(new JLabel("Log:"), setGridBagConstraints(0, 2, 2, 1, 1, 0.1));
-        hud.add(new JScrollPane(LOG), setGridBagConstraints(0, 3, 2, 2, 1, 1));
+        hud.add(new JLabel("Stamina:"), setGridBagConstraints(0, 2, 1, 1, 0.1, 0.1));
+        hud.add(STAMINABAR, setGridBagConstraints(1, 2, 1, 1, 0.9, 0.1));
+        STAMINABAR.setMaximum(player.getMaximumStamina());
+        STAMINABAR.setValue(player.getCurrentStamina());
+        STAMINABAR.setString(String.format("%d/%d", player.getCurrentStamina(), player.getMaximumStamina()));
+        STAMINABAR.setStringPainted(true);
+        hud.add(new JLabel("Log:"), setGridBagConstraints(0, 3, 2, 1, 1, 0.1));
+        hud.add(new JScrollPane(LOG), setGridBagConstraints(0, 4, 2, 2, 1, 1));
         LOG.setForeground(Color.WHITE);
         LOG.setBackground(Color.BLACK);
         return hud;

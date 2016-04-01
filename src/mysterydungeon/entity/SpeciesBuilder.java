@@ -60,7 +60,7 @@ public class SpeciesBuilder
     {
         if(species.getMoves().isEmpty())
         {
-            species.addMove(new BrawlMove(5)); //Wimpy attack if there is no other.
+            species.addMove(new BrawlMove("Weak Punch", 5, 0)); //Wimpy attack if there is no other.
         }
         return species;
     }

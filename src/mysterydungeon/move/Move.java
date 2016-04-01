@@ -67,6 +67,12 @@ public interface Move
     int getPower();
     
     /**
+     * Get the amount of stamina needed to perform this attack.
+     * @return An integer, representing the amount of stamina needed to use this attack.
+     */
+    int getStamina();
+    
+    /**
      * Pause program execution by some amount of time.
      * @param millis The number of milliseconds to wait.
      */

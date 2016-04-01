@@ -30,19 +30,25 @@ public class RangeMove implements Move, Comparable
      */
     public static final double MULTIPLIER = 0.75;
     
+    private final String name;
     private final int power;
     private final int range;
+    private final int stamina;
     private int currentPower;
     private int currentRange;
     
     /**
      * Creates a ranged move.
+     * @param name The name of this move.
      * @param power The standard damage this attack will do, at one tile away.
      * @param range The farthest the attack will go before dying.
+     * @param stamina The amount of stamina this attack will use.
      */
-    public RangeMove(int power, int range)
+    public RangeMove(String name, int power, int range, int stamina)
     {
+        this.name = name;
         this.power = power;
+        this.stamina = stamina;
         this.currentPower = power;
         this.range = range;
     }
@@ -64,7 +70,7 @@ public class RangeMove implements Move, Comparable
     @Override
     public String getName()
     {
-        return "Blast";
+        return name;
     }
     
     /**
@@ -87,6 +93,12 @@ public class RangeMove implements Move, Comparable
     @Override
     public void attack(Dungeon dungeon, Entity attacker, Entity defender)
     {
+        if(attacker.getCurrentStamina() < stamina)
+        {
+            MysteryDungeon.LOG.append(String.format("%s doesn't have enough stamina!\n", attacker.getName()));
+            return;
+        }
+        attacker.addStamina(-getStamina());
         doAnimation(attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
         if(defender == null)
         {
@@ -148,6 +160,12 @@ public class RangeMove implements Move, Comparable
             currentPower = (int)(currentPower * MULTIPLIER); //Reduces by 25% the farther away you go.
         }
         return null;
+    }
+    
+    @Override
+    public int getStamina()
+    {
+        return stamina;
     }
     
     /**

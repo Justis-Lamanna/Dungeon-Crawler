@@ -36,17 +36,17 @@ public class FollowState extends EntityState
             Collections.sort((List)moves);
             for(Move move : moves)
             {
-                if(move.getType() == Move.ROOM && canDoRoomMove(move, e, d))
+                if(move.getType() == Move.ROOM && canDoRoomMove(move, e, d) && e.getCurrentStamina() >= move.getStamina())
                 {
                     move.attack(d, e, player);
                     return;
                 }
-                else if(move.getType() == Move.RANGE && canDoRangeMove(move, e, d))
+                else if(move.getType() == Move.RANGE && canDoRangeMove(move, e, d) && e.getCurrentStamina() >= move.getStamina())
                 {
                     move.attack(d, e, player);
                     return;
                 }
-                else if(move.getType() == Move.BRAWL && canDoBrawlMove(move, e, d))
+                else if(move.getType() == Move.BRAWL && canDoBrawlMove(move, e, d) && e.getCurrentStamina() >= move.getStamina())
                 {
                     move.attack(d, e, player);
                     return;

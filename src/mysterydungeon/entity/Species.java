@@ -38,9 +38,10 @@ public class Species
      */
     public static final Species PLAYER = 
             new SpeciesBuilder("Player", "Sprites/player.png", 40)
-            .addMove(new BrawlMove(15))
-            .addMove(new RangeMove(20, 4))
-            .addMove(new RoomMove(20))
+            .addMove(new BrawlMove("Weak Punch", 2, 0))
+            .addMove(new BrawlMove("Punch", 15, 5))
+            .addMove(new RangeMove("Blast", 20, 4, 10))
+            .addMove(new RoomMove("Sonic Boom", 20, 25))
             .make();
 
     /**
@@ -48,7 +49,6 @@ public class Species
      */
     public static final Species ROBOT1 = 
             new SpeciesBuilder("Robot1", "Sprites/robot1.png", 20)
-            .addMove(new BrawlMove(5))
             .make();
 
     /**
