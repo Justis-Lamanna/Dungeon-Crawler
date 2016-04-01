@@ -66,6 +66,10 @@ public interface Move
      */
     int getPower();
     
+    /**
+     * Pause program execution by some amount of time.
+     * @param millis The number of milliseconds to wait.
+     */
     public static void delay(long millis)
     {
         long waitUntil = System.currentTimeMillis() + millis;
@@ -75,6 +79,14 @@ public interface Move
         }
     }
     
+    /**
+     * Animate a certain animation.
+     * Animations that are played a fix amount of time should use this method
+     * to animate. This method repeatedly calls the animate() method until it
+     * returns true, in which case it terminates.
+     * @param anim The animation to play.
+     * @param delay The amount of time to wait between frames.
+     */
     public static void animate(Animation anim, long delay)
     {
         DungeonComp component = DungeonComp.getInstance();

@@ -7,7 +7,6 @@ package mysterydungeon.move;
 
 import java.util.ArrayList;
 import mysterydungeon.Controls;
-import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.entity.Entity;

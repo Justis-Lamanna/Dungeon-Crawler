@@ -7,8 +7,6 @@ package mysterydungeon.entity;
 
 import mysterydungeon.move.BrawlMove;
 import mysterydungeon.move.Move;
-import mysterydungeon.move.RangeMove;
-import mysterydungeon.move.RoomMove;
 
 /**
  * A builder pattern to assist with development of species.
