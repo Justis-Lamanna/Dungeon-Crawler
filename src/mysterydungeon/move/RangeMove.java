@@ -189,6 +189,6 @@ public class RangeMove implements Move, Comparable
     private void doAnimation(int startX, int startY, int direction, int range)
     {
         Animation anim = new RangeAnimation(startX, startY, direction, range);
-        Move.animate(anim, 1);
+        Move.animate(anim, 5);
     }
 }

@@ -353,7 +353,14 @@ public class Dungeon
      */
     public void clearEnemy(Entity enemy)
     {
-        enemies.remove(enemy);
+        for(int index = 0; index < enemies.size(); index++)
+        {
+            if(enemies.get(index).getEntity().equals(enemy))
+            {
+                enemies.remove(enemies.get(index));
+                return;
+            }
+        }
     }
 
     private boolean isValidPosition(Entity newEnemy)
