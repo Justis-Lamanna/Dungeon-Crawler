@@ -11,7 +11,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * An animation for a ranged attack.
+ * Currently, a red beam is shot in some direction for some amount of tiles.
  * @author jlamanna
  */
 public class RangeAnimation implements Animation
@@ -26,6 +27,13 @@ public class RangeAnimation implements Animation
     private static final int[] dx = {0, 1, 1, 1, 0, -1, -1, -1};
     private static final int[] dy = {-1, -1, 0, 1, 1, 1, 0, -1};
     
+    /**
+     * Create a range animation.
+     * @param startX The X coordinate of the top-left corner of where the animation begins.
+     * @param startY The Y coordinate of the top-left corner of where the animation begins.
+     * @param direction The direction of the firing.
+     * @param range The number of tiles the animation should extend.
+     */
     public RangeAnimation(int startX, int startY, int direction, int range)
     {
         xx = startX;

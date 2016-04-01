@@ -64,7 +64,7 @@ public class MysteryDungeon extends JFrame{
 
     /**
      * Start the game!
-     * @param args
+     * @param args Nothing is really done through args right now.
      */
     public static void main(String[] args)
     {
@@ -73,7 +73,7 @@ public class MysteryDungeon extends JFrame{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         //new Thread(new GameLoop(frame.getComponent())).start();
-        new GameLoop(frame.getComponent()).run();
+        new GameLoop().run();
     }
 
     /**
@@ -194,10 +194,5 @@ public class MysteryDungeon extends JFrame{
         LOG.setForeground(Color.WHITE);
         LOG.setBackground(Color.BLACK);
         return hud;
-    }
-    
-    public DungeonComp getComponent()
-    {
-        return dungeon;
     }
 }

@@ -300,7 +300,11 @@ public class Dungeon
         }
         return entities;
     }
-    
+   
+    /**
+     * Returns a list of all entities in this dungeon, as animated entities.
+     * @return A list of AnimatedEntities, with the player occupying slot 0.
+     */
     public ArrayList<AnimatedEntity> getAnimatedEntities()
     {
         ArrayList<AnimatedEntity> entities = new ArrayList<>();
@@ -499,6 +503,11 @@ public class Dungeon
         }
     }
     
+    /**
+     * Returns the current mask of the dungeon.
+     * The mask contains 100-pixel diameter circles around each discovered node.
+     * @return The mask, with unfamiliar areas blacked out, and visited areas visible.
+     */
     public BufferedImage getMask()
     {
         return mask;

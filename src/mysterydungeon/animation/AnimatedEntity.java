@@ -23,6 +23,10 @@ public class AnimatedEntity implements Animation
     
     private static final int FRAMES_BETWEEN_STEP = 24;
     
+    /**
+     * Create an animated entity.
+     * @param entity The base entity to use.
+     */
     public AnimatedEntity(Entity entity)
     {
         this.entity = entity;
@@ -68,6 +72,10 @@ public class AnimatedEntity implements Animation
         return false;
     }
     
+    /**
+     * Get the entity associated with this animated entity.
+     * @return The entity contained in this animated entity.
+     */
     public Entity getEntity()
     {
         return entity;

@@ -95,6 +95,15 @@ public class DungeonComp extends JComponent
         catch(IOException ex){arrowImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
     }
     
+    /**
+     * Creates and returns a singleton of this component.
+     * As opposed to passing this component around, in order to make things repaint,
+     * I've moved to the use of a singleton. This one needs to be called only once,
+     * in order to initialize; When that's done, you can use the no argument form.
+     * @param tiles Filename of the tiles image.
+     * @param dungeon Dungeon to paint.
+     * @return An instance of the DungeonComp.
+     */
     public static DungeonComp getInstance(String tiles, Dungeon dungeon)
     {
         if(singleton == null)
@@ -104,6 +113,12 @@ public class DungeonComp extends JComponent
         return singleton;
     }
     
+    /**
+     * Returns a singleton of this component.
+     * Once the version with parameters is used, there is no reason to provide
+     * more parameters.
+     * @return An instance of the DungeonComp.
+     */
     public static DungeonComp getInstance()
     {
         return singleton;
@@ -363,11 +378,19 @@ public class DungeonComp extends JComponent
         return tiles[tile];
     }
     
+    /**
+     * Add an animation to be painted.
+     * @param anim The animation to schedule for painting.
+     */
     public void addAnimation(Animation anim)
     {
         animations.add(anim);
     }
     
+    /**
+     * Remove an animation, so it's no longer painted.
+     * @param anim The animation to remove from the painting queue.
+     */
     public void removeAnimation(Animation anim)
     {
         animations.remove(anim);

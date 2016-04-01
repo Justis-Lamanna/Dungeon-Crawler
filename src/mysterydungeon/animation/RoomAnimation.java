@@ -11,7 +11,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- *
+ * Creates an animation for a room attack.
+ * Currently, this causes a small shockwave to emit from the player.
  * @author jlamanna
  */
 public class RoomAnimation implements Animation
@@ -21,6 +22,11 @@ public class RoomAnimation implements Animation
     private BufferedImage image;
     private int counter;
     
+    /**
+     * Create a room animation.
+     * @param startX The X coordinate of the upper-left corner of the animation frame.
+     * @param startY The y coordinate of the upper-left corner of the animation frame.
+     */
     public RoomAnimation(int startX, int startY)
     {
         x = startX;

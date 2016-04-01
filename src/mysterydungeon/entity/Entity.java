@@ -382,22 +382,40 @@ public class Entity
         knownMoves.add(newMove);
     }
     
+    /**
+     * Is this entity the player?
+     * @return True if this entity is the player, false if not.
+     */
     public boolean isPlayer()
     {
         return isPlayer;
     }
     
+    /**
+     * Add an item to this entity's inventory.
+     * @param newItem The item to be added.
+     */
     public void addItem(Item newItem)
     {
         heldItems.add(newItem);
     }
     
+    /**
+     * Use an item contained in this entity's inventory.
+     * The item will be removed after use, depending on how the item returns
+     * after calling useItem on it.
+     * @param itemSlot THe slot number of the item to use.
+     */
     public void useItem(int itemSlot)
     {
         boolean remove = heldItems.get(itemSlot).useItem(this);
         if(remove){heldItems.remove(itemSlot);}
     }
     
+    /**
+     * Get a list of items in this entity's inventory.
+     * @return An ArrayList of the items this entity is carrying.
+     */
     public ArrayList<Item> getItems()
     {
         return heldItems;
