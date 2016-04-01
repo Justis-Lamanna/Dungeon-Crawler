@@ -208,11 +208,14 @@ public class GameLoop implements Runnable
 
     private int getAttackPressed()
     {
-        if(controls.isKeyDown(KeyEvent.VK_1)){return 0;}
-        else if(controls.isKeyDown(KeyEvent.VK_2)){return 1;}
-        else if(controls.isKeyDown(KeyEvent.VK_3)){return 2;}
-        else if(controls.isKeyDown(KeyEvent.VK_4)){return 3;}
-        else{return -1;}
+        for(int key = 0; key < 9; key++)
+        {
+            if(controls.isKeyDown(KeyEvent.VK_1 + key))
+            {
+                return key;
+            }
+        }
+        return -1;
     }
 
     private void onPlayerStep(Dungeon dungeon, Entity player)

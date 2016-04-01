@@ -60,8 +60,8 @@ public class Entity
         this.isPlayer = player;
         this.maxHP = species.getHP();
         this.currentHP = maxHP;
-        this.maxStamina = 40;
-        this.currentStamina = 40; //Flat value of 40.
+        this.maxStamina = 400;
+        this.currentStamina = 400; //Flat value of 400. Since this value increases very slowly, we want to give alot to work with.
         knownMoves = (ArrayList<Move>)species.getMoves().clone(); //Clone so we don't modify the actual species data.
         heldItems = new ArrayList<>();
         randomizeLocation();
