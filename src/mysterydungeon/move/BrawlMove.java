@@ -165,6 +165,6 @@ public class BrawlMove extends Move
     @Override
     public String getDescription()
     {
-        return String.format("%s (Stamina: %d)", name, stamina);
+        return String.format("Power: %d", basePower);
     }
 }

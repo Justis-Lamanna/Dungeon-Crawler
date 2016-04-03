@@ -26,7 +26,7 @@ public class RangeMove extends Move
     /**
      * A constant representing the fire gun attack.
      */
-    public static final RangeMove FIRE_GUN = new RangeMove("Fire Gun", 20, 3, 10);
+    public static final RangeMove FIRE_GUN = new RangeMove("Fire Gun", 15, 3, 10);
     
     /**
      * A constant representing the fire laser attack.
@@ -36,7 +36,7 @@ public class RangeMove extends Move
     /**
      * A constant representing the fire rockets attack.
      */
-    public static final RangeMove FIRE_ROCKET = new RangeMove("Fire Rocket", 40, 5, 30);
+    public static final RangeMove FIRE_ROCKET = new RangeMove("Fire Rocket", 45, 5, 30);
     
     /**
      * The value multiplied by this base power with each tile traveled.
@@ -185,6 +185,6 @@ public class RangeMove extends Move
     @Override
     public String getDescription()
     {
-        return String.format("%s (Stamina: %d)", name, stamina, range);
+        return String.format("Power: %d; Range: %d", power, range);
     }
 }

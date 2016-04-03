@@ -100,6 +100,6 @@ public class NeutralMove extends Move
     @Override
     public String getDescription()
     {
-        return String.format("%s (No Stamina)", name);
+        return String.format("Power: %d", power);
     }
 }

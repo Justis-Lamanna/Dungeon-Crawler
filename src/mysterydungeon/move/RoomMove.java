@@ -182,6 +182,6 @@ public class RoomMove extends Move
     @Override
     public String getDescription()
     {
-        return String.format("%s (Stamina: %d)", name, power);
+        return String.format("Power: %d; Range: Room", power);
     }
 }
