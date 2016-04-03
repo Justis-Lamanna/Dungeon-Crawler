@@ -328,7 +328,7 @@ public class DungeonComp extends JComponent
             g.setColor(Color.RED);
             g.drawRect(startX, getHeight() - 40, keyWidth, 40);
             g.setColor(Color.BLACK);
-            g.drawString(String.format("%d. %s (Stamina: %d)", index+1, moves.get(index).getName(), moves.get(index).getStamina()), startX + 10, getHeight() - 20);
+            g.drawString(String.format("%d. %s", index+1, moves.get(index).getDescription()), startX + 10, getHeight() - 20);
         }
     }
 

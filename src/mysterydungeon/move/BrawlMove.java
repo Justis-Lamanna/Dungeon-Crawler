@@ -6,7 +6,6 @@
 package mysterydungeon.move;
 
 import java.util.ArrayList;
-import mysterydungeon.Controls;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.MysteryDungeon;
@@ -19,8 +18,23 @@ import mysterydungeon.dungeon.Node;
  * chance of doing 50% more damage.
  * @author Justis
  */
-public class BrawlMove implements Move, Comparable
+public class BrawlMove extends Move
 {   
+    /**
+     * A constant representing the Weak Punch attack.
+     */
+    public static final BrawlMove WEAK_PUNCH = new BrawlMove("Weak Punch", 5, 5);
+    
+    /**
+     * A constant representing the Punch attack.
+     */
+    public static final BrawlMove PUNCH = new BrawlMove("Punch", 15, 10);
+    
+    /**
+     * A constant representing the Strong Punch attack.
+     */
+    public static final BrawlMove STRONG_PUNCH = new BrawlMove("Strong Punch", 25, 15);
+    
     private final int basePower;
     private final int stamina;
     private final String name;
@@ -110,12 +124,7 @@ public class BrawlMove implements Move, Comparable
                 MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", defender.getName()));
                 if(defender.isPlayer())
                 {
-                    MysteryDungeon.LOG.append("Press any key...");
-                    while(Controls.getInstance().isAnyKeyDown())
-                    {
-
-                    }
-                    dungeon.startDungeon();
+                    Move.respawn();
                 }
             }
         }
@@ -153,39 +162,9 @@ public class BrawlMove implements Move, Comparable
         return stamina;
     }
     
-    /**
-     * Compare this move to another move.
-     * In the hierarchy, RoomMove > RangeMove > BrawlMove.
-     * Individually, higher base power > lower base power.
-     * @param o The object to compare to.
-     * @return 
-     */
     @Override
-    public int compareTo(Object o)
+    public String getDescription()
     {
-        Move other = (Move)o;
-        if(other.getType() > this.getType())
-        {
-            return 1;
-        }
-        else if(other.getType() < this.getType())
-        {
-            return -1;
-        }
-        else
-        {
-            if(other.getPower() > this.getPower())
-            {
-                return 1;
-            }
-            else if(other.getPower() < this.getPower())
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
+        return String.format("%s (Stamina: %d)", name, stamina);
     }
 }

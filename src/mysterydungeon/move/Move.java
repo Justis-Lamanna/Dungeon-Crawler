@@ -5,7 +5,9 @@
  */
 package mysterydungeon.move;
 
+import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
+import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.Entity;
@@ -14,23 +16,28 @@ import mysterydungeon.entity.Entity;
  * The skeleton for a move.
  * @author Justis
  */
-public interface Move
+public abstract class Move implements Comparable
 {
 
     /**
+     * A constant representing a neutral move.
+     */
+    public static final int NEUTRAL = 0;
+    
+    /**
      * A constant representing a short-range move.
      */
-    public static final int BRAWL = 0;
+    public static final int BRAWL = 1;
 
     /**
      * A constant representing a long-range move.
      */
-    public static final int RANGE = 1;
+    public static final int RANGE = 2;
 
     /**
      * A constant representing a room-range move.
      */
-    public static final int ROOM = 2;
+    public static final int ROOM = 3;
     
     /**
      * Determine the defender of the attack.
@@ -38,7 +45,7 @@ public interface Move
      * @param attacker The entity using the attack.
      * @return The entity receiving the attack.
      */
-    Entity getDefender(Dungeon dungeon, Entity attacker);
+    public abstract Entity getDefender(Dungeon dungeon, Entity attacker);
 
     /**
      * Perform the attack.
@@ -46,31 +53,36 @@ public interface Move
      * @param attacker The entity using the attack.
      * @param defender The entity receiving the attack.
      */
-    void attack(Dungeon dungeon, Entity attacker, Entity defender);
+    public abstract void attack(Dungeon dungeon, Entity attacker, Entity defender);
 
     /**
      * Returns a name for this attack.
      * @return The name of the attack.
      */
-    String getName();
+    public abstract String getName();
 
     /**
      * Get the type of attack this is.
      * @return An integer representing what type of attack this is (Short-range, etc)
      */
-    int getType();
+    public abstract int getType();
     
     /**
      * Get the base power of this attack.
      * @return An integer, representing the amount of HP this attack does.
      */
-    int getPower();
+    public abstract int getPower();
     
     /**
      * Get the amount of stamina needed to perform this attack.
      * @return An integer, representing the amount of stamina needed to use this attack.
      */
-    int getStamina();
+    public abstract int getStamina();
+    
+    /**
+     * Get the description of this move, for use in the move menu.
+     */
+    public abstract String getDescription();
     
     /**
      * Pause program execution by some amount of time.
@@ -103,5 +115,54 @@ public interface Move
             delay(delay);
         } while (!anim.animate());
         component.removeAnimation(anim);
+    }
+    
+    /**
+     * When the player faints, this method is called.
+     */
+    public static void respawn()
+    {
+        MysteryDungeon.LOG.append("Press any key...");
+        while(Controls.getInstance().isAnyKeyDown())
+        {
+
+        }
+        DungeonComp.getInstance().getDungeon().startDungeon();
+    }
+    
+    /**
+     * Compare this move to another move.
+     * In the hierarchy, RoomMove > RangeMove > BrawlMove.
+     * Individually, higher base power > lower base power.
+     * @param o The object to compare to.
+     * @return 
+     */
+    @Override
+    public int compareTo(Object o)
+    {
+        Move other = (Move)o;
+        if(other.getType() > this.getType())
+        {
+            return 1;
+        }
+        else if(other.getType() < this.getType())
+        {
+            return -1;
+        }
+        else
+        {
+            if(other.getPower() > this.getPower())
+            {
+                return 1;
+            }
+            else if(other.getPower() < this.getPower())
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

@@ -5,7 +5,6 @@
  */
 package mysterydungeon.move;
 
-import mysterydungeon.Controls;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.Entity;
@@ -22,9 +21,23 @@ import mysterydungeon.animation.RangeAnimation;
  * increased damage.
  * @author Justis
  */
-public class RangeMove implements Move, Comparable
+public class RangeMove extends Move
 {
-
+    /**
+     * A constant representing the fire gun attack.
+     */
+    public static final RangeMove FIRE_GUN = new RangeMove("Fire Gun", 20, 3, 10);
+    
+    /**
+     * A constant representing the fire laser attack.
+     */
+    public static final RangeMove FIRE_LASER = new RangeMove("Fire Laser", 30, 4, 20);
+    
+    /**
+     * A constant representing the fire rockets attack.
+     */
+    public static final RangeMove FIRE_ROCKET = new RangeMove("Fire Rocket", 40, 5, 30);
+    
     /**
      * The value multiplied by this base power with each tile traveled.
      */
@@ -121,12 +134,7 @@ public class RangeMove implements Move, Comparable
                     MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", defender.getName()));
                     if(defender.isPlayer())
                     {
-                        MysteryDungeon.LOG.append("Press any key...");
-                        while(!Controls.getInstance().isAnyKeyDown())
-                        {
-                            
-                        }
-                        dungeon.startDungeon();
+                        Move.respawn();
                     }
                 }
             }
@@ -168,45 +176,15 @@ public class RangeMove implements Move, Comparable
         return stamina;
     }
     
-    /**
-     * Compare this move to another move.
-     * In the hierarchy, RoomMove > RangeMove > BrawlMove.
-     * Individually, higher base power > lower base power.
-     * @param o The object to compare to.
-     * @return 
-     */
-    @Override
-    public int compareTo(Object o)
-    {
-        Move other = (Move)o;
-        if(other.getType() > this.getType())
-        {
-            return 1;
-        }
-        else if(other.getType() < this.getType())
-        {
-            return -1;
-        }
-        else
-        {
-            if(other.getPower() > this.getPower())
-            {
-                return 1;
-            }
-            else if(other.getPower() < this.getPower())
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-    }
-    
     private void doAnimation(int startX, int startY, int direction, int range)
     {
         Animation anim = new RangeAnimation(startX, startY, direction, range);
         Move.animate(anim, 5);
+    }
+    
+    @Override
+    public String getDescription()
+    {
+        return String.format("%s (Stamina: %d)", name, stamina, range);
     }
 }

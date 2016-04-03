@@ -5,8 +5,8 @@
  */
 package mysterydungeon.entity;
 
-import mysterydungeon.move.BrawlMove;
 import mysterydungeon.move.Move;
+import mysterydungeon.move.NeutralMove;
 
 /**
  * A builder pattern to assist with development of species.
@@ -28,7 +28,7 @@ public class SpeciesBuilder
     public SpeciesBuilder(String name, String filename, int hp)
     {
         species = new Species(name, filename, hp);
-        species.addMove(new BrawlMove("Weak Punch", 5, 0)); //Wimpy attack with no stamina.
+        species.addMove(NeutralMove.BASH); //Wimpy attack with no stamina.
     }
     
     /**

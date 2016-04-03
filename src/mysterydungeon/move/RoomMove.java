@@ -6,7 +6,6 @@
 package mysterydungeon.move;
 
 import java.util.ArrayList;
-import mysterydungeon.Controls;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.entity.Entity;
@@ -23,8 +22,23 @@ import mysterydungeon.animation.RoomAnimation;
  * damage.
  * @author Justis
  */
-public class RoomMove implements Move, Comparable
+public class RoomMove extends Move
 {
+    /**
+     * A constant representing a shock wave attack.
+     */
+    public static final RoomMove SHOCK_WAVE = new RoomMove("Shock Wave", 20, 25);
+    
+    /**
+     * A constant representing a sonic boom attack.
+     */
+    public static final RoomMove SONIC_BOOM = new RoomMove("Sonic Boom", 40, 40);
+    
+    /**
+     * A constant representing a nuclear blast attack.
+     */
+    public static final RoomMove NUCLEAR_BLAST = new RoomMove("Nuclear Blast", 60, 65);
+    
     private final int power;
     private final int stamina;
     private final String name;
@@ -117,12 +131,7 @@ public class RoomMove implements Move, Comparable
                         MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", entity.getName()));
                         if(entity.isPlayer())
                         {
-                            MysteryDungeon.LOG.append("Press any key...");
-                            while(Controls.getInstance().isAnyKeyDown())
-                            {
-
-                            }
-                            dungeon.startDungeon();
+                            Move.respawn();
                         }
                     }
                 }
@@ -164,45 +173,15 @@ public class RoomMove implements Move, Comparable
         return stamina;
     }
     
-    /**
-     * Compare this move to another move.
-     * In the hierarchy, RoomMove > RangeMove > BrawlMove.
-     * Individually, higher base power > lower base power.
-     * @param o The object to compare to.
-     * @return 
-     */
-    @Override
-    public int compareTo(Object o)
-    {
-        Move other = (Move)o;
-        if(other.getType() > this.getType())
-        {
-            return 1;
-        }
-        else if(other.getType() < this.getType())
-        {
-            return -1;
-        }
-        else
-        {
-            if(other.getPower() > this.getPower())
-            {
-                return 1;
-            }
-            else if(other.getPower() < this.getPower())
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-    }
-    
     private void doAnimation(int startX, int startY)
     {
         Animation anim = new RoomAnimation(startX - 16, startY - 16);
         Move.animate(anim, 5);
+    }
+    
+    @Override
+    public String getDescription()
+    {
+        return String.format("%s (Stamina: %d)", name, power);
     }
 }
