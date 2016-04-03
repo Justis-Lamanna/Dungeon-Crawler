@@ -55,14 +55,15 @@ public class NeutralMove extends Move
     }
     
     @Override
-    public void attack(Dungeon dungeon, Entity attacker, Entity defender)
+    public void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> affected)
     {
-        if(defender == null)
+        if(affected.isEmpty())
         {
             MysteryDungeon.LOG.append(String.format("%s attacked and missed!\n", attacker.getName()));
         }
         else
         {
+            Entity defender = affected.get(0);
             int totalDamage = defender.addHP(-power);
             MysteryDungeon.LOG.append(String.format("%s attacked %s for %dHP of damage!\n", attacker.getName(), defender.getName(), totalDamage));
             if(defender.getCurrentHP() == 0)
@@ -78,10 +79,11 @@ public class NeutralMove extends Move
     }
     
     @Override
-    public Entity getDefender(Dungeon dungeon, Entity attacker)
+    public ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker)
     {
         Node currentNode = attacker.getCurrentNode();
         Node facingNode = currentNode.getPath(attacker.facing);
+        ArrayList<Entity> affected = new ArrayList<>();
         if(facingNode == null)
         {
             return null;
@@ -91,7 +93,8 @@ public class NeutralMove extends Move
         {
             if(entity.getDestinationNode().equals(facingNode))
             {
-                return entity;
+                affected.add(entity);
+                return affected;
             }
         }
         return null;

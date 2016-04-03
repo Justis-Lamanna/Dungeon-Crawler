@@ -5,6 +5,7 @@
  */
 package mysterydungeon.move;
 
+import java.util.ArrayList;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.Entity;
@@ -101,10 +102,10 @@ public class RangeMove extends Move
      * Performs the actual attack.
      * @param dungeon The dungeon this attack occurs in.
      * @param attacker The entity performing the attack.
-     * @param defender The entity being attacked.
+     * @param affected
      */
     @Override
-    public void attack(Dungeon dungeon, Entity attacker, Entity defender)
+    public void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> affected)
     {
         if(attacker.getCurrentStamina() < stamina)
         {
@@ -112,26 +113,28 @@ public class RangeMove extends Move
             return;
         }
         attacker.addStamina(-getStamina());
+        MysteryDungeon.LOG.append(String.format("%s fired off a %s!", attacker.getName(), name.split(" ")[1]));
         doAnimation(attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
-        if(defender == null)
+        if(affected.isEmpty())
         {
-            MysteryDungeon.LOG.append(String.format("%s fired and missed!\n", attacker.getName()));
+            MysteryDungeon.LOG.append("   But there was no target!\n");
         }
         else
         {
+            Entity defender = affected.get(0);
             if(Dungeon.PRNG.nextInt(100) < 15)
             {
-                MysteryDungeon.LOG.append(String.format("%s fired at %s and missed!\n", attacker.getName(), defender.getName()));
+                MysteryDungeon.LOG.append("   Just missed!\n");
             }
             else
             {
                 //
                 int totalDamage = defender.addHP(-currentPower);
-                MysteryDungeon.LOG.append(String.format("%s attacked %s for %dHP of damage!\n", attacker.getName(), defender.getName(), totalDamage));
+                MysteryDungeon.LOG.append(String.format("   %s lost %dHP!\n", defender.getName(), totalDamage));
                 if(defender.getCurrentHP() == 0)
                 {
                     dungeon.clearEnemy(defender);
-                    MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", defender.getName()));
+                    MysteryDungeon.LOG.append(String.format("   %s was destroyed!\n", defender.getName()));
                     if(defender.isPlayer())
                     {
                         Move.respawn();
@@ -148,11 +151,12 @@ public class RangeMove extends Move
      * @return The entity receiving the attack, or null if there is nobody.
      */
     @Override
-    public Entity getDefender(Dungeon dungeon, Entity attacker)
+    public ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker)
     {
         Node start = attacker.getCurrentNode();
         int facing = attacker.facing;
         currentPower = power;
+        ArrayList<Entity> affected = new ArrayList<>();
         for(int ds = 0; ds < range; ds++)
         {
             start = start.getPath(facing);
@@ -162,7 +166,8 @@ public class RangeMove extends Move
                 if(entity.getDestinationNode().equals(start))
                 {
                     currentRange = ds;
-                    return entity;
+                    affected.add(entity);
+                    return affected;
                 }
             }
             currentPower = (int)(currentPower * MULTIPLIER); //Reduces by 25% the farther away you go.

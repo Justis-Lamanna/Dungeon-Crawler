@@ -42,7 +42,6 @@ public class RoomMove extends Move
     private final int power;
     private final int stamina;
     private final String name;
-    private final ArrayList<Entity> affected;
     
     /**
      * Creates a room-range move.
@@ -55,7 +54,6 @@ public class RoomMove extends Move
         this.power = power;
         this.stamina = stamina;
         this.name = name;
-        affected = new ArrayList<>();
     }
     
     /**
@@ -94,10 +92,10 @@ public class RoomMove extends Move
      * stored list of affected entities. The defender entity is ignored.
      * @param dungeon The dungeon the attack occurs in.
      * @param attacker The entity performing the attack.
-     * @param defender Ignored for the purposes of this attack.
+     * @param affected
      */
     @Override
-    public void attack(Dungeon dungeon, Entity attacker, Entity defender)
+    public void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> affected)
     {
         if(attacker.getCurrentStamina() < stamina)
         {
@@ -105,30 +103,29 @@ public class RoomMove extends Move
             return;
         }
         attacker.addStamina(-getStamina());
+        MysteryDungeon.LOG.append(String.format("%s let off a %s\n", attacker.getName(), name));
         doAnimation(attacker.getPixelX(), attacker.getPixelY());
         if(affected.isEmpty())
         {
-            MysteryDungeon.LOG.append(String.format("%s boomed and missed!\n", attacker.getName()));
+            MysteryDungeon.LOG.append("   But there was no target!");
         }
         else
         {
             if(Dungeon.PRNG.nextInt(100) < 25)
             {
-                MysteryDungeon.LOG.append(String.format("%s boomed, but it did nothing!\n", attacker.getName()));
+                MysteryDungeon.LOG.append("   But there was no effect!\n");
             }
             else
             {
-                MysteryDungeon.LOG.append(String.format("%s let off a sonic boom!\n", attacker.getName()));
-                //
                 for(Entity entity : affected)
                 {
                     int newDamage = power / affected.size();
                     int totalDamage = entity.addHP(-newDamage);
-                    MysteryDungeon.LOG.append(String.format("%s recieved %dHP of damage!\n", entity.getName(), totalDamage));
+                    MysteryDungeon.LOG.append(String.format("   %s lost %dHP!\n", entity.getName(), totalDamage));
                     if(entity.getCurrentHP() == 0)
                     {
                         dungeon.clearEnemy(entity);
-                        MysteryDungeon.LOG.append(String.format("%s was destroyed!\n", entity.getName()));
+                        MysteryDungeon.LOG.append(String.format("   %s was destroyed!\n", entity.getName()));
                         if(entity.isPlayer())
                         {
                             Move.respawn();
@@ -148,9 +145,9 @@ public class RoomMove extends Move
      * @return Null. The affected entities are stored internally.
      */
     @Override
-    public Entity getDefender(Dungeon dungeon, Entity attacker)
+    public ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker)
     {
-        affected.clear();
+        ArrayList<Entity> affected = new ArrayList<>();
         RoomNode room = dungeon.getRoom(attacker.getCurrentNode());
         if(room != null)
         {
@@ -164,7 +161,7 @@ public class RoomMove extends Move
                 }
             }
         }
-        return null;
+        return affected;
     }
     
     @Override

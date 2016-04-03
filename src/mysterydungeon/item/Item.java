@@ -5,6 +5,7 @@
  */
 package mysterydungeon.item;
 
+import java.awt.image.BufferedImage;
 import mysterydungeon.entity.Entity;
 
 /**
@@ -19,4 +20,24 @@ public interface Item
      * @return True if the item should be consumed, false if not.
      */
     boolean useItem(Entity user);
+    
+    /**
+     * Get the name of this item.
+     * @return This item's name.
+     */
+    String getName();
+    
+    /**
+     * Get the image of this item.
+     * @return The sprite containing this image.
+     */
+    BufferedImage getImage();
+    
+    /**
+     * Get the description of this item.
+     * @return A description of this item.
+     */
+    String getDescription();
+    
+    
 }

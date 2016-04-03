@@ -6,6 +6,7 @@
 package mysterydungeon;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -204,6 +205,7 @@ public class MysteryDungeon extends JFrame{
         hud.add(new JScrollPane(LOG), setGridBagConstraints(0, 4, 2, 2, 1, 1));
         LOG.setForeground(Color.WHITE);
         LOG.setBackground(Color.BLACK);
+        LOG.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
         return hud;
     }
 }

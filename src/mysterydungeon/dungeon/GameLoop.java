@@ -185,7 +185,7 @@ public class GameLoop implements Runnable
                 Move attackUsed = knownMoves.get(attackPressed);
                 useMove = false;
                 //Now, we go for the kill!
-                Entity defender = attackUsed.getDefender(comp.getDungeon(), player);
+                ArrayList<Entity> defender = attackUsed.getDefender(comp.getDungeon(), player);
                 attackUsed.attack(comp.getDungeon(), player, defender);
                 return true;
             }

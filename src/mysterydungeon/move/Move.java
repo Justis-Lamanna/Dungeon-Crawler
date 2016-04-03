@@ -5,6 +5,7 @@
  */
 package mysterydungeon.move;
 
+import java.util.ArrayList;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
@@ -45,7 +46,7 @@ public abstract class Move implements Comparable
      * @param attacker The entity using the attack.
      * @return The entity receiving the attack.
      */
-    public abstract Entity getDefender(Dungeon dungeon, Entity attacker);
+    public abstract ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker);
 
     /**
      * Perform the attack.
@@ -53,7 +54,7 @@ public abstract class Move implements Comparable
      * @param attacker The entity using the attack.
      * @param defender The entity receiving the attack.
      */
-    public abstract void attack(Dungeon dungeon, Entity attacker, Entity defender);
+    public abstract void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> defender);
 
     /**
      * Returns a name for this attack.

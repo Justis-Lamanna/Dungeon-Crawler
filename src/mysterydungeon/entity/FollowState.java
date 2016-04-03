@@ -36,7 +36,7 @@ public class FollowState extends EntityState
             Collections.sort((List)moves);
             for(Move move : moves)
             {
-                if(move.getType() == Move.ROOM && canDoRoomMove(move, e, d) && e.getCurrentStamina() >= move.getStamina())
+                /*if(move.getType() == Move.ROOM && canDoRoomMove(move, e, d) && e.getCurrentStamina() >= move.getStamina())
                 {
                     move.attack(d, e, player);
                     return;
@@ -49,6 +49,13 @@ public class FollowState extends EntityState
                 else if(move.getType() == Move.BRAWL && canDoBrawlMove(move, e, d) && e.getCurrentStamina() >= move.getStamina())
                 {
                     move.attack(d, e, player);
+                    return;
+                }*/
+                if(canUseMove(move, e, d))
+                {
+                    ArrayList<Entity> playerList = new ArrayList<>();
+                    playerList.add(player);
+                    move.attack(d, e, playerList);
                     return;
                 }
             }
@@ -83,45 +90,14 @@ public class FollowState extends EntityState
         return 1;
     }
     
-    private boolean canDoRoomMove(Move move, Entity entity, Dungeon dungeon)
-    {
-        Node player = dungeon.getEntities().get(0).getDestinationNode();
-        Node user = entity.getCurrentNode();
-        if(dungeon.getRoom(player) != null)
-        {
-            move.getDefender(dungeon, entity);
-            return dungeon.getRoom(player).equals(dungeon.getRoom(user));
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    private boolean canDoRangeMove(Move move, Entity entity, Dungeon dungeon)
+    private boolean canUseMove(Move move, Entity entity, Dungeon dungeon)
     {
         int oldFacing = entity.facing;
         Entity player = dungeon.getEntities().get(0);
         for(int dir = 0; dir < 8; dir++)
         {
-            entity.facing = dir;
-            if(player.equals(move.getDefender(dungeon, entity)))
-            {
-                return true;
-            }
-        }
-        entity.facing = oldFacing;
-        return false;
-    }
-    
-    private boolean canDoBrawlMove(Move move, Entity entity, Dungeon dungeon)
-    {
-        int oldFacing = entity.facing;
-        Entity player = dungeon.getEntities().get(0);
-        for(int dir = 0; dir < 8; dir++)
-        {
-            entity.facing = dir;
-            if(player.equals(move.getDefender(dungeon, entity)))
+            ArrayList<Entity> defenders = move.getDefender(dungeon, entity);
+            if(defenders.contains(player))
             {
                 return true;
             }
