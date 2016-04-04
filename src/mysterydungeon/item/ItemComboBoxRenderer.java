@@ -42,11 +42,14 @@ public class ItemComboBoxRenderer extends JLabel implements ListCellRenderer
             setBackground(list.getBackground());
             setForeground(list.getForeground());
         }
-        Item item = (Item)value;
-        setIcon(new ImageIcon(item.getImage()));
-        setText(item.getName());
-        setToolTipText(item.getDescription());
-        setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
+        if(value != null)
+        {
+            Item item = (Item)value;
+            setIcon(new ImageIcon(item.getImage()));
+            setText(item.getName());
+            setToolTipText(item.getDescription());
+            setFont(new Font(Font.MONOSPACED, Font.PLAIN, 18));
+        }
         return this;
     }
     

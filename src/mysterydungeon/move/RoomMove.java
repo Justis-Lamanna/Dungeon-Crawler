@@ -99,21 +99,21 @@ public class RoomMove extends Move
     {
         if(attacker.getCurrentStamina() < stamina)
         {
-            MysteryDungeon.LOG.append(String.format("%s doesn't have enough stamina!\n", attacker.getName()));
+            MysteryDungeon.updateLog(String.format("%s doesn't have enough stamina!", attacker.getName()));
             return;
         }
         attacker.addStamina(-getStamina());
-        MysteryDungeon.LOG.append(String.format("%s let off a %s\n", attacker.getName(), name));
+        MysteryDungeon.updateLog(String.format("%s let off a %s", attacker.getName(), name));
         doAnimation(attacker.getPixelX(), attacker.getPixelY());
         if(affected.isEmpty())
         {
-            MysteryDungeon.LOG.append("   But there was no target!");
+            MysteryDungeon.updateLog("   But there was no target!");
         }
         else
         {
             if(Dungeon.PRNG.nextInt(100) < 25)
             {
-                MysteryDungeon.LOG.append("   But there was no effect!\n");
+                MysteryDungeon.updateLog("   But there was no effect!");
             }
             else
             {
@@ -121,11 +121,11 @@ public class RoomMove extends Move
                 {
                     int newDamage = power / affected.size();
                     int totalDamage = entity.addHP(-newDamage);
-                    MysteryDungeon.LOG.append(String.format("   %s lost %dHP!\n", entity.getName(), totalDamage));
+                    MysteryDungeon.updateLog(String.format("   %s lost %dHP!", entity.getName(), totalDamage));
                     if(entity.getCurrentHP() == 0)
                     {
                         dungeon.clearEnemy(entity);
-                        MysteryDungeon.LOG.append(String.format("   %s was destroyed!\n", entity.getName()));
+                        MysteryDungeon.updateLog(String.format("   %s was destroyed!", entity.getName()));
                         if(entity.isPlayer())
                         {
                             Move.respawn();

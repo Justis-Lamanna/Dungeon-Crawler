@@ -123,7 +123,7 @@ public abstract class Move implements Comparable
      */
     public static void respawn()
     {
-        MysteryDungeon.LOG.append("Press any key...");
+        MysteryDungeon.updateLog("Press any key...");
         while(Controls.getInstance().isAnyKeyDown())
         {
 

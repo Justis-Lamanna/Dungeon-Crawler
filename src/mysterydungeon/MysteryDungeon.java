@@ -11,6 +11,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -23,6 +24,7 @@ import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.GameLoop;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.item.Item;
+import mysterydungeon.item.ItemComboBoxRenderer;
 
 /**
  * Entry point for the game. Initializes the main frame, such as the buttons,
@@ -52,25 +54,11 @@ public class MysteryDungeon extends JFrame{
      */
     public static final String TILEMAP = "Maps/map1.txt";
     
-    /**
-     * The HP bar of the HUD. Placed as a constant for ease of access.
-     */
-    public static final JProgressBar HPBAR = new JProgressBar(0, 100);
     
-    /**
-     * The stamina bar of the HUD. Placed as a constant for ease of access.
-     */
-    public static final JProgressBar STAMINABAR = new JProgressBar(0, 100);
-
-    /**
-     * The combo box for an inventory. Placed as a constant for ease of access.
-     */
-    public static final JComboBox<Item> INVENTORY = new JComboBox<>();
-    
-    /**
-     * The log of the HUD. Placed as a constant for ease of access.
-     */
-    public static final JTextArea LOG = new JTextArea("Entered the Dungeon.\n", 50, 10);
+    private static final JProgressBar hpBar = new JProgressBar(0, 100);
+    private static final JProgressBar staminaBar = new JProgressBar(0, 100);
+    private static final JComboBox<Item> inventory = new JComboBox<>();
+    private static final JTextArea log = new JTextArea("Entered the Dungeon.\n", 50, 10);
     
 
     private DungeonComp dungeon;
@@ -193,35 +181,68 @@ public class MysteryDungeon extends JFrame{
     
     private JPanel createHud()
     {
+        Entity player = dungeon.getDungeon().getEntities().get(0);
         JPanel hud = new JPanel(new GridBagLayout());
         
         hud.add(new JLabel("Player Stats"), setGridBagConstraints(0, 0, 2, 1, 1, 0.1));
         
         hud.add(new JLabel("HP:"), setGridBagConstraints(0, 1, 1, 1, 0.1, 0.1));
-        hud.add(HPBAR, setGridBagConstraints(1, 1, 1, 1, 0.9, 0.1));
-        Entity player = dungeon.getDungeon().getEntities().get(0);
-        HPBAR.setMaximum(player.getMaximumHP());
-        HPBAR.setValue(player.getCurrentHP());
-        HPBAR.setString(String.format("%d/%d", player.getCurrentHP(), player.getMaximumHP()));
-        HPBAR.setStringPainted(true);
+        hud.add(hpBar, setGridBagConstraints(1, 1, 1, 1, 0.9, 0.1));
+        updateHP(player.getCurrentHP(), player.getMaximumHP());
         
         hud.add(new JLabel("Stamina:"), setGridBagConstraints(0, 2, 1, 1, 0.1, 0.1));
-        hud.add(STAMINABAR, setGridBagConstraints(1, 2, 1, 1, 0.9, 0.1));
-        STAMINABAR.setMaximum(player.getMaximumStamina());
-        STAMINABAR.setValue(player.getCurrentStamina());
-        STAMINABAR.setString(String.format("%d/%d", player.getCurrentStamina(), player.getMaximumStamina()));
-        STAMINABAR.setStringPainted(true);
+        hud.add(staminaBar, setGridBagConstraints(1, 2, 1, 1, 0.9, 0.1));
+        updateStamina(player.getCurrentStamina(), player.getMaximumStamina());
         
         hud.add(new JLabel("Inventory:"), setGridBagConstraints(0, 3, 1, 1, 1, 0.1));
-        hud.add(INVENTORY, setGridBagConstraints(0, 4, 1, 1, 0.7, 0.1));
-        hud.add(new JButton("Use"), setGridBagConstraints(1, 4, 1, 1, 0.3, 0.1));
+        
+        hud.add(inventory, setGridBagConstraints(0, 4, 1, 1, 0.7, 0.1));
+        inventory.setRenderer(new ItemComboBoxRenderer());
+        JButton use = new JButton("Use");
+        use.addActionListener(e -> System.out.println(inventory.getSelectedItem()));
+        hud.add(use, setGridBagConstraints(1, 4, 1, 1, 0.3, 0.1));
         
         hud.add(new JLabel("Log:"), setGridBagConstraints(0, 5, 2, 1, 1, 0.1));
         
-        hud.add(new JScrollPane(LOG), setGridBagConstraints(0, 6, 2, 2, 1, 1));
-        LOG.setForeground(Color.WHITE);
-        LOG.setBackground(Color.BLACK);
-        LOG.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+        hud.add(new JScrollPane(log), setGridBagConstraints(0, 6, 2, 2, 1, 1));
+        log.setForeground(Color.WHITE);
+        log.setBackground(Color.BLACK);
+        log.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
         return hud;
+    }
+    
+    public static void updateHP(int current, int max)
+    {
+        hpBar.setMaximum(max);
+        hpBar.setValue(current);
+        hpBar.setString(String.format("%d/%d", current, max));
+        hpBar.setStringPainted(true);
+    }
+    
+    public static void updateStamina(int current, int max)
+    {
+        staminaBar.setMaximum(max);
+        staminaBar.setValue(current);
+        staminaBar.setString(String.format("%d/%d", current, max));
+        staminaBar.setStringPainted(true);
+    }
+    
+    public static void updateLog(String line)
+    {
+        log.append(line + "\n");
+    }
+    
+    public static void clearLog()
+    {
+        log.setText("");
+    }
+    
+    public static void updateInventory(ArrayList<Item> items)
+    {
+        inventory.removeAllItems();
+        for(Item item : items)
+        {
+            inventory.addItem(item);
+        }
     }
 }

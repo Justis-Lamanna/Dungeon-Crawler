@@ -109,32 +109,32 @@ public class RangeMove extends Move
     {
         if(attacker.getCurrentStamina() < stamina)
         {
-            MysteryDungeon.LOG.append(String.format("%s doesn't have enough stamina!\n", attacker.getName()));
+            MysteryDungeon.updateLog(String.format("%s doesn't have enough stamina!", attacker.getName()));
             return;
         }
         attacker.addStamina(-getStamina());
-        MysteryDungeon.LOG.append(String.format("%s fired off a %s!\n", attacker.getName(), name.split(" ")[1]));
+        MysteryDungeon.updateLog(String.format("%s fired off a %s!", attacker.getName(), name.split(" ")[1]));
         doAnimation(attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
         if(affected.isEmpty())
         {
-            MysteryDungeon.LOG.append("   But there was no target!\n");
+            MysteryDungeon.updateLog("   But there was no target!");
         }
         else
         {
             Entity defender = affected.get(0);
             if(Dungeon.PRNG.nextInt(100) < 15)
             {
-                MysteryDungeon.LOG.append("   Just missed!\n");
+                MysteryDungeon.updateLog("   Just missed!");
             }
             else
             {
                 //
                 int totalDamage = defender.addHP(-currentPower);
-                MysteryDungeon.LOG.append(String.format("   %s lost %dHP!\n", defender.getName(), totalDamage));
+                MysteryDungeon.updateLog(String.format("   %s lost %dHP!", defender.getName(), totalDamage));
                 if(defender.getCurrentHP() == 0)
                 {
                     dungeon.clearEnemy(defender);
-                    MysteryDungeon.LOG.append(String.format("   %s was destroyed!\n", defender.getName()));
+                    MysteryDungeon.updateLog(String.format("   %s was destroyed!", defender.getName()));
                     if(defender.isPlayer())
                     {
                         Move.respawn();

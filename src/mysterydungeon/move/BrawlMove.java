@@ -52,56 +52,38 @@ public class BrawlMove extends Move
         this.name = name;
     }
     
-    /**
-     * Get the type of move this is
-     * @return The constant Move.BRAWL, defined in the Move class.
-     */
     @Override
     public int getType()
     {
         return Move.BRAWL;
     }
     
-    /**
-     * Get the name of this attack. Not actually used.
-     * @return The string "Punch".
-     */
     @Override
     public String getName()
     {
         return name;
     }
     
-    /**
-     * Get the base power of this attack.
-     * @return An integer, representing the amount of HP this attack does.
-     */
     @Override
     public int getPower()
     {
         return basePower;
     }
     
-    /**
-     * Performs the actual attack.
-     * @param dungeon The dungeon this attack is happening in.
-     * @param attacker The entity doing the attack.
-     * @param defender The entity receiving the attack.
-     */
     @Override
     public void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> affected)
     {
         int damage = basePower;
         if(attacker.getCurrentStamina() < stamina)
         {
-            MysteryDungeon.LOG.append(String.format("%s doesn't have enough stamina!\n", attacker.getName()));
+            MysteryDungeon.updateLog(String.format("%s doesn't have enough stamina!", attacker.getName()));
             return;
         }
         attacker.addStamina(-getStamina());
-        MysteryDungeon.LOG.append(String.format("%s let off a %s!\n", attacker.getName(), name));
+        MysteryDungeon.updateLog(String.format("%s let off a %s!", attacker.getName(), name));
         if(affected.isEmpty())
         {
-            MysteryDungeon.LOG.append("   But there was no target!\n");
+            MysteryDungeon.updateLog("   But there was no target!");
         }
         else
         {
@@ -109,21 +91,21 @@ public class BrawlMove extends Move
             if(Dungeon.PRNG.nextInt(100) < 10)
             {
                 damage = (int)(damage * 1.5);
-                MysteryDungeon.LOG.append(String.format("   %s felt powered-up!\n", attacker.getName()));
+                MysteryDungeon.updateLog(String.format("   %s felt powered-up!", attacker.getName()));
             }
             if(Dungeon.PRNG.nextInt(100) < 5)
             {
-                MysteryDungeon.LOG.append("   Just missed!\n");
+                MysteryDungeon.updateLog("   Just missed!");
             }
             else
             {
                 int totalDamage = defender.addHP(-damage);
-                MysteryDungeon.LOG.append(String.format("   %s lost %dHP!\n", defender.getName(), totalDamage));
+                MysteryDungeon.updateLog(String.format("   %s lost %dHP!", defender.getName(), totalDamage));
             }
             if(defender.getCurrentHP() == 0)
             {
                 dungeon.clearEnemy(defender);
-                MysteryDungeon.LOG.append(String.format("   %s was destroyed!\n", defender.getName()));
+                MysteryDungeon.updateLog(String.format("   %s was destroyed!", defender.getName()));
                 if(defender.isPlayer())
                 {
                     Move.respawn();
@@ -132,12 +114,6 @@ public class BrawlMove extends Move
         }
     }
     
-    /**
-     * Gets the entity affected by this attack.
-     * @param dungeon The dungeon this attack happens in.
-     * @param attacker The entity using the attack.
-     * @return The entity who will receive the attack, or null if there is nobody.
-     */
     @Override
     public ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker)
     {

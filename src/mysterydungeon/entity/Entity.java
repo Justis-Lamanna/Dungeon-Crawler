@@ -234,7 +234,7 @@ public class Entity
         currentState = state;
         if(state.getClass().equals(FollowState.class))
         {
-            MysteryDungeon.LOG.append(String.format("%s gave chase!\n", species.getName()));
+            MysteryDungeon.updateLog(String.format("%s gave chase!", species.getName()));
         }
     }
 
@@ -344,9 +344,7 @@ public class Entity
     {
         if(isPlayer)
         {
-            MysteryDungeon.HPBAR.setValue(currentHP);
-            MysteryDungeon.HPBAR.setMaximum(maxHP);
-            MysteryDungeon.HPBAR.setString(String.format("%d/%d", currentHP, maxHP));
+            MysteryDungeon.updateHP(currentHP, maxHP);
         }
     }
     
@@ -415,9 +413,7 @@ public class Entity
     {
         if(isPlayer)
         {
-            MysteryDungeon.STAMINABAR.setValue(currentStamina);
-            MysteryDungeon.STAMINABAR.setMaximum(maxStamina);
-            MysteryDungeon.STAMINABAR.setString(String.format("%d/%d", currentStamina, maxStamina));
+            MysteryDungeon.updateStamina(currentStamina, maxStamina);
         }
     }
 
@@ -473,18 +469,34 @@ public class Entity
     public void addItem(Item newItem)
     {
         heldItems.add(newItem);
+        MysteryDungeon.updateInventory(heldItems);
     }
     
     /**
      * Use an item contained in this entity's inventory.
      * The item will be removed after use, depending on how the item returns
      * after calling useItem on it.
-     * @param itemSlot THe slot number of the item to use.
+     * @param itemSlot The slot number of the item to use.
      */
     public void useItem(int itemSlot)
     {
-        boolean remove = heldItems.get(itemSlot).useItem(this);
-        if(remove){heldItems.remove(itemSlot);}
+        useItem(heldItems.get(itemSlot));
+    }
+    
+    /**
+     * Use an item contained in this entity's inventory.
+     * The item will be removed after use, depending on how the item returns
+     * after calling useItem on it.
+     * @param item The item to use.
+     */
+    public void useItem(Item item)
+    {
+        boolean remove = item.useItem(this);
+        if(remove)
+        {
+            heldItems.remove(item);
+            MysteryDungeon.updateInventory(heldItems);
+        }
     }
     
     /**

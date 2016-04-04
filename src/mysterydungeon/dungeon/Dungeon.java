@@ -74,7 +74,7 @@ public class Dungeon
     public void startDungeon()
     {
         loadDungeon();
-        MysteryDungeon.LOG.setText("");
+        MysteryDungeon.clearLog();
         player = new AnimatedEntity(new Entity(this, Species.PLAYER, null, true));
         enemies.clear();
         spawnEnemies(1);
