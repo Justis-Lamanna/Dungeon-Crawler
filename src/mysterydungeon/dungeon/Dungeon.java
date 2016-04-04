@@ -18,6 +18,8 @@ import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.Species;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.AnimatedEntity;
+import mysterydungeon.item.HPItem;
+import mysterydungeon.item.StaminaItem;
 
 /**
  * Class that's responsible for handling stuff related to the Dungeon, such as
@@ -76,6 +78,8 @@ public class Dungeon
         loadDungeon();
         MysteryDungeon.clearLog();
         player = new AnimatedEntity(new Entity(this, Species.PLAYER, null, true));
+        player.getEntity().addItem(StaminaItem.AAA_BATTERY);
+        player.getEntity().addItem(HPItem.REPAIR_V1);
         enemies.clear();
         spawnEnemies(1);
         initializeMask();

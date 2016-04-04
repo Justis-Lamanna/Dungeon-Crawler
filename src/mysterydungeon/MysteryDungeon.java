@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -25,6 +26,7 @@ import mysterydungeon.dungeon.GameLoop;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.item.Item;
 import mysterydungeon.item.ItemComboBoxRenderer;
+import mysterydungeon.item.NullItem;
 
 /**
  * Entry point for the game. Initializes the main frame, such as the buttons,
@@ -55,10 +57,10 @@ public class MysteryDungeon extends JFrame{
     public static final String TILEMAP = "Maps/map1.txt";
     
     
-    private static final JProgressBar hpBar = new JProgressBar(0, 100);
-    private static final JProgressBar staminaBar = new JProgressBar(0, 100);
-    private static final JComboBox<Item> inventory = new JComboBox<>();
-    private static final JTextArea log = new JTextArea("Entered the Dungeon.\n", 50, 10);
+    private static JProgressBar hpBar = new JProgressBar(0, 100);
+    private static JProgressBar staminaBar = new JProgressBar(0, 100);
+    private static JComboBox<Item> inventory = new JComboBox<>();
+    private static JTextArea log = new JTextArea("Entered the Dungeon.\n", 50, 10);
     
 
     private DungeonComp dungeon;
@@ -197,9 +199,12 @@ public class MysteryDungeon extends JFrame{
         hud.add(new JLabel("Inventory:"), setGridBagConstraints(0, 3, 1, 1, 1, 0.1));
         
         hud.add(inventory, setGridBagConstraints(0, 4, 1, 1, 0.7, 0.1));
+        inventory.addKeyListener(Controls.getInstance());
         inventory.setRenderer(new ItemComboBoxRenderer());
+        updateInventory(player.getItems());
         JButton use = new JButton("Use");
-        use.addActionListener(e -> System.out.println(inventory.getSelectedItem()));
+        use.addKeyListener(Controls.getInstance());
+        use.addActionListener(e -> player.useItem((Item)inventory.getSelectedItem()));
         hud.add(use, setGridBagConstraints(1, 4, 1, 1, 0.3, 0.1));
         
         hud.add(new JLabel("Log:"), setGridBagConstraints(0, 5, 2, 1, 1, 0.1));
@@ -211,6 +216,11 @@ public class MysteryDungeon extends JFrame{
         return hud;
     }
     
+    /**
+     * Updates the HP bar to the player's current HP values.
+     * @param current The player's current HP.
+     * @param max The player's max HP.
+     */
     public static void updateHP(int current, int max)
     {
         hpBar.setMaximum(max);
@@ -219,6 +229,11 @@ public class MysteryDungeon extends JFrame{
         hpBar.setStringPainted(true);
     }
     
+    /**
+     * Updates the stamina bar to the player's current stamina values.
+     * @param current The player's current stamina.
+     * @param max The player's maximum stamina.
+     */
     public static void updateStamina(int current, int max)
     {
         staminaBar.setMaximum(max);
@@ -227,22 +242,41 @@ public class MysteryDungeon extends JFrame{
         staminaBar.setStringPainted(true);
     }
     
+    /**
+     * Updates the log.
+     * This method automatically inserts a newline.
+     * @param line The line to append to the end of the log.
+     */
     public static void updateLog(String line)
     {
         log.append(line + "\n");
     }
     
+    /**
+     * Clears the log.
+     */
     public static void clearLog()
     {
         log.setText("");
     }
     
+    /**
+     * Updates the inventory drop-down.
+     * @param items The list of items.
+     */
     public static void updateInventory(ArrayList<Item> items)
     {
         inventory.removeAllItems();
-        for(Item item : items)
+        if(items.isEmpty())
         {
-            inventory.addItem(item);
+            inventory.addItem(NullItem.NULL_ITEM);
+        }
+        else
+        {
+            for(Item item : items)
+            {
+                inventory.addItem(item);
+            }
         }
     }
 }

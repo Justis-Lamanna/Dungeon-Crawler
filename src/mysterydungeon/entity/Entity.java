@@ -491,11 +491,20 @@ public class Entity
      */
     public void useItem(Item item)
     {
-        boolean remove = item.useItem(this);
-        if(remove)
+        if(item != null)
         {
-            heldItems.remove(item);
-            MysteryDungeon.updateInventory(heldItems);
+            boolean remove = item.useItem(this);
+            if(remove)
+            {
+                heldItems.remove(item);
+                MysteryDungeon.updateInventory(heldItems);
+            }
+            ArrayList<Entity> entities = dungeon.getEntities();
+            for(Entity others : entities)
+            {
+                others.doState();
+                others.setMoving(true);
+            }
         }
     }
     
