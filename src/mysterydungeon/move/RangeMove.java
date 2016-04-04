@@ -113,7 +113,7 @@ public class RangeMove extends Move
             return;
         }
         attacker.addStamina(-getStamina());
-        MysteryDungeon.LOG.append(String.format("%s fired off a %s!", attacker.getName(), name.split(" ")[1]));
+        MysteryDungeon.LOG.append(String.format("%s fired off a %s!\n", attacker.getName(), name.split(" ")[1]));
         doAnimation(attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
         if(affected.isEmpty())
         {
@@ -172,7 +172,7 @@ public class RangeMove extends Move
             }
             currentPower = (int)(currentPower * MULTIPLIER); //Reduces by 25% the farther away you go.
         }
-        return null;
+        return new ArrayList<>();
     }
     
     @Override

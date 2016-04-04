@@ -146,7 +146,7 @@ public class BrawlMove extends Move
         ArrayList<Entity> affected = new ArrayList<>();
         if(facingNode == null)
         {
-            return null;
+            return new ArrayList<>();
         }
         ArrayList<Entity> entities = dungeon.getEntities();
         for(Entity entity : entities)
@@ -157,7 +157,7 @@ public class BrawlMove extends Move
                 return affected;
             }
         }
-        return null;
+        return new ArrayList<>();
     }
     
     @Override
