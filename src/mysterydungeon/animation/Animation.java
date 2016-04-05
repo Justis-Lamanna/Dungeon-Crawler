@@ -33,13 +33,13 @@ public interface Animation
      * Get the X coordinate of the top-left corner of the image.
      * @return The X coordinate of the top-left corner of the image.
      */
-    int getX();
+    int getAnimationX();
     
     /**
-     * Get the Y coordinate of the top-left corner of the image.
+     * Get the Y coordinate  of the top-left corner of the image.
      * @return The Y coordinate of the top-left corner of the image.
      */
-    int getY();
+    int getAnimationY();
     
     /**
      * Scales an image.

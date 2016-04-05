@@ -37,13 +37,13 @@ public class RoomAnimation implements Animation
     }
     
     @Override
-    public int getX()
+    public int getAnimationX()
     {
         return x;
     }
     
     @Override
-    public int getY()
+    public int getAnimationY()
     {
         return y;
     }

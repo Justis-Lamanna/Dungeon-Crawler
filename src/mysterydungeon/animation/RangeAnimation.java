@@ -68,13 +68,13 @@ public class RangeAnimation implements Animation
     }
     
     @Override
-    public int getX()
+    public int getAnimationX()
     {
         return xx;
     }
     
     @Override
-    public int getY()
+    public int getAnimationY()
     {
         return yy;
     }

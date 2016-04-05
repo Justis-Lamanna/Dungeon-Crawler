@@ -136,7 +136,7 @@ public class DungeonComp extends JComponent
         if(drawMask){paintMask(g);}
         for(Animation anim : animations)
         {
-            g.drawImage(anim.getImage(), anim.getX(), anim.getY(), null);
+            g.drawImage(anim.getImage(), anim.getAnimationX(), anim.getAnimationY(), null);
         }
         paintMoves(g);
     }
@@ -295,8 +295,8 @@ public class DungeonComp extends JComponent
         {
             Entity entity = anim.getEntity();
             BufferedImage entityImage = anim.getImage();
-            int drawX = calculateDrawPointX(anim.getX(), entityImage.getWidth());
-            int drawY = calculateDrawPointY(anim.getY(), entityImage.getHeight());
+            int drawX = calculateDrawPointX(anim.getAnimationX(), entityImage.getWidth());
+            int drawY = calculateDrawPointY(anim.getAnimationY(), entityImage.getHeight());
             g.drawImage(entityImage, drawX, drawY, null);
             if(entity.getState() != null && entity.getState().getClass().equals(FollowState.class))
             {

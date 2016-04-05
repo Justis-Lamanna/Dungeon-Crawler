@@ -375,7 +375,7 @@ public class Dungeon
     {
         int newEnemyX = newEnemy.getX();
         int newEnemyY = newEnemy.getY();
-        if(newEnemyX == player.getX() && newEnemyY == player.getY())
+        if(newEnemyX == player.getAnimationX() && newEnemyY == player.getAnimationY())
         {
             return false;
         }
