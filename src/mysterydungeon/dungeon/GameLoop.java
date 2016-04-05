@@ -56,7 +56,6 @@ public class GameLoop implements Runnable
         final int TARGET_FPS = 60;
         final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
         boolean gameRunning = true;
-        onPlayerStep(comp.getDungeon(), comp.getDungeon().getEntities().get(0));
         while(gameRunning)
         {
             long now = System.nanoTime();

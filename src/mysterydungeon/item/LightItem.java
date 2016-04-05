@@ -8,48 +8,48 @@ package mysterydungeon.item;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.Animation;
+import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.Entity;
 
 /**
- * Represents a stamina-healing item.
+ *
  * @author jlamanna
  */
-public class StaminaItem implements Item
+public class LightItem implements Item
 {
-    public static final Item AAA_BATTERY = new StaminaItem("AAA Battery", 50);
-    public static final Item C_BATTERY = new StaminaItem("C Battery", 100);
-    public static final Item NV_BATTERY = new StaminaItem("9V Battery", 200);
+    public static final LightItem TORCH = new LightItem("Torch", 1.5);
+    public static final LightItem FLASHLIGHT = new LightItem("Flashlight", 2);
     
+    private final double size;
     private final String name;
-    private final int staminaToHeal;
     
-    /**
-     * Creates a stamina-healing item.
-     * @param name The name of the item.
-     * @param stamina The amount of stamina to heal.
-     */
-    public StaminaItem(String name, int stamina)
+    public LightItem(String name, double size)
     {
+        this.size = size;
         this.name = name;
-        staminaToHeal = stamina;
     }
     
     @Override
     public boolean useItem(Entity user)
     {
-        int added = user.addStamina(staminaToHeal);
-        if(added == 0)
+        BufferedImage shadow;
+        try
         {
-            MysteryDungeon.updateLog("Stamina was already maxed out!");
-            return false;
+            shadow = ImageIO.read(new File("Sprites/shadow.png"));
         }
-        else
+        catch(IOException ex)
         {
-            MysteryDungeon.updateLog(String.format("Stamina was increased by %d.", -added));
-            return true;
+            shadow = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
         }
+        MysteryDungeon.updateLog(String.format("%s was able to see farther.", user.getName()));
+        Dungeon thisDungeon = user.getDungeon();
+        thisDungeon.setShadow(Animation.scale(shadow, size, size));
+        thisDungeon.setDiscovered(user.getX(), user.getY());
+        return true;
     }
 
     @Override
@@ -74,7 +74,6 @@ public class StaminaItem implements Item
     @Override
     public String getDescription()
     {
-        return String.format("Increases your stamina by up to %d.", staminaToHeal);
+        return String.format("Increases view size by %.1fx", size);
     }
-    
 }

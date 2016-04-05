@@ -18,8 +18,7 @@ import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.Species;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.AnimatedEntity;
-import mysterydungeon.item.HPItem;
-import mysterydungeon.item.StaminaItem;
+import mysterydungeon.item.*;
 
 /**
  * Class that's responsible for handling stuff related to the Dungeon, such as
@@ -66,8 +65,6 @@ public class Dungeon
     {
         this.basemapFilename = basemapFilename;
         possibleSpecies = speciesList;
-        try{shadow = ImageIO.read(new File("Sprites/shadow.png"));}
-        catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
     }
     
     /**
@@ -77,9 +74,16 @@ public class Dungeon
     {
         loadDungeon();
         MysteryDungeon.clearLog();
-        player = new AnimatedEntity(new Entity(this, Species.PLAYER, null, true));
-        player.getEntity().addItem(StaminaItem.AAA_BATTERY);
-        player.getEntity().addItem(HPItem.REPAIR_V1);
+        if(player == null)
+        {
+            //Players are a pseudo-singleton...There's only one player!
+            player = new AnimatedEntity(new Entity(this, Species.PLAYER, null, true));
+            player.getEntity().addItems(LightItem.TORCH, LightItem.FLASHLIGHT);
+        }
+        else
+        {
+            player.getEntity().randomizeLocation();
+        }
         enemies.clear();
         spawnEnemies(1);
         initializeMask();
@@ -475,8 +479,8 @@ public class Dungeon
      */
     public void setDiscovered(int x, int y)
     {
-        int circleX = x * DungeonComp.TILE_SIZE - 38;
-        int circleY = y * DungeonComp.TILE_SIZE - 38;
+        int circleX = x * DungeonComp.TILE_SIZE - ((shadow.getWidth() - DungeonComp.TILE_SIZE) / 2);
+        int circleY = y * DungeonComp.TILE_SIZE - ((shadow.getHeight() - DungeonComp.TILE_SIZE) / 2);
         for(int xx = 0; xx < shadow.getWidth(); xx++)
         {
             for(int yy = 0; yy < shadow.getHeight(); yy++)
@@ -497,6 +501,8 @@ public class Dungeon
     
     private void initializeMask()
     {
+        try{shadow = ImageIO.read(new File("Sprites/shadow.png"));}
+        catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
         mask = new BufferedImage(tilemap[0].length * DungeonComp.TILE_SIZE, tilemap.length * DungeonComp.TILE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
         for(int xx = 0; xx < mask.getWidth(); xx++)
         {
@@ -505,6 +511,7 @@ public class Dungeon
                 mask.setRGB(xx, yy, 0xFF000000);
             }
         }
+        setDiscovered(player.getEntity().getX(), player.getEntity().getY());
     }
     
     /**
@@ -515,5 +522,24 @@ public class Dungeon
     public BufferedImage getMask()
     {
         return mask;
+    }
+    
+    /**
+     * Sets a new window to be used by the fog of war.
+     * @param newShadow The new shadow. The image should be transparent where the mask
+     * should clear, and solid black where it shouldn't.
+     */
+    public void setShadow(BufferedImage newShadow)
+    {
+        shadow = newShadow;
+    }
+    
+    /**
+     * Get the current shadow being used.
+     * @return The shadow used currently.
+     */
+    public BufferedImage getShadow()
+    {
+        return shadow;
     }
 }

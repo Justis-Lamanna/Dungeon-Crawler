@@ -472,6 +472,15 @@ public class Entity
         MysteryDungeon.updateInventory(heldItems);
     }
     
+    public void addItems(Item... newItems)
+    {
+        for(Item item : newItems)
+        {
+            heldItems.add(item);
+        }
+        MysteryDungeon.updateInventory(heldItems);
+    }
+    
     /**
      * Use an item contained in this entity's inventory.
      * The item will be removed after use, depending on how the item returns
@@ -525,6 +534,15 @@ public class Entity
     public boolean hasItem(Item item)
     {
         return heldItems.contains(item);
+    }
+    
+    /**
+     * Returns the dungeon this entity is in.
+     * @return The dungeon this entity is in.
+     */
+    public Dungeon getDungeon()
+    {
+        return dungeon;
     }
 
     @Override

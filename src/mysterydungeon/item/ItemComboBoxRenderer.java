@@ -24,7 +24,7 @@ public class ItemComboBoxRenderer extends JLabel implements ListCellRenderer
 {
     public ItemComboBoxRenderer()
     {
-        setHorizontalAlignment(CENTER);
+        setHorizontalAlignment(LEFT);
         setVerticalAlignment(CENTER);
         setOpaque(true);
     }
