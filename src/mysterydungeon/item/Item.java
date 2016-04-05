@@ -14,6 +14,9 @@ import mysterydungeon.entity.Entity;
  */
 public interface Item
 {
+    public static final boolean REMOVE = true;
+    public static final boolean KEEP = false;
+    
     /**
      * Dictate what the item will do when used.
      * @param user The user of the item.

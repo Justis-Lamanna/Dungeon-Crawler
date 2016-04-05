@@ -38,12 +38,12 @@ public class HPItem implements Item
         if(added == 0)
         {
             MysteryDungeon.updateLog("HP was already maxed out!");
-            return false;
+            return KEEP;
         }
         else
         {
             MysteryDungeon.updateLog(String.format("HP was healed by %d.", added));
-            return true;
+            return REMOVE;
         }
     }
 

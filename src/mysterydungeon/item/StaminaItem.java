@@ -43,12 +43,12 @@ public class StaminaItem implements Item
         if(added == 0)
         {
             MysteryDungeon.updateLog("Stamina was already maxed out!");
-            return false;
+            return KEEP;
         }
         else
         {
             MysteryDungeon.updateLog(String.format("Stamina was increased by %d.", -added));
-            return true;
+            return REMOVE;
         }
     }
 

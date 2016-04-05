@@ -41,7 +41,7 @@ public class RevealItem implements Item
         {
             dungeon.setDiscovered(node.getX(), node.getY());
         }
-        return true;
+        return REMOVE;
     }
 
     @Override

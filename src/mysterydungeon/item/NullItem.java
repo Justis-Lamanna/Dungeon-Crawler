@@ -6,6 +6,7 @@
 package mysterydungeon.item;
 
 import java.awt.image.BufferedImage;
+import mysterydungeon.MysteryDungeon;
 import mysterydungeon.entity.Entity;
 
 /**
@@ -21,7 +22,8 @@ public class NullItem implements Item
     @Override
     public boolean useItem(Entity user)
     {
-        return false;
+        MysteryDungeon.updateLog("No item was selected.");
+        return KEEP;
     }
 
     @Override

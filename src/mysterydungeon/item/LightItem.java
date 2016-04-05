@@ -43,13 +43,13 @@ public class LightItem implements Item
         }
         catch(IOException ex)
         {
-            shadow = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
+            shadow = new BufferedImage((int)(100 * size), (int)(100 * size), BufferedImage.TYPE_4BYTE_ABGR);
         }
         MysteryDungeon.updateLog(String.format("%s was able to see farther.", user.getName()));
         Dungeon thisDungeon = user.getDungeon();
         thisDungeon.setShadow(Animation.scale(shadow, size, size));
         thisDungeon.setDiscovered(user.getX(), user.getY());
-        return true;
+        return REMOVE;
     }
 
     @Override
