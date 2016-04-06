@@ -6,7 +6,7 @@
 package mysterydungeon.item;
 
 import java.awt.image.BufferedImage;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 
 /**
  * The interface for a usable item in this game.
@@ -22,7 +22,7 @@ public interface Item
      * @param user The user of the item.
      * @return True if the item should be consumed, false if not.
      */
-    boolean useItem(Entity user);
+    boolean useItem(SpeciesEntity user);
     
     /**
      * Get the name of this item.

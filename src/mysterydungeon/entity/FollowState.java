@@ -27,18 +27,18 @@ public class FollowState extends EntityState
      * @param d The dungeon this entity resides in.
      */
     @Override
-    public void doState(Entity e, Dungeon d)
+    public void doState(SpeciesEntity e, Dungeon d)
     {
         if(e.getCurrentHP() > 0)
         {
-            Entity player = d.getEntities().get(0);
+            SpeciesEntity player = d.getEntities().get(0);
             ArrayList<Move> moves = (ArrayList<Move>)e.getMoves().clone();
             Collections.sort((List)moves);
             for(Move move : moves)
             {
                 if(canUseMove(move, e, d))
                 {
-                    ArrayList<Entity> playerList = new ArrayList<>();
+                    ArrayList<SpeciesEntity> playerList = new ArrayList<>();
                     playerList.add(player);
                     move.attack(d, e, playerList);
                     return;
@@ -76,13 +76,13 @@ public class FollowState extends EntityState
         return 1;
     }
     
-    private boolean canUseMove(Move move, Entity entity, Dungeon dungeon)
+    private boolean canUseMove(Move move, SpeciesEntity entity, Dungeon dungeon)
     {
         int oldFacing = entity.facing;
-        Entity player = dungeon.getEntities().get(0);
+        SpeciesEntity player = dungeon.getEntities().get(0);
         for(int dir = 0; dir < 8; dir++)
         {
-            ArrayList<Entity> defenders = move.getDefender(dungeon, entity);
+            ArrayList<SpeciesEntity> defenders = move.getDefender(dungeon, entity);
             if(defenders.contains(player))
             {
                 return true;

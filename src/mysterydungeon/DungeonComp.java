@@ -18,7 +18,7 @@ import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.FollowState;
 import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.move.Move;
@@ -295,7 +295,7 @@ public class DungeonComp extends JComponent
         ArrayList<AnimatedEntity> allEntities = dungeon.getAnimatedEntities();
         for(AnimatedEntity anim : allEntities)
         {
-            Entity entity = anim.getEntity();
+            SpeciesEntity entity = anim.getEntity();
             BufferedImage entityImage = anim.getImage();
             int drawX = calculateDrawPointX(anim.getX(), entityImage.getWidth());
             int drawY = calculateDrawPointY(anim.getY(), entityImage.getHeight());
@@ -309,8 +309,8 @@ public class DungeonComp extends JComponent
             else
             {
                 int facing = entity.facing;
-                drawX = calculateDrawPointX(entity.getPixelX(), 32);
-                drawY = calculateDrawPointY(entity.getPixelY(), 32);
+                drawX = calculateDrawPointX(entity.getX(), 32);
+                drawY = calculateDrawPointY(entity.getY(), 32);
                 BufferedImage arrow = arrowImage.getSubimage(0, facing*32, 32, 32);
                 g.drawImage(arrow, drawX, drawY, null);
             }

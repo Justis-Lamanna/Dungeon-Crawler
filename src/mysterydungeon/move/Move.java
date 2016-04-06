@@ -11,7 +11,7 @@ import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
 import mysterydungeon.dungeon.Dungeon;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 
 /**
  * The skeleton for a move.
@@ -46,7 +46,7 @@ public abstract class Move implements Comparable
      * @param attacker The entity using the attack.
      * @return The entity receiving the attack.
      */
-    public abstract ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker);
+    public abstract ArrayList<SpeciesEntity> getDefender(Dungeon dungeon, SpeciesEntity attacker);
 
     /**
      * Perform the attack.
@@ -54,7 +54,7 @@ public abstract class Move implements Comparable
      * @param attacker The entity using the attack.
      * @param defender The entity receiving the attack.
      */
-    public abstract void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> defender);
+    public abstract void attack(Dungeon dungeon, SpeciesEntity attacker, ArrayList<SpeciesEntity> defender);
 
     /**
      * Returns a name for this attack.

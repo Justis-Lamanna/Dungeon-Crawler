@@ -8,7 +8,7 @@ package mysterydungeon.move;
 import java.util.ArrayList;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.RoomNode;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.RoomAnimation;
@@ -95,7 +95,7 @@ public class RoomMove extends Move
      * @param affected
      */
     @Override
-    public void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> affected)
+    public void attack(Dungeon dungeon, SpeciesEntity attacker, ArrayList<SpeciesEntity> affected)
     {
         if(attacker.getCurrentStamina() < stamina)
         {
@@ -104,7 +104,7 @@ public class RoomMove extends Move
         }
         attacker.addStamina(-getStamina());
         MysteryDungeon.updateLog(String.format("%s let off a %s", attacker.getName(), name));
-        doAnimation(attacker.getPixelX(), attacker.getPixelY());
+        doAnimation(attacker.getX(), attacker.getY());
         if(affected.isEmpty())
         {
             MysteryDungeon.updateLog("   But there was no target!");
@@ -117,7 +117,7 @@ public class RoomMove extends Move
             }
             else
             {
-                for(Entity entity : affected)
+                for(SpeciesEntity entity : affected)
                 {
                     int newDamage = power / affected.size();
                     int totalDamage = entity.addHP(-newDamage);
@@ -145,14 +145,14 @@ public class RoomMove extends Move
      * @return Null. The affected entities are stored internally.
      */
     @Override
-    public ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker)
+    public ArrayList<SpeciesEntity> getDefender(Dungeon dungeon, SpeciesEntity attacker)
     {
-        ArrayList<Entity> affected = new ArrayList<>();
+        ArrayList<SpeciesEntity> affected = new ArrayList<>();
         RoomNode room = dungeon.getRoom(attacker.getCurrentNode());
         if(room != null)
         {
             //The attacker must be in a room.
-            for(Entity entity : dungeon.getEntities())
+            for(SpeciesEntity entity : dungeon.getEntities())
             {
                 if(entity.equals(attacker)){continue;}
                 if(room.equals(dungeon.getRoom(entity.getDestinationNode())))

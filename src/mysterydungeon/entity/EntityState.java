@@ -26,7 +26,7 @@ public abstract class EntityState
      * @param e The entity this state refers to.
      * @param d The dungeon this entity is in.
      */
-    public abstract void doState(Entity e, Dungeon d);
+    public abstract void doState(SpeciesEntity e, Dungeon d);
 
     /**
      * An arbitrary value, used to distinguish between different states.
@@ -48,10 +48,10 @@ public abstract class EntityState
      * @param end The end node, where the path will terminate.
      * @return The next valid node the Entity can travel to.
      */
-    public Node nextNode(Entity entity, Dungeon dungeon, Node start, Node end)
+    public Node nextNode(SpeciesEntity entity, Dungeon dungeon, Node start, Node end)
     {
         LinkedList<Node> path = findShortestPath(entity, dungeon, start, end);
-        Entity player = dungeon.getEntities().get(0);
+        SpeciesEntity player = dungeon.getEntities().get(0);
         if(path.size() > 1 && !isOccupied(entity, dungeon, path.get(1)))
         {
             return path.get(1);
@@ -96,7 +96,7 @@ public abstract class EntityState
      * @param end The node to end the path at.
      * @return A linked list, in the order of path traversal.
      */
-    public LinkedList<Node> findShortestPath(Entity entity, Dungeon dungeon, Node start, Node end)
+    public LinkedList<Node> findShortestPath(SpeciesEntity entity, Dungeon dungeon, Node start, Node end)
     {
         LinkedList<Node> path = readPath(findShortestPath(entity, dungeon, start), start, end);
         return path;
@@ -109,7 +109,7 @@ public abstract class EntityState
      * @param start The node to begin the path at.
      * @return A hashmap, linking all nodes to the ones closest to them.
      */
-    public HashMap<Node, Node> findShortestPath(Entity entity, Dungeon dungeon, Node start)
+    public HashMap<Node, Node> findShortestPath(SpeciesEntity entity, Dungeon dungeon, Node start)
     {
         HashMap<Node, Double> dist = new HashMap<>();
         HashMap<Node, Node> prev = new HashMap<>();
@@ -200,7 +200,7 @@ public abstract class EntityState
      * @param next The node to check the legality of.
      * @return True if the node is valid, false if it is not.
      */
-    protected boolean isValidNode(Entity entity, Dungeon dungeon, Node current, Node next)
+    protected boolean isValidNode(SpeciesEntity entity, Dungeon dungeon, Node current, Node next)
     {
         return next.getType() == Node.LAND;// && !isOccupied(entity, dungeon, next);
     }
@@ -212,10 +212,10 @@ public abstract class EntityState
      * @param node The node the test the occupancy of.
      * @return True if the node is occupied, false if it isn't
      */
-    protected boolean isOccupied(Entity entity, Dungeon dungeon, Node node)
+    protected boolean isOccupied(SpeciesEntity entity, Dungeon dungeon, Node node)
     {
-        ArrayList<Entity> enemies = dungeon.getEntities();
-        for(Entity enemy : enemies)
+        ArrayList<SpeciesEntity> enemies = dungeon.getEntities();
+        for(SpeciesEntity enemy : enemies)
         {
             if(enemy.equals(entity)){continue;}
             Node enemyNode = enemy.getDestinationNode();
@@ -238,11 +238,11 @@ public abstract class EntityState
      */
     protected boolean playerNearby(Dungeon d, Node start, int range)
     {
-        Entity player = d.getEntities().get(0);
+        SpeciesEntity player = d.getEntities().get(0);
         return entityNearby(d, player, start, range);
     }
     
-    protected boolean entityNearby(Dungeon d, Entity e, Node start, int range)
+    protected boolean entityNearby(Dungeon d, SpeciesEntity e, Node start, int range)
     {
         Node playerNode = e.getCurrentNode();
         LinkedList<Node> queue = new LinkedList<>();
@@ -284,7 +284,7 @@ public abstract class EntityState
         return -1;
     }
     
-    protected void pickupItem(Dungeon d, Entity e)
+    protected void pickupItem(Dungeon d, SpeciesEntity e)
     {
         ArrayList<ItemEntity> items = d.getItems();
         for(ItemEntity item : items)

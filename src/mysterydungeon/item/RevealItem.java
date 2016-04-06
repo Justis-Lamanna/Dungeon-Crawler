@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 
 /**
  *
@@ -33,7 +33,7 @@ public class RevealItem implements Item
     }
     
     @Override
-    public boolean useItem(Entity user)
+    public boolean useItem(SpeciesEntity user)
     {
         Dungeon dungeon = user.getDungeon();
         ArrayList<Node> nodes = dungeon.getNodesList();

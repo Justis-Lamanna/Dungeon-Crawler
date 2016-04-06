@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 
 /**
  *
@@ -55,7 +55,7 @@ public class NeutralMove extends Move
     }
     
     @Override
-    public void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> affected)
+    public void attack(Dungeon dungeon, SpeciesEntity attacker, ArrayList<SpeciesEntity> affected)
     {
         MysteryDungeon.updateLog(String.format("%s %sed!", attacker.getName(), name));
         if(affected.isEmpty())
@@ -64,7 +64,7 @@ public class NeutralMove extends Move
         }
         else
         {
-            Entity defender = affected.get(0);
+            SpeciesEntity defender = affected.get(0);
             int totalDamage = defender.addHP(-power);
             MysteryDungeon.updateLog(String.format("   %s lost %dHP!", defender.getName(), totalDamage));
             if(defender.getCurrentHP() == 0)
@@ -80,17 +80,17 @@ public class NeutralMove extends Move
     }
     
     @Override
-    public ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker)
+    public ArrayList<SpeciesEntity> getDefender(Dungeon dungeon, SpeciesEntity attacker)
     {
         Node currentNode = attacker.getCurrentNode();
         Node facingNode = currentNode.getPath(attacker.facing);
-        ArrayList<Entity> affected = new ArrayList<>();
+        ArrayList<SpeciesEntity> affected = new ArrayList<>();
         if(facingNode == null)
         {
             return new ArrayList<>();
         }
-        ArrayList<Entity> entities = dungeon.getEntities();
-        for(Entity entity : entities)
+        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+        for(SpeciesEntity entity : entities)
         {
             if(entity.getDestinationNode().equals(facingNode))
             {

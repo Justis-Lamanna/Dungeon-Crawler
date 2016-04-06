@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.move.Move;
 
@@ -88,18 +88,18 @@ public class GameLoop implements Runnable
     public void updateGame(double delta)
     {
         Dungeon dungeon = comp.getDungeon();
-        ArrayList<Entity> entities = dungeon.getEntities();
-        Entity player = entities.get(0);
+        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+        SpeciesEntity player = entities.get(0);
         boolean doneMoving = true;
         boolean isRunning = controls.isKeyDown(KeyEvent.VK_NUMPAD5);
-        for(Entity entity : entities)
+        for(SpeciesEntity entity : entities)
         {
             if(entity.isMoving())
             {
                 doneMoving = false;
                 int[] iValues = interpolate(entity, isRunning ? FRAMES_RUN : FRAMES_WALK);
                 entity.addPixel(iValues[0], iValues[1]);
-                if(entity.getDestinationNode().equals(entity.getPixelX(), entity.getPixelY()))
+                if(entity.getDestinationNode().equals(entity.getX(), entity.getY()))
                 {
                     entity.setCurrentNode(entity.getDestinationNode());
                     entity.setMoving(false);
@@ -108,7 +108,7 @@ public class GameLoop implements Runnable
         }
         if(doneMoving && handleControls(dungeon, player))
         {
-            for(Entity others : entities)
+            for(SpeciesEntity others : entities)
             {
                 others.doState();
                 others.setMoving(true);
@@ -121,18 +121,18 @@ public class GameLoop implements Runnable
         }
     }
         
-    private int[] interpolate(Entity entity, int delta)
+    private int[] interpolate(SpeciesEntity entity, int delta)
     {
         int[] returnPoints = new int[2];
-        returnPoints[0] = (entity.getDestinationNode().getX() - entity.getX()) * (24 / delta);
-        returnPoints[1] = (entity.getDestinationNode().getY() - entity.getY()) * (24 / delta);
+        returnPoints[0] = (entity.getDestinationNode().getX() - entity.getTileX()) * (24 / delta);
+        returnPoints[1] = (entity.getDestinationNode().getY() - entity.getTileY()) * (24 / delta);
         return returnPoints;
     }
 
-    private boolean handleControls(Dungeon dungeon, Entity player)
+    private boolean handleControls(Dungeon dungeon, SpeciesEntity player)
     {
         Node playerNode = player.getCurrentNode();
-        ArrayList<Entity> entities = dungeon.getEntities();
+        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
         int directionPressed = getDirectionPressed();
         int attackPressed = getAttackPressed();
         if(controls.isKeyDown(KeyEvent.VK_CONTROL))
@@ -151,7 +151,7 @@ public class GameLoop implements Runnable
                     {
                         if(next == null){break;}
                         next = next.getPath(dir);
-                        for(Entity entity : entities)
+                        for(SpeciesEntity entity : entities)
                         {
                             if(entity.getCurrentNode().equals(next))
                             {
@@ -186,7 +186,7 @@ public class GameLoop implements Runnable
                 Move attackUsed = knownMoves.get(attackPressed);
                 useMove = false;
                 //Now, we go for the kill!
-                ArrayList<Entity> defender = attackUsed.getDefender(comp.getDungeon(), player);
+                ArrayList<SpeciesEntity> defender = attackUsed.getDefender(comp.getDungeon(), player);
                 attackUsed.attack(comp.getDungeon(), player, defender);
                 return true;
             }
@@ -219,7 +219,7 @@ public class GameLoop implements Runnable
         return -1;
     }
 
-    private void onPlayerStep(Dungeon dungeon, Entity player)
+    private void onPlayerStep(Dungeon dungeon, SpeciesEntity player)
     {
         int playerCenterX = player.getDestinationNode().getX();
         int playerCenterY = player.getDestinationNode().getY();

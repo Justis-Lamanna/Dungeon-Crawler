@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import mysterydungeon.MysteryDungeon;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 
 /**
  * Represents a stamina-healing item.
@@ -37,7 +37,7 @@ public class StaminaItem implements Item
     }
     
     @Override
-    public boolean useItem(Entity user)
+    public boolean useItem(SpeciesEntity user)
     {
         int added = user.addStamina(staminaToHeal);
         if(added == 0)

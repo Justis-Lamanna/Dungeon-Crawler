@@ -16,7 +16,7 @@ import java.util.Random;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 import mysterydungeon.DungeonComp;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.Species;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.AnimatedEntity;
@@ -96,7 +96,7 @@ public class Dungeon
         if(player == null)
         {
             //Players are a pseudo-singleton...There's only one player!
-            player = new AnimatedEntity(new Entity(this, Species.PLAYER, null, true));
+            player = new AnimatedEntity(new SpeciesEntity(this, Species.PLAYER, null, true));
             player.getEntity().addItems(LightItem.TORCH, LightItem.FLASHLIGHT);
         }
         else
@@ -319,9 +319,9 @@ public class Dungeon
      * Returns all the entities in this dungeon.
      * @return List of all entities, with the player occupying slot 0.
      */
-    public ArrayList<Entity> getEntities()
+    public ArrayList<SpeciesEntity> getEntities()
     {
-        ArrayList<Entity> entities = new ArrayList<>();
+        ArrayList<SpeciesEntity> entities = new ArrayList<>();
         entities.add(player.getEntity());
         for(Animation enemy : enemies)
         {
@@ -355,7 +355,7 @@ public class Dungeon
         for(int count = 0; count < number; count++)
         {
             Species randomSpecies = possibleSpecies[PRNG.nextInt(possibleSpecies.length)];
-            Entity enemy = new Entity(this, randomSpecies);
+            SpeciesEntity enemy = new SpeciesEntity(this, randomSpecies);
             while(!isValidPosition(enemy))
             {
                 enemy.randomizeLocation();
@@ -368,7 +368,7 @@ public class Dungeon
      * Spawns a specific enemy in this dungeon.
      * @param entity The entity to spawn.
      */
-    public void spawnEnemy(Entity entity)
+    public void spawnEnemy(SpeciesEntity entity)
     {
         enemies.add(new AnimatedEntity(entity));
     }
@@ -385,7 +385,7 @@ public class Dungeon
      * Destroy a specific enemy in this dungeon.
      * @param enemy The enemy to destroy.
      */
-    public void clearEnemy(Entity enemy)
+    public void clearEnemy(SpeciesEntity enemy)
     {
         for(int index = 0; index < enemies.size(); index++)
         {
@@ -397,17 +397,17 @@ public class Dungeon
         }
     }
 
-    private boolean isValidPosition(Entity newEnemy)
+    private boolean isValidPosition(SpeciesEntity newEnemy)
     {
-        int newEnemyX = newEnemy.getX();
-        int newEnemyY = newEnemy.getY();
+        int newEnemyX = newEnemy.getTileX();
+        int newEnemyY = newEnemy.getTileY();
         if(newEnemyX == player.getX() && newEnemyY == player.getY())
         {
             return false;
         }
         for(AnimatedEntity enemy : enemies)
         {
-            if(newEnemyX == enemy.getEntity().getX() && newEnemyY == enemy.getEntity().getY())
+            if(newEnemyX == enemy.getEntity().getTileX() && newEnemyY == enemy.getEntity().getTileY())
             {
                 return false;
             }
@@ -532,7 +532,7 @@ public class Dungeon
                 mask.setRGB(xx, yy, 0xFF000000);
             }
         }
-        setDiscovered(player.getEntity().getX(), player.getEntity().getY());
+        setDiscovered(player.getEntity().getTileX(), player.getEntity().getTileY());
     }
     
     /**

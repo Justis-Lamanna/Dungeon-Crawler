@@ -8,7 +8,7 @@ package mysterydungeon.move;
 import java.util.ArrayList;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.RangeAnimation;
@@ -105,7 +105,7 @@ public class RangeMove extends Move
      * @param affected
      */
     @Override
-    public void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> affected)
+    public void attack(Dungeon dungeon, SpeciesEntity attacker, ArrayList<SpeciesEntity> affected)
     {
         if(attacker.getCurrentStamina() < stamina)
         {
@@ -114,14 +114,14 @@ public class RangeMove extends Move
         }
         attacker.addStamina(-getStamina());
         MysteryDungeon.updateLog(String.format("%s fired off a %s!", attacker.getName(), name.split(" ")[1]));
-        doAnimation(attacker.getPixelX(), attacker.getPixelY(), attacker.facing, currentRange);
+        doAnimation(attacker.getX(), attacker.getY(), attacker.facing, currentRange);
         if(affected.isEmpty())
         {
             MysteryDungeon.updateLog("   But there was no target!");
         }
         else
         {
-            Entity defender = affected.get(0);
+            SpeciesEntity defender = affected.get(0);
             if(Dungeon.PRNG.nextInt(100) < 15)
             {
                 MysteryDungeon.updateLog("   Just missed!");
@@ -151,17 +151,17 @@ public class RangeMove extends Move
      * @return The entity receiving the attack, or null if there is nobody.
      */
     @Override
-    public ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker)
+    public ArrayList<SpeciesEntity> getDefender(Dungeon dungeon, SpeciesEntity attacker)
     {
         Node start = attacker.getCurrentNode();
         int facing = attacker.facing;
         currentPower = power;
-        ArrayList<Entity> affected = new ArrayList<>();
+        ArrayList<SpeciesEntity> affected = new ArrayList<>();
         for(int ds = 0; ds < range; ds++)
         {
             start = start.getPath(facing);
             if(start == null){break;}
-            for(Entity entity : dungeon.getEntities())
+            for(SpeciesEntity entity : dungeon.getEntities())
             {
                 if(entity.getDestinationNode().equals(start))
                 {

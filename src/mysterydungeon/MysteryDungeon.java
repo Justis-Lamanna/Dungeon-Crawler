@@ -22,7 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.GameLoop;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.item.Item;
 import mysterydungeon.item.ItemComboBoxRenderer;
 import mysterydungeon.item.NullItem;
@@ -182,7 +182,7 @@ public class MysteryDungeon extends JFrame{
     
     private JPanel createHud()
     {
-        Entity player = dungeon.getDungeon().getEntities().get(0);
+        SpeciesEntity player = dungeon.getDungeon().getEntities().get(0);
         JPanel hud = new JPanel(new GridBagLayout());
         
         hud.add(new JLabel("Player Stats"), setGridBagConstraints(0, 0, 2, 1, 1, 0.1));

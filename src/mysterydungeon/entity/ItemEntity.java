@@ -5,6 +5,7 @@
  */
 package mysterydungeon.entity;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
@@ -15,7 +16,7 @@ import mysterydungeon.item.Item;
  *
  * @author Justis
  */
-public class ItemEntity
+public class ItemEntity implements Entity
 {
     private final Item item;
     private final Node currentNode;
@@ -41,13 +42,21 @@ public class ItemEntity
         return item;
     }
     
+    @Override
     public int getX()
     {
         return currentNode.getX();
     }
     
+    @Override
     public int getY()
     {
         return currentNode.getY();
     }   
+    
+    @Override
+    public BufferedImage getImage()
+    {
+        return item.getImage();
+    }
 }

@@ -7,7 +7,7 @@ package mysterydungeon.item;
 
 import java.awt.image.BufferedImage;
 import mysterydungeon.MysteryDungeon;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 
 /**
  * Represents the empty item.
@@ -20,7 +20,7 @@ public class NullItem implements Item
     public static final NullItem NULL_ITEM = new NullItem();
     
     @Override
-    public boolean useItem(Entity user)
+    public boolean useItem(SpeciesEntity user)
     {
         MysteryDungeon.updateLog("No item was selected.");
         return KEEP;

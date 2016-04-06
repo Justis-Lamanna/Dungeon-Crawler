@@ -7,7 +7,7 @@ package mysterydungeon.move;
 
 import java.util.ArrayList;
 import mysterydungeon.dungeon.Dungeon;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.dungeon.Node;
 
@@ -71,7 +71,7 @@ public class BrawlMove extends Move
     }
     
     @Override
-    public void attack(Dungeon dungeon, Entity attacker, ArrayList<Entity> affected)
+    public void attack(Dungeon dungeon, SpeciesEntity attacker, ArrayList<SpeciesEntity> affected)
     {
         int damage = basePower;
         if(attacker.getCurrentStamina() < stamina)
@@ -87,7 +87,7 @@ public class BrawlMove extends Move
         }
         else
         {
-            Entity defender = affected.get(0);
+            SpeciesEntity defender = affected.get(0);
             if(Dungeon.PRNG.nextInt(100) < 10)
             {
                 damage = (int)(damage * 1.5);
@@ -115,17 +115,17 @@ public class BrawlMove extends Move
     }
     
     @Override
-    public ArrayList<Entity> getDefender(Dungeon dungeon, Entity attacker)
+    public ArrayList<SpeciesEntity> getDefender(Dungeon dungeon, SpeciesEntity attacker)
     {
         Node currentNode = attacker.getCurrentNode();
         Node facingNode = currentNode.getPath(attacker.facing);
-        ArrayList<Entity> affected = new ArrayList<>();
+        ArrayList<SpeciesEntity> affected = new ArrayList<>();
         if(facingNode == null)
         {
             return new ArrayList<>();
         }
-        ArrayList<Entity> entities = dungeon.getEntities();
-        for(Entity entity : entities)
+        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+        for(SpeciesEntity entity : entities)
         {
             if(entity.getDestinationNode().equals(facingNode))
             {

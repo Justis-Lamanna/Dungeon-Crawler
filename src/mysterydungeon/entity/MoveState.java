@@ -31,7 +31,7 @@ public class MoveState extends EntityState
      * @param d The dungeon this entity resides in.
      */
     @Override
-    public void doState(Entity e, Dungeon d)
+    public void doState(SpeciesEntity e, Dungeon d)
     {
         Node current = e.getCurrentNode();
         if(d.getRoom(current) != null)

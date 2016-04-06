@@ -7,6 +7,7 @@ package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
 import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.SpeciesEntity;
 
 /**
  * A wrapper class, which wraps an Entity inside an Animation.
@@ -16,9 +17,9 @@ import mysterydungeon.entity.Entity;
  * reasons.
  * @author jlamanna
  */
-public class AnimatedEntity implements Animation
+public class AnimatedEntity implements Animation, Entity
 {
-    private final Entity entity;
+    private final SpeciesEntity entity;
     private int counter;
     
     private static final int FRAMES_BETWEEN_STEP = 24;
@@ -27,7 +28,7 @@ public class AnimatedEntity implements Animation
      * Create an animated entity.
      * @param entity The base entity to use.
      */
-    public AnimatedEntity(Entity entity)
+    public AnimatedEntity(SpeciesEntity entity)
     {
         this.entity = entity;
         counter = 0;
@@ -36,7 +37,7 @@ public class AnimatedEntity implements Animation
     @Override
     public int getX()
     {
-        return entity.getPixelX();
+        return entity.getX();
     }
     
     @Override
@@ -44,11 +45,11 @@ public class AnimatedEntity implements Animation
     {
         if(counter < FRAMES_BETWEEN_STEP)
         {
-            return entity.getPixelY();
+            return entity.getY();
         }
         else
         {
-            return entity.getPixelY() - 1;
+            return entity.getY() - 1;
         }
     }
     
@@ -76,7 +77,7 @@ public class AnimatedEntity implements Animation
      * Get the entity associated with this animated entity.
      * @return The entity contained in this animated entity.
      */
-    public Entity getEntity()
+    public SpeciesEntity getEntity()
     {
         return entity;
     }
