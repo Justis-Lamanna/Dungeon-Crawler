@@ -18,6 +18,8 @@ import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.Species;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.AnimatedEntity;
+import mysterydungeon.animation.Animation;
+import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.item.*;
 
 /**
@@ -37,6 +39,16 @@ public class Dungeon
             Species.ROBOT7, Species.ROBOT8, Species.ROBOT9,
             Species.ROBOT10, Species.ROBOT11, Species.ROBOT12,
             Species.ROBOT13, Species.ROBOT14};
+    
+    /**
+     * A sample list containing all items.
+     */
+    public static final Item[] TEST_ITEMS = {
+        HPItem.REPAIR_V1, HPItem.REPAIR_V2, HPItem.REPAIR_V10,
+        LightItem.TORCH, LightItem.FLASHLIGHT,
+        RevealItem.SEEING_LIGHT,
+        StaminaItem.AAA_BATTERY, StaminaItem.C_BATTERY, StaminaItem.NV_BATTERY
+    };
 
     private final String basemapFilename;
     private int[][] tilemap;
@@ -50,6 +62,9 @@ public class Dungeon
     
     private BufferedImage mask = null;
     private BufferedImage shadow = null;
+    
+    private final Item[] possibleItems;
+    private final ArrayList<ItemEntity> items = new ArrayList<>();
 
     /**
      * The random number generator, used in all instances of randomness in-game.
@@ -60,11 +75,13 @@ public class Dungeon
      * Creates an instance of a Dungeon.
      * @param basemapFilename The filename of the base map this dungeon should display.
      * @param speciesList A list of possible species that may appear in the dungeon.
+     * @param itemList A list of possible items that may appear in the dungeon.
      */
-    public Dungeon(String basemapFilename, Species[] speciesList)
+    public Dungeon(String basemapFilename, Species[] speciesList, Item[] itemList)
     {
         this.basemapFilename = basemapFilename;
         possibleSpecies = speciesList;
+        possibleItems = itemList;
     }
     
     /**
@@ -86,6 +103,8 @@ public class Dungeon
         }
         enemies.clear();
         spawnEnemies(1);
+        items.clear();
+        spawnItems(1);
         initializeMask();
     }
 
@@ -302,9 +321,10 @@ public class Dungeon
     {
         ArrayList<Entity> entities = new ArrayList<>();
         entities.add(player.getEntity());
-        for(AnimatedEntity enemy : enemies)
+        for(Animation enemy : enemies)
         {
-                entities.add(enemy.getEntity());
+            AnimatedEntity convertedEnemy = (AnimatedEntity)enemy;    
+            entities.add(convertedEnemy.getEntity());
         }
         return entities;
     }
@@ -379,7 +399,7 @@ public class Dungeon
     {
         int newEnemyX = newEnemy.getX();
         int newEnemyY = newEnemy.getY();
-        if(newEnemyX == player.getAnimationX() && newEnemyY == player.getAnimationY())
+        if(newEnemyX == player.getX() && newEnemyY == player.getY())
         {
             return false;
         }
@@ -393,16 +413,14 @@ public class Dungeon
         return true;
     }
 
-    /**
-     * Causes each entity to act for its current turn, according to their state.
-     */
+    /*
     public void updateAll()
     {
         for(AnimatedEntity enemy : enemies)
         {
             enemy.getEntity().doState();
         }
-    }
+    }*/
 
     /**
      * Generates a random node contained in the map.
@@ -541,5 +559,34 @@ public class Dungeon
     public BufferedImage getShadow()
     {
         return shadow;
+    }
+    
+    public ArrayList<ItemEntity> getItems()
+    {
+        return items;
+    }
+    
+    public void spawnItems(int number)
+    {
+        for(int count = 0; count < number; count++)
+        {
+            Item randomItem = possibleItems[PRNG.nextInt(possibleItems.length)];
+            items.add(new ItemEntity(randomItem, this));
+        }
+    }
+    
+    public void spawnItem(Item item)
+    {
+        items.add(new ItemEntity(item, this));
+    }
+    
+    public void clearItems()
+    {
+        items.clear();
+    }
+    
+    public void clearItem(ItemEntity item)
+    {
+        items.remove(item);
     }
 }

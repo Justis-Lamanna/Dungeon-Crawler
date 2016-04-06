@@ -20,6 +20,7 @@ import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.FollowState;
+import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.move.Move;
 
 /**
@@ -71,18 +72,6 @@ public class DungeonComp extends JComponent
     private static BufferedImage attackImage;
     private static BufferedImage arrowImage;
 
-    private DungeonComp(String tileFilename, String tilemapFilename)
-    {
-        super();
-        dungeon = new Dungeon(tilemapFilename, Dungeon.TEST_LIST);
-        dungeon.startDungeon();
-        generateTiles(tileFilename);
-        try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
-        catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
-        try{arrowImage = ImageIO.read(new File("Sprites/arrows.png"));}
-        catch(IOException ex){arrowImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
-    }
-    
     private DungeonComp(String tiles, Dungeon dungeon)
     {
         super();
@@ -132,11 +121,12 @@ public class DungeonComp extends JComponent
         if(drawNodes){paintNodes(g);}
         if(drawPaths){paintPaths(g);}
         if(drawRooms){paintRooms(g);}
+        paintItems(g);
         if(drawEntity){paintEntities(g);}
         if(drawMask){paintMask(g);}
         for(Animation anim : animations)
         {
-            g.drawImage(anim.getImage(), anim.getAnimationX(), anim.getAnimationY(), null);
+            g.drawImage(anim.getImage(), anim.getX(), anim.getY(), null);
         }
         paintMoves(g);
     }
@@ -287,6 +277,18 @@ public class DungeonComp extends JComponent
             g.fillRect(roomCenterX, roomCenterY, TILE_SIZE/2, TILE_SIZE/2);
         }
     }
+    
+    private void paintItems(Graphics g)
+    {
+        ArrayList<ItemEntity> allItems = dungeon.getItems();
+        for(ItemEntity item : allItems)
+        {
+            BufferedImage itemImage = item.getItem().getImage();
+            int drawX = item.getX() * TILE_SIZE;
+            int drawY = item.getY() * TILE_SIZE;
+            g.drawImage(itemImage, drawX, drawY, null);
+        }
+    }
 
     private void paintEntities(Graphics g)
     {
@@ -295,8 +297,8 @@ public class DungeonComp extends JComponent
         {
             Entity entity = anim.getEntity();
             BufferedImage entityImage = anim.getImage();
-            int drawX = calculateDrawPointX(anim.getAnimationX(), entityImage.getWidth());
-            int drawY = calculateDrawPointY(anim.getAnimationY(), entityImage.getHeight());
+            int drawX = calculateDrawPointX(anim.getX(), entityImage.getWidth());
+            int drawY = calculateDrawPointY(anim.getY(), entityImage.getHeight());
             g.drawImage(entityImage, drawX, drawY, null);
             if(entity.getState() != null && entity.getState().getClass().equals(FollowState.class))
             {
@@ -465,7 +467,6 @@ public class DungeonComp extends JComponent
      */
     public void kachunk(boolean repaint)
     {
-        dungeon.updateAll();
         if(repaint){repaint();}
     }
 

@@ -12,7 +12,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -89,7 +88,7 @@ public class MysteryDungeon extends JFrame{
         JPanel frame = new JPanel(new GridBagLayout());
         GridBagConstraints c;
         
-        Dungeon dg = new Dungeon(tilemapFilename, Dungeon.TEST_LIST);
+        Dungeon dg = new Dungeon(tilemapFilename, Dungeon.TEST_LIST, Dungeon.TEST_ITEMS);
         dungeon = DungeonComp.getInstance(tileFilename, dg);
         JScrollPane scrollpane = new JScrollPane(dungeon);
         c = setGridBagConstraints(0, 0, 5, 1, 0.9, 1.0);

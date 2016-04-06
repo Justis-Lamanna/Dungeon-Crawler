@@ -34,13 +34,13 @@ public class AnimatedEntity implements Animation
     }
     
     @Override
-    public int getAnimationX()
+    public int getX()
     {
         return entity.getPixelX();
     }
     
     @Override
-    public int getAnimationY()
+    public int getY()
     {
         if(counter < FRAMES_BETWEEN_STEP)
         {

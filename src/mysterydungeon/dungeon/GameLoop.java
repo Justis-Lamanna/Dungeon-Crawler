@@ -9,7 +9,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
+import mysterydungeon.MysteryDungeon;
 import mysterydungeon.entity.Entity;
+import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.move.Move;
 
 /**
@@ -223,5 +225,16 @@ public class GameLoop implements Runnable
         int playerCenterY = player.getDestinationNode().getY();
         dungeon.setDiscovered(playerCenterX, playerCenterY);
         player.addHP(1);
+        ArrayList<ItemEntity> items = dungeon.getItems();
+        for(ItemEntity item : items)
+        {
+            if(playerCenterX == item.getX() && playerCenterY == item.getY())
+            {
+                dungeon.clearItem(item);
+                MysteryDungeon.updateLog(String.format("Picked up a %s.", item.getItem().getName()));
+                player.addItem(item.getItem());
+                break;
+            }
+        }
     }
 }
