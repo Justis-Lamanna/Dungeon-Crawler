@@ -5,9 +5,7 @@
  */
 package mysterydungeon.entity;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import mysterydungeon.animation.Animation;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
@@ -17,7 +15,7 @@ import mysterydungeon.item.Item;
  *
  * @author Justis
  */
-public class ItemEntity implements Animation
+public class ItemEntity
 {
     private final Item item;
     private final Node currentNode;
@@ -43,28 +41,13 @@ public class ItemEntity implements Animation
         return item;
     }
     
-    @Override
     public int getX()
     {
         return currentNode.getX();
     }
     
-    @Override
     public int getY()
     {
         return currentNode.getY();
-    }
-    
-    @Override
-    public BufferedImage getImage()
-    {
-        return item.getImage();
-    }
-    
-    @Override
-    public boolean animate()
-    {
-        return false;
-    }
-        
+    }   
 }
