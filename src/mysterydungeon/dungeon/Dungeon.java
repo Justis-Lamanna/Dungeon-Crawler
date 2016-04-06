@@ -5,6 +5,8 @@
  */
 package mysterydungeon.dungeon;
 
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -519,8 +521,9 @@ public class Dungeon
     
     private void initializeMask()
     {
-        try{shadow = ImageIO.read(new File("Sprites/shadow.png"));}
-        catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
+        //try{shadow = ImageIO.read(new File("Sprites/shadow.png"));}
+        //catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
+        shadow = generateShadow(150);
         mask = new BufferedImage(tilemap[0].length * DungeonComp.TILE_SIZE, tilemap.length * DungeonComp.TILE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
         for(int xx = 0; xx < mask.getWidth(); xx++)
         {
@@ -559,6 +562,24 @@ public class Dungeon
     public BufferedImage getShadow()
     {
         return shadow;
+    }
+    
+    public BufferedImage generateShadow(int width)
+    {
+        BufferedImage returnShadow = new BufferedImage(width, width, BufferedImage.TYPE_4BYTE_ABGR);
+        int mid = returnShadow.getWidth() / 2;
+        for(int xx = 0; xx < returnShadow.getWidth(); xx++)
+        {
+            for(int yy = 0; yy < returnShadow.getHeight(); yy++)
+            {
+                int distance = (int)(Point.distance(xx, yy, mid, mid));
+                int rgb = (int)((510.0 / width) * distance);
+                if(rgb > 255){rgb = 255;}
+                else if(rgb < (width / 2)){rgb = 0;}
+                returnShadow.setRGB(xx, yy, rgb << 24);
+            }
+        }
+        return returnShadow;
     }
     
     public ArrayList<ItemEntity> getItems()

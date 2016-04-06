@@ -94,6 +94,7 @@ public class MoveState extends EntityState
                 e.setDestinationNode(next);
             }
         }
+        pickupItem(d, e);
         if(playerNearby(d, e.getCurrentNode(), RANGE))
         {
             e.setState(new FollowState());

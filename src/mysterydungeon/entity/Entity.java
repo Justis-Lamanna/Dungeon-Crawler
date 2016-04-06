@@ -469,7 +469,7 @@ public class Entity
     public void addItem(Item newItem)
     {
         heldItems.add(newItem);
-        MysteryDungeon.updateInventory(heldItems);
+        if(isPlayer){MysteryDungeon.updateInventory(heldItems);}
     }
     
     public void addItems(Item... newItems)
@@ -478,7 +478,7 @@ public class Entity
         {
             heldItems.add(item);
         }
-        MysteryDungeon.updateInventory(heldItems);
+        if(isPlayer){MysteryDungeon.updateInventory(heldItems);}
     }
     
     /**
@@ -506,7 +506,7 @@ public class Entity
             if(remove)
             {
                 heldItems.remove(item);
-                MysteryDungeon.updateInventory(heldItems);
+                if(isPlayer){MysteryDungeon.updateInventory(heldItems);}
             }
             ArrayList<Entity> entities = dungeon.getEntities();
             for(Entity others : entities)

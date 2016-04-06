@@ -8,6 +8,7 @@ package mysterydungeon.entity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import mysterydungeon.MysteryDungeon;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 
@@ -238,7 +239,12 @@ public abstract class EntityState
     protected boolean playerNearby(Dungeon d, Node start, int range)
     {
         Entity player = d.getEntities().get(0);
-        Node playerNode = player.getCurrentNode();
+        return entityNearby(d, player, start, range);
+    }
+    
+    protected boolean entityNearby(Dungeon d, Entity e, Node start, int range)
+    {
+        Node playerNode = e.getCurrentNode();
         LinkedList<Node> queue = new LinkedList<>();
         queue.add(start);
         for(int iter = 0; iter < range; iter++)
@@ -276,5 +282,20 @@ public abstract class EntityState
             if(start.getPath(dir) != null && start.getPath(dir).equals(end)){return dir;}
         }
         return -1;
+    }
+    
+    protected void pickupItem(Dungeon d, Entity e)
+    {
+        ArrayList<ItemEntity> items = d.getItems();
+        for(ItemEntity item : items)
+        {
+            if(e.getItems().isEmpty() && e.getDestinationNode().getX() == item.getX() && e.getDestinationNode().getY() == item.getY())
+            {
+                MysteryDungeon.updateLog(String.format("%s picked up %s.", e.getName(), item.getItem().getName()));
+                e.addItem(item.getItem());
+                d.clearItem(item);
+                break;
+            }
+        }
     }
 }

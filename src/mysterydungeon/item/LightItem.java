@@ -8,7 +8,6 @@ package mysterydungeon.item;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
 import javax.imageio.ImageIO;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
@@ -36,18 +35,9 @@ public class LightItem implements Item
     @Override
     public boolean useItem(Entity user)
     {
-        BufferedImage shadow;
-        try
-        {
-            shadow = ImageIO.read(new File("Sprites/shadow.png"));
-        }
-        catch(IOException ex)
-        {
-            shadow = new BufferedImage((int)(100 * size), (int)(100 * size), BufferedImage.TYPE_4BYTE_ABGR);
-        }
         MysteryDungeon.updateLog(String.format("%s was able to see farther.", user.getName()));
         Dungeon thisDungeon = user.getDungeon();
-        thisDungeon.setShadow(Animation.scale(shadow, size, size));
+        thisDungeon.setShadow(thisDungeon.generateShadow((int)(150*size)));
         thisDungeon.setDiscovered(user.getX(), user.getY());
         return REMOVE;
     }
