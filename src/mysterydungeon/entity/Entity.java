@@ -12,8 +12,9 @@ import java.awt.image.BufferedImage;
  * This class is used to bridge the gap between a class, and its appearance
  * in the dungeon.
  * @author jlamanna
+ * @param <E> The contained item.
  */
-public interface Entity
+public interface Entity<E>
 {
     /**
      * Get the X value of the entity.
@@ -32,4 +33,10 @@ public interface Entity
      * @return The image of this entity.
      */
     BufferedImage getImage();
+    
+    /**
+     * Get the item contained inside this entity.
+     * @return The item wrapped.
+     */
+    E getContained();
 }

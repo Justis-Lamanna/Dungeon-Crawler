@@ -291,8 +291,8 @@ public abstract class EntityState
         {
             if(e.getItems().isEmpty() && e.getDestinationNode().getX() == item.getX() && e.getDestinationNode().getY() == item.getY())
             {
-                MysteryDungeon.updateLog(String.format("%s picked up %s.", e.getName(), item.getItem().getName()));
-                e.addItem(item.getItem());
+                MysteryDungeon.updateLog(String.format("%s picked up %s.", e.getName(), item.getContained().getName()));
+                e.addItem(item.getContained());
                 d.clearItem(item);
                 break;
             }

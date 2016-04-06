@@ -6,7 +6,6 @@
 package mysterydungeon.dungeon;
 
 import java.awt.Point;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,13 +13,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Scanner;
-import javax.imageio.ImageIO;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.Species;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.AnimatedEntity;
-import mysterydungeon.animation.Animation;
+import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.item.*;
 
@@ -60,13 +58,13 @@ public class Dungeon
 
     private AnimatedEntity player;
     private final Species[] possibleSpecies;
-    private final ArrayList<AnimatedEntity> enemies = new ArrayList<>();
+    private final ArrayList<Entity> enemies = new ArrayList<>();
     
     private BufferedImage mask = null;
     private BufferedImage shadow = null;
     
     private final Item[] possibleItems;
-    private final ArrayList<ItemEntity> items = new ArrayList<>();
+    private final ArrayList<Entity> items = new ArrayList<>();
 
     /**
      * The random number generator, used in all instances of randomness in-game.
@@ -97,11 +95,11 @@ public class Dungeon
         {
             //Players are a pseudo-singleton...There's only one player!
             player = new AnimatedEntity(new SpeciesEntity(this, Species.PLAYER, null, true));
-            player.getEntity().addItems(LightItem.TORCH, LightItem.FLASHLIGHT);
+            player.getContained().addItems(LightItem.TORCH, LightItem.FLASHLIGHT);
         }
         else
         {
-            player.getEntity().randomizeLocation();
+            player.getContained().randomizeLocation();
         }
         enemies.clear();
         spawnEnemies(1);
@@ -322,11 +320,11 @@ public class Dungeon
     public ArrayList<SpeciesEntity> getEntities()
     {
         ArrayList<SpeciesEntity> entities = new ArrayList<>();
-        entities.add(player.getEntity());
-        for(Animation enemy : enemies)
+        entities.add(player.getContained());
+        for(Entity enemy : enemies)
         {
             AnimatedEntity convertedEnemy = (AnimatedEntity)enemy;    
-            entities.add(convertedEnemy.getEntity());
+            entities.add(convertedEnemy.getContained());
         }
         return entities;
     }
@@ -339,9 +337,9 @@ public class Dungeon
     {
         ArrayList<AnimatedEntity> entities = new ArrayList<>();
         entities.add(player);
-        for(AnimatedEntity enemy : enemies)
+        for(Entity enemy : enemies)
         {
-                entities.add(enemy);
+                entities.add((AnimatedEntity)enemy);
         }
         return entities;
     }
@@ -389,7 +387,7 @@ public class Dungeon
     {
         for(int index = 0; index < enemies.size(); index++)
         {
-            if(enemies.get(index).getEntity().equals(enemy))
+            if(enemies.get(index).getContained().equals(enemy))
             {
                 enemies.remove(enemies.get(index));
                 return;
@@ -405,9 +403,9 @@ public class Dungeon
         {
             return false;
         }
-        for(AnimatedEntity enemy : enemies)
+        for(Entity enemy : enemies)
         {
-            if(newEnemyX == enemy.getEntity().getTileX() && newEnemyY == enemy.getEntity().getTileY())
+            if(newEnemyX == ((SpeciesEntity)enemy.getContained()).getTileX() && newEnemyY == ((SpeciesEntity)enemy.getContained()).getTileY())
             {
                 return false;
             }
@@ -532,7 +530,7 @@ public class Dungeon
                 mask.setRGB(xx, yy, 0xFF000000);
             }
         }
-        setDiscovered(player.getEntity().getTileX(), player.getEntity().getTileY());
+        setDiscovered(player.getContained().getTileX(), player.getContained().getTileY());
     }
     
     /**
@@ -584,7 +582,12 @@ public class Dungeon
     
     public ArrayList<ItemEntity> getItems()
     {
-        return items;
+        ArrayList<ItemEntity> newItems = new ArrayList<>();
+        for(Entity item : items)
+        {
+            newItems.add((ItemEntity)item);
+        }
+        return newItems;
     }
     
     public void spawnItems(int number)

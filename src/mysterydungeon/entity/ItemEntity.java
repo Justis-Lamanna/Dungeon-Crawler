@@ -16,7 +16,7 @@ import mysterydungeon.item.Item;
  *
  * @author Justis
  */
-public class ItemEntity implements Entity
+public class ItemEntity implements Entity<Item>
 {
     private final Item item;
     private final Node currentNode;
@@ -37,7 +37,7 @@ public class ItemEntity implements Entity
         return nodes.get(randomNode);
     }
     
-    public Item getItem()
+    public Item getContained()
     {
         return item;
     }

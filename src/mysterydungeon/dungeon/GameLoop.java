@@ -231,8 +231,8 @@ public class GameLoop implements Runnable
             if(playerCenterX == item.getX() && playerCenterY == item.getY())
             {
                 dungeon.clearItem(item);
-                MysteryDungeon.updateLog(String.format("Picked up a %s.", item.getItem().getName()));
-                player.addItem(item.getItem());
+                MysteryDungeon.updateLog(String.format("Picked up a %s.", item.getContained().getName()));
+                player.addItem(item.getContained());
                 break;
             }
         }

@@ -19,7 +19,7 @@ import mysterydungeon.move.Move;
  * A class representing an entity. An entity is any moving object in a dungeon.
  * @author Justis
  */
-public class SpeciesEntity implements Entity
+public class SpeciesEntity implements Entity<Species>
 {
     private Node currentNode;
     private Node gotoNode;
@@ -122,7 +122,7 @@ public class SpeciesEntity implements Entity
      * Get the species of this entity.
      * @return This entity's species.
      */
-    public Species getSpecies()
+    public Species getContained()
     {
         return species;
     }

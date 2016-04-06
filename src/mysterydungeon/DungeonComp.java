@@ -283,7 +283,7 @@ public class DungeonComp extends JComponent
         ArrayList<ItemEntity> allItems = dungeon.getItems();
         for(ItemEntity item : allItems)
         {
-            BufferedImage itemImage = item.getItem().getImage();
+            BufferedImage itemImage = item.getContained().getImage();
             int drawX = item.getX() * TILE_SIZE;
             int drawY = item.getY() * TILE_SIZE;
             g.drawImage(itemImage, drawX, drawY, null);
@@ -295,7 +295,7 @@ public class DungeonComp extends JComponent
         ArrayList<AnimatedEntity> allEntities = dungeon.getAnimatedEntities();
         for(AnimatedEntity anim : allEntities)
         {
-            SpeciesEntity entity = anim.getEntity();
+            SpeciesEntity entity = anim.getContained();
             BufferedImage entityImage = anim.getImage();
             int drawX = calculateDrawPointX(anim.getX(), entityImage.getWidth());
             int drawY = calculateDrawPointY(anim.getY(), entityImage.getHeight());

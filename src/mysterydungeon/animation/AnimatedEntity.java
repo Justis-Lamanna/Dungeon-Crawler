@@ -56,7 +56,7 @@ public class AnimatedEntity implements Animation, Entity
     @Override
     public BufferedImage getImage()
     {
-        return entity.getSpecies().getImage();
+        return ((Entity)entity.getContained()).getImage();
     }
     
     @Override
@@ -77,7 +77,8 @@ public class AnimatedEntity implements Animation, Entity
      * Get the entity associated with this animated entity.
      * @return The entity contained in this animated entity.
      */
-    public SpeciesEntity getEntity()
+    @Override
+    public SpeciesEntity getContained()
     {
         return entity;
     }
