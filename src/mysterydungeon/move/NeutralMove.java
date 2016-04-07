@@ -10,6 +10,7 @@ import mysterydungeon.MysteryDungeon;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.SpeciesEntity;
+import mysterydungeon.item.Item;
 
 /**
  *
@@ -71,10 +72,7 @@ public class NeutralMove extends Move
             {
                 dungeon.clearEnemy(defender);
                 MysteryDungeon.updateLog(String.format(   "%s was destroyed!", defender.getName()));
-                if(defender.isPlayer())
-                {
-                    Move.respawn();
-                }
+                Move.faint(defender);
             }
         }
     }

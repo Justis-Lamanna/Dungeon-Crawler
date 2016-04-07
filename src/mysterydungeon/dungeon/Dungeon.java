@@ -95,7 +95,7 @@ public class Dungeon
         {
             //Players are a pseudo-singleton...There's only one player!
             player = new AnimatedEntity(new SpeciesEntity(this, Species.PLAYER, null, true));
-            player.getContained().addItems(LightItem.TORCH, LightItem.FLASHLIGHT);
+            player.getContained().addItems(LightItem.TORCH, LightItem.FLASHLIGHT, RevealItem.SEEING_LIGHT);
         }
         else
         {
@@ -584,7 +584,10 @@ public class Dungeon
             {
                 double distance = Point.distance(xx, yy, mid, mid);
                 int rgb;
-                if(distance < innerRadius / 2){rgb = 0;}
+                if(distance < innerRadius / 2)
+                {
+                    rgb = 0;
+                }
                 else
                 {
                     rgb = (int)((256.0 / (outerRadius * outerRadius)) * distance * distance);
@@ -596,6 +599,10 @@ public class Dungeon
         return returnShadow;
     }
     
+    /**
+     * Get a list of all items on the dungeon floor.
+     * @return A list of all items in the dungeon.
+     */
     public ArrayList<ItemEntity> getItems()
     {
         ArrayList<ItemEntity> newItems = new ArrayList<>();
@@ -606,6 +613,12 @@ public class Dungeon
         return newItems;
     }
     
+    /**
+     * Create a number of items.
+     * This chooses a random item, from the list of items provided when the dungeon
+     * was created. It is then placed in a random room.
+     * @param number The number of items to spawn.
+     */
     public void spawnItems(int number)
     {
         for(int count = 0; count < number; count++)
@@ -615,16 +628,39 @@ public class Dungeon
         }
     }
     
+    /**
+     * Creates an item.
+     * This spawns a specific item, and places it in a random room.
+     * @param item The item to spawn.
+     */
     public void spawnItem(Item item)
     {
         items.add(new ItemEntity(item, this));
     }
     
+    /**
+     * Creates an item.
+     * This spawns a specific item, and places it in a specific place.
+     * @param item The item to spawn.
+     * @param node The node to spawn it on.
+     */
+    public void spawnItem(Item item, Node node)
+    {
+        items.add(new ItemEntity(item, node));
+    }
+    
+    /**
+     * Removes all items on the dungeon floor.
+     */
     public void clearItems()
     {
         items.clear();
     }
     
+    /**
+     * Removes a specific item entity on the dungeon floor.
+     * @param item The item to remove.
+     */
     public void clearItem(ItemEntity item)
     {
         items.remove(item);

@@ -11,7 +11,9 @@ import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
 import mysterydungeon.dungeon.Dungeon;
+import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.SpeciesEntity;
+import mysterydungeon.item.Item;
 
 /**
  * The skeleton for a move.
@@ -126,9 +128,23 @@ public abstract class Move implements Comparable
         MysteryDungeon.updateLog("Press any key...");
         while(Controls.getInstance().isAnyKeyDown())
         {
-
+            Controls.getInstance().update();
         }
         DungeonComp.getInstance().getDungeon().startDungeon();
+    }
+    
+    public static void faint(SpeciesEntity fainted)
+    {
+        if(fainted.isPlayer())
+        {
+            respawn();
+        }
+        else if(!fainted.getItems().isEmpty())
+        {
+            Item heldItem = fainted.getItems().get(0);
+            MysteryDungeon.updateLog(String.format("%s dropped a %s.", fainted.getName(), heldItem.getName()));
+            fainted.getDungeon().spawnItem(heldItem, fainted.getCurrentNode());
+        }
     }
     
     /**

@@ -27,6 +27,12 @@ public class ItemEntity implements Entity<Item>
         currentNode = randomizeLocation(dungeon);
     }
     
+    public ItemEntity(Item item, Node node)
+    {
+        this.item = item;
+        currentNode = node;
+    }
+    
     private Node randomizeLocation(Dungeon dungeon)
     {
         ArrayList<RoomNode> rooms = dungeon.getRooms();
@@ -37,6 +43,7 @@ public class ItemEntity implements Entity<Item>
         return nodes.get(randomNode);
     }
     
+    @Override
     public Item getContained()
     {
         return item;

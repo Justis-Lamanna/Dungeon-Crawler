@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
+import mysterydungeon.animation.Animation;
+import mysterydungeon.animation.FadeAnimation;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.SpeciesEntity;
@@ -36,11 +38,13 @@ public class RevealItem implements Item
     public boolean useItem(SpeciesEntity user)
     {
         Dungeon dungeon = user.getDungeon();
-        ArrayList<Node> nodes = dungeon.getNodesList();
+        /*ArrayList<Node> nodes = dungeon.getNodesList();
         for(Node node : nodes)
         {
             dungeon.setDiscovered(node.getX(), node.getY());
-        }
+        }*/
+        Animation fade = new FadeAnimation(0, 0, dungeon.getMask(), 16);
+        Animation.animate(fade, 50);
         return REMOVE;
     }
 
