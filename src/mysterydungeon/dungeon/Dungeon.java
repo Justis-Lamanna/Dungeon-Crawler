@@ -507,7 +507,8 @@ public class Dungeon
                 {
                     int shadowRGB = shadow.getRGB(xx, yy);
                     int maskRGB = mask.getRGB(circleX+xx, circleY+yy);
-                    mask.setRGB(circleX+xx, circleY+yy, shadowRGB & maskRGB);
+                    int betterRGB = (shadowRGB >>> 24) < (maskRGB >>> 24) ? shadowRGB : maskRGB;
+                    mask.setRGB(circleX+xx, circleY+yy, betterRGB);
                 }
                 catch(ArrayIndexOutOfBoundsException ex)
                 {
@@ -521,7 +522,7 @@ public class Dungeon
     {
         //try{shadow = ImageIO.read(new File("Sprites/shadow.png"));}
         //catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
-        shadow = generateShadow(150);
+        shadow = generateShadow(100, 25);
         mask = new BufferedImage(tilemap[0].length * DungeonComp.TILE_SIZE, tilemap.length * DungeonComp.TILE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
         for(int xx = 0; xx < mask.getWidth(); xx++)
         {
@@ -562,18 +563,33 @@ public class Dungeon
         return shadow;
     }
     
-    public BufferedImage generateShadow(int width)
+    /**
+     * Generate a circular fog of war type thing.
+     * Dynamically creates a circle of the specified outerRadius. A concentric
+     * circle of innerRadius is created as well, and this inner circle is set to full
+     * transparency. Everything outside of this circle is faded to black, according
+     * to the formula:
+     * <br>Alpha = (256 / (outerRadius ^ 2)) * (distance from center ^ 2)
+     * @param outerRadius The full radius of the circle, in pixels.
+     * @param innerRadius The radius of full transparency inside the circle.
+     * @return The circle generated.
+     */
+    public BufferedImage generateShadow(int outerRadius, int innerRadius)
     {
-        BufferedImage returnShadow = new BufferedImage(width, width, BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage returnShadow = new BufferedImage(outerRadius * 2, outerRadius * 2, BufferedImage.TYPE_4BYTE_ABGR);
         int mid = returnShadow.getWidth() / 2;
         for(int xx = 0; xx < returnShadow.getWidth(); xx++)
         {
             for(int yy = 0; yy < returnShadow.getHeight(); yy++)
             {
-                int distance = (int)(Point.distance(xx, yy, mid, mid));
-                int rgb = (int)((510.0 / width) * distance);
+                double distance = Point.distance(xx, yy, mid, mid);
+                int rgb;
+                if(distance < innerRadius / 2){rgb = 0;}
+                else
+                {
+                    rgb = (int)((256.0 / (outerRadius * outerRadius)) * distance * distance);
+                }
                 if(rgb > 255){rgb = 255;}
-                else if(rgb < (width / 2)){rgb = 0;}
                 returnShadow.setRGB(xx, yy, rgb << 24);
             }
         }

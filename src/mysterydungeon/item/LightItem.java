@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import mysterydungeon.MysteryDungeon;
-import mysterydungeon.animation.Animation;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.SpeciesEntity;
 
@@ -37,7 +36,7 @@ public class LightItem implements Item
     {
         MysteryDungeon.updateLog(String.format("%s was able to see farther.", user.getName()));
         Dungeon thisDungeon = user.getDungeon();
-        thisDungeon.setShadow(thisDungeon.generateShadow((int)(150*size)));
+        thisDungeon.setShadow(thisDungeon.generateShadow((int)(100*size), (int)(25 * size)));
         thisDungeon.setDiscovered(user.getTileX(), user.getTileY());
         return REMOVE;
     }
