@@ -38,13 +38,8 @@ public class RevealItem implements Item
     public boolean useItem(SpeciesEntity user)
     {
         Dungeon dungeon = user.getDungeon();
-        /*ArrayList<Node> nodes = dungeon.getNodesList();
-        for(Node node : nodes)
-        {
-            dungeon.setDiscovered(node.getX(), node.getY());
-        }*/
-        Animation fade = new FadeAnimation(0, 0, dungeon.getMask(), 16);
-        Animation.animate(fade, 50);
+        Animation.animate(new FadeAnimation(0, 0, dungeon.getMask(), 16), 50);
+        //Because of pass-by-reference, no need to set the dungeon's mask.
         return REMOVE;
     }
 

@@ -24,23 +24,13 @@ public class ItemEntity implements Entity<Item>
     public ItemEntity(Item item, Dungeon dungeon)
     {
         this.item = item;
-        currentNode = randomizeLocation(dungeon);
+        currentNode = Entity.generateRandomLocation(dungeon);
     }
     
     public ItemEntity(Item item, Node node)
     {
         this.item = item;
         currentNode = node;
-    }
-    
-    private Node randomizeLocation(Dungeon dungeon)
-    {
-        ArrayList<RoomNode> rooms = dungeon.getRooms();
-        int randomRoom = Dungeon.PRNG.nextInt(rooms.size());
-        RoomNode room = rooms.get(randomRoom);
-        ArrayList<Node> nodes = room.getNodes();
-        int randomNode = Dungeon.PRNG.nextInt(nodes.size());
-        return nodes.get(randomNode);
     }
     
     @Override

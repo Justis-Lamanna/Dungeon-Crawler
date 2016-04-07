@@ -20,6 +20,7 @@ import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.ItemEntity;
+import mysterydungeon.entity.StairEntity;
 import mysterydungeon.item.*;
 
 /**
@@ -65,6 +66,8 @@ public class Dungeon
     
     private final Item[] possibleItems;
     private final ArrayList<Entity> items = new ArrayList<>();
+    
+    private StairEntity stairs;
 
     /**
      * The random number generator, used in all instances of randomness in-game.
@@ -106,6 +109,7 @@ public class Dungeon
         items.clear();
         spawnItems(1);
         initializeMask();
+        stairs = new StairEntity(this, StairEntity.DOWN);
     }
 
     /**
@@ -664,5 +668,10 @@ public class Dungeon
     public void clearItem(ItemEntity item)
     {
         items.remove(item);
+    }
+    
+    public StairEntity getStairs()
+    {
+        return stairs;
     }
 }

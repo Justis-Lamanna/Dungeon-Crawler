@@ -97,22 +97,12 @@ public class SpeciesEntity implements Entity<Species>
         this(dungeon, species, new MoveState(), false);
     }
 
-    private Node generateLocation()
-    {
-        ArrayList<RoomNode> rooms = dungeon.getRooms();
-        int randomRoom = Dungeon.PRNG.nextInt(rooms.size());
-        RoomNode room = rooms.get(randomRoom);
-        ArrayList<Node> nodes = room.getNodes();
-        int randomNode = Dungeon.PRNG.nextInt(nodes.size());
-        return nodes.get(randomNode);
-    }
-
     /**
      * Places this entity on a random node in a random room.
      */
     public void randomizeLocation()
     {
-        currentNode = generateLocation();
+        currentNode = Entity.generateRandomLocation(dungeon);
         currentX = currentNode.getX() * DungeonComp.TILE_SIZE;
         currentY = currentNode.getY() * DungeonComp.TILE_SIZE;
         gotoNode = currentNode;
