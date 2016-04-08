@@ -6,10 +6,8 @@
 package mysterydungeon.entity;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
-import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.item.Item;
 
 /**

@@ -36,13 +36,13 @@ public class StairEntity implements Entity
     @Override
     public int getX()
     {
-        return location.getX() * DungeonComp.TILE_SIZE;
+        return location.getX();
     }
 
     @Override
     public int getY()
     {
-        return location.getY() * DungeonComp.TILE_SIZE;
+        return location.getY();
     }
 
     @Override

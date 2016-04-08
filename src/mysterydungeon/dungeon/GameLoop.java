@@ -7,12 +7,17 @@ package mysterydungeon.dungeon;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.Animation;
+import mysterydungeon.animation.FadeScreenAnimation;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.ItemEntity;
+import mysterydungeon.entity.StairEntity;
 import mysterydungeon.move.Move;
+import static mysterydungeon.move.Move.delay;
 
 /**
  * The main loop of the game.
@@ -236,5 +241,22 @@ public class GameLoop implements Runnable
                 break;
             }
         }
+        StairEntity stairs = dungeon.getStairs();
+        if(playerCenterX == stairs.getX() && playerCenterY == stairs.getY())
+        {
+            doStairs();
+        }
+    }
+    
+    public void doStairs()
+    {
+        DungeonComp component = DungeonComp.getInstance();
+        Animation fadeAnimation = new FadeScreenAnimation(
+                0, 0, component.getWidth(), component.getHeight(), 0, -8);
+        Animation.animate(fadeAnimation, 20);
+        component.getDungeon().startDungeon();
+        fadeAnimation = new FadeScreenAnimation(
+                0, 0, component.getWidth(), component.getHeight(), 255, 8);
+        Animation.animate(fadeAnimation, 20);
     }
 }
