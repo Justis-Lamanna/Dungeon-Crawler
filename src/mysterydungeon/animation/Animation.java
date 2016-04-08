@@ -6,6 +6,8 @@
 package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
+import mysterydungeon.DungeonComp;
+import static mysterydungeon.move.Move.delay;
 
 /**
  * An interface for creating animations.
@@ -62,5 +64,25 @@ public interface Animation
             }
         }
         return newImage;
+    }
+    
+    /**
+     * Animate a certain animation.
+     * Animations that are played a fix amount of time should use this method
+     * to animate. This method repeatedly calls the animate() method until it
+     * returns true, in which case it terminates.
+     * @param anim The animation to play.
+     * @param delay The amount of time to wait between frames.
+     */
+    public static void animate(Animation anim, long delay)
+    {
+        DungeonComp component = DungeonComp.getInstance();
+        component.addAnimation(anim);
+        do
+        {
+            component.paintImmediately(anim.getX(), anim.getY(), anim.getImage().getWidth(), anim.getImage().getHeight());
+            delay(delay);
+        } while (!anim.animate());
+        component.removeAnimation(anim);
     }
 }

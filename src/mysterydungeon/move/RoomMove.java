@@ -126,10 +126,7 @@ public class RoomMove extends Move
                     {
                         dungeon.clearEnemy(entity);
                         MysteryDungeon.updateLog(String.format("   %s was destroyed!", entity.getName()));
-                        if(entity.isPlayer())
-                        {
-                            Move.respawn();
-                        }
+                        Move.faint(entity);
                     }
                 }
             }

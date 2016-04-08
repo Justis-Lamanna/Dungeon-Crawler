@@ -20,6 +20,7 @@ import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.ItemEntity;
+import mysterydungeon.entity.StairEntity;
 import mysterydungeon.item.*;
 
 /**
@@ -65,6 +66,8 @@ public class Dungeon
     
     private final Item[] possibleItems;
     private final ArrayList<Entity> items = new ArrayList<>();
+    
+    private StairEntity stairs;
 
     /**
      * The random number generator, used in all instances of randomness in-game.
@@ -95,7 +98,7 @@ public class Dungeon
         {
             //Players are a pseudo-singleton...There's only one player!
             player = new AnimatedEntity(new SpeciesEntity(this, Species.PLAYER, null, true));
-            player.getContained().addItems(LightItem.TORCH, LightItem.FLASHLIGHT);
+            player.getContained().addItems(LightItem.TORCH, LightItem.FLASHLIGHT, RevealItem.SEEING_LIGHT);
         }
         else
         {
@@ -106,6 +109,7 @@ public class Dungeon
         items.clear();
         spawnItems(1);
         initializeMask();
+        stairs = new StairEntity(this, StairEntity.DOWN);
     }
 
     /**
@@ -507,7 +511,8 @@ public class Dungeon
                 {
                     int shadowRGB = shadow.getRGB(xx, yy);
                     int maskRGB = mask.getRGB(circleX+xx, circleY+yy);
-                    mask.setRGB(circleX+xx, circleY+yy, shadowRGB & maskRGB);
+                    int betterRGB = (shadowRGB >>> 24) < (maskRGB >>> 24) ? shadowRGB : maskRGB;
+                    mask.setRGB(circleX+xx, circleY+yy, betterRGB);
                 }
                 catch(ArrayIndexOutOfBoundsException ex)
                 {
@@ -521,7 +526,7 @@ public class Dungeon
     {
         //try{shadow = ImageIO.read(new File("Sprites/shadow.png"));}
         //catch(IOException ex){shadow = new BufferedImage(10, 10, BufferedImage.TYPE_4BYTE_ABGR);}
-        shadow = generateShadow(150);
+        shadow = generateShadow(100, 25);
         mask = new BufferedImage(tilemap[0].length * DungeonComp.TILE_SIZE, tilemap.length * DungeonComp.TILE_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
         for(int xx = 0; xx < mask.getWidth(); xx++)
         {
@@ -562,24 +567,46 @@ public class Dungeon
         return shadow;
     }
     
-    public BufferedImage generateShadow(int width)
+    /**
+     * Generate a circular fog of war type thing.
+     * Dynamically creates a circle of the specified outerRadius. A concentric
+     * circle of innerRadius is created as well, and this inner circle is set to full
+     * transparency. Everything outside of this circle is faded to black, according
+     * to the formula:
+     * <br>Alpha = (256 / (outerRadius ^ 2)) * (distance from center ^ 2)
+     * @param outerRadius The full radius of the circle, in pixels.
+     * @param innerRadius The radius of full transparency inside the circle.
+     * @return The circle generated.
+     */
+    public BufferedImage generateShadow(int outerRadius, int innerRadius)
     {
-        BufferedImage returnShadow = new BufferedImage(width, width, BufferedImage.TYPE_4BYTE_ABGR);
+        BufferedImage returnShadow = new BufferedImage(outerRadius * 2, outerRadius * 2, BufferedImage.TYPE_4BYTE_ABGR);
         int mid = returnShadow.getWidth() / 2;
         for(int xx = 0; xx < returnShadow.getWidth(); xx++)
         {
             for(int yy = 0; yy < returnShadow.getHeight(); yy++)
             {
-                int distance = (int)(Point.distance(xx, yy, mid, mid));
-                int rgb = (int)((510.0 / width) * distance);
+                double distance = Point.distance(xx, yy, mid, mid);
+                int rgb;
+                if(distance < innerRadius / 2)
+                {
+                    rgb = 0;
+                }
+                else
+                {
+                    rgb = (int)((256.0 / (outerRadius * outerRadius)) * distance * distance);
+                }
                 if(rgb > 255){rgb = 255;}
-                else if(rgb < (width / 2)){rgb = 0;}
                 returnShadow.setRGB(xx, yy, rgb << 24);
             }
         }
         return returnShadow;
     }
     
+    /**
+     * Get a list of all items on the dungeon floor.
+     * @return A list of all items in the dungeon.
+     */
     public ArrayList<ItemEntity> getItems()
     {
         ArrayList<ItemEntity> newItems = new ArrayList<>();
@@ -590,6 +617,12 @@ public class Dungeon
         return newItems;
     }
     
+    /**
+     * Create a number of items.
+     * This chooses a random item, from the list of items provided when the dungeon
+     * was created. It is then placed in a random room.
+     * @param number The number of items to spawn.
+     */
     public void spawnItems(int number)
     {
         for(int count = 0; count < number; count++)
@@ -599,18 +632,46 @@ public class Dungeon
         }
     }
     
+    /**
+     * Creates an item.
+     * This spawns a specific item, and places it in a random room.
+     * @param item The item to spawn.
+     */
     public void spawnItem(Item item)
     {
         items.add(new ItemEntity(item, this));
     }
     
+    /**
+     * Creates an item.
+     * This spawns a specific item, and places it in a specific place.
+     * @param item The item to spawn.
+     * @param node The node to spawn it on.
+     */
+    public void spawnItem(Item item, Node node)
+    {
+        items.add(new ItemEntity(item, node));
+    }
+    
+    /**
+     * Removes all items on the dungeon floor.
+     */
     public void clearItems()
     {
         items.clear();
     }
     
+    /**
+     * Removes a specific item entity on the dungeon floor.
+     * @param item The item to remove.
+     */
     public void clearItem(ItemEntity item)
     {
         items.remove(item);
+    }
+    
+    public StairEntity getStairs()
+    {
+        return stairs;
     }
 }

@@ -106,10 +106,7 @@ public class BrawlMove extends Move
             {
                 dungeon.clearEnemy(defender);
                 MysteryDungeon.updateLog(String.format("   %s was destroyed!", defender.getName()));
-                if(defender.isPlayer())
-                {
-                    Move.respawn();
-                }
+                Move.faint(defender);
             }
         }
     }

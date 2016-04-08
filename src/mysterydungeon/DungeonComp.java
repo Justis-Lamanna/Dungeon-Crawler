@@ -122,6 +122,7 @@ public class DungeonComp extends JComponent
         if(drawPaths){paintPaths(g);}
         if(drawRooms){paintRooms(g);}
         paintItems(g);
+        g.drawImage(dungeon.getStairs().getImage(), dungeon.getStairs().getX(), dungeon.getStairs().getY(), null);
         if(drawEntity){paintEntities(g);}
         if(drawMask){paintMask(g);}
         for(Animation anim : animations)

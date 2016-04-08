@@ -6,6 +6,10 @@
 package mysterydungeon.entity;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import mysterydungeon.dungeon.Dungeon;
+import mysterydungeon.dungeon.Node;
+import mysterydungeon.dungeon.RoomNode;
 
 /**
  * Represents a basic Entity.
@@ -39,4 +43,14 @@ public interface Entity<E>
      * @return The item wrapped.
      */
     E getContained();
+    
+    static Node generateRandomLocation(Dungeon dungeon)
+    {
+        ArrayList<RoomNode> rooms = dungeon.getRooms();
+        int randomRoom = Dungeon.PRNG.nextInt(rooms.size());
+        RoomNode room = rooms.get(randomRoom);
+        ArrayList<Node> nodes = room.getNodes();
+        int randomNode = Dungeon.PRNG.nextInt(nodes.size());
+        return nodes.get(randomNode);
+    }
 }
