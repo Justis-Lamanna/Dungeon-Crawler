@@ -108,6 +108,7 @@ public class GameLoop implements Runnable
                 {
                     entity.setCurrentNode(entity.getDestinationNode());
                     entity.setMoving(false);
+                    if(entity.isPlayer()){onPlayerStep(dungeon, entity);}
                 }
             }
         }
@@ -118,7 +119,6 @@ public class GameLoop implements Runnable
                 others.doState();
                 others.setMoving(true);
             }
-            onPlayerStep(dungeon, player);
         }
         if(getAttackPressed() == -1)
         {
