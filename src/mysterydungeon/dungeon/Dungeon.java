@@ -51,7 +51,7 @@ public class Dungeon
         StaminaItem.AAA_BATTERY, StaminaItem.C_BATTERY, StaminaItem.NV_BATTERY
     };
 
-    private final String basemapFilename;
+    private DungeonLayout layout;
     private int[][] tilemap;
     private int[][] basemap;
     private Node[][] nodes;
@@ -82,9 +82,20 @@ public class Dungeon
      */
     public Dungeon(String basemapFilename, Species[] speciesList, Item[] itemList)
     {
-        this.basemapFilename = basemapFilename;
+        this(new DungeonLayout(basemapFilename), speciesList, itemList);
+    }
+    
+    /**
+     * Creates an instance of a Dungeon.
+     * @param layout The layout of this dungeon.
+     * @param speciesList An array of the species that may appear in the dungeon.
+     * @param itemList An array of the items that may appear in the dungeon.
+     */
+    public Dungeon(DungeonLayout layout, Species[] speciesList, Item[] itemList)
+    {
         possibleSpecies = speciesList;
         possibleItems = itemList;
+        this.layout = layout;
     }
     
     /**
@@ -117,7 +128,7 @@ public class Dungeon
      */
     public void loadDungeon()
     {
-        generateBasemap(basemapFilename);
+        basemap = layout.getBaseMap();
         generateTilemap(basemap);
         findNodes();
         findPaths();

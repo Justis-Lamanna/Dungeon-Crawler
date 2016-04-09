@@ -463,15 +463,6 @@ public class DungeonComp extends JComponent
     }
 
     /**
-     * Updates all entities.
-     * @param repaint True if repaint should be called, false if not.
-     */
-    public void kachunk(boolean repaint)
-    {
-        if(repaint){repaint();}
-    }
-
-    /**
      * Gets the Dungeon that this class is responsible for painting.
      * @return This dungeon this class is responsible for.
      */

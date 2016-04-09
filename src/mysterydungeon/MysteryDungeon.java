@@ -185,30 +185,30 @@ public class MysteryDungeon extends JFrame{
         SpeciesEntity player = dungeon.getDungeon().getEntities().get(0);
         JPanel hud = new JPanel(new GridBagLayout());
         
-        hud.add(new JLabel("Player Stats"), setGridBagConstraints(0, 0, 2, 1, 1, 0.1));
+        hud.add(new JLabel("Player Stats"), setGridBagConstraints(0, 0, 3, 1, 1, 0.1));
         
         hud.add(new JLabel("HP:"), setGridBagConstraints(0, 1, 1, 1, 0.1, 0.1));
-        hud.add(hpBar, setGridBagConstraints(1, 1, 1, 1, 0.9, 0.1));
+        hud.add(hpBar, setGridBagConstraints(1, 1, 2, 1, 0.9, 0.1));
         updateHP(player.getCurrentHP(), player.getMaximumHP());
         
         hud.add(new JLabel("Stamina:"), setGridBagConstraints(0, 2, 1, 1, 0.1, 0.1));
-        hud.add(staminaBar, setGridBagConstraints(1, 2, 1, 1, 0.9, 0.1));
+        hud.add(staminaBar, setGridBagConstraints(1, 2, 2, 1, 0.9, 0.1));
         updateStamina(player.getCurrentStamina(), player.getMaximumStamina());
         
-        hud.add(new JLabel("Inventory:"), setGridBagConstraints(0, 3, 1, 1, 1, 0.1));
+        hud.add(new JLabel("Inventory:"), setGridBagConstraints(0, 3, 3, 1, 1, 0.1));
         
-        hud.add(inventory, setGridBagConstraints(0, 4, 1, 1, 0.7, 0.1));
+        hud.add(inventory, setGridBagConstraints(1, 4, 2, 1, 1, 0.1));
         inventory.addKeyListener(Controls.getInstance());
         inventory.setRenderer(new ItemComboBoxRenderer());
         updateInventory(player.getItems());
         JButton use = new JButton("Use");
         use.addKeyListener(Controls.getInstance());
         use.addActionListener(e -> player.useItem((Item)inventory.getSelectedItem()));
-        hud.add(use, setGridBagConstraints(1, 4, 1, 1, 0.3, 0.1));
+        hud.add(use, setGridBagConstraints(0, 4, 1, 1, 1, 0.1));
         
-        hud.add(new JLabel("Log:"), setGridBagConstraints(0, 5, 2, 1, 1, 0.1));
+        hud.add(new JLabel("Log:"), setGridBagConstraints(0, 5, 3, 1, 1, 0.1));
         
-        hud.add(new JScrollPane(log), setGridBagConstraints(0, 6, 2, 2, 1, 1));
+        hud.add(new JScrollPane(log), setGridBagConstraints(0, 6, 3, 2, 1, 1));
         log.setForeground(Color.WHITE);
         log.setBackground(Color.BLACK);
         log.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
