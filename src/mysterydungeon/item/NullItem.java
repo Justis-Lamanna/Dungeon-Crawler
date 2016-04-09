@@ -44,4 +44,9 @@ public class NullItem implements Item
         return "Items can be found on the ground.";
     }
     
+    @Override
+    public int getType()
+    {
+        return Item.NORMAL;
+    }
 }

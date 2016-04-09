@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
+import mysterydungeon.item.Item;
 
 /**
  * An abstract class, for use in defining states. Many helpful functions are
@@ -297,5 +298,27 @@ public abstract class EntityState
                 break;
             }
         }
+    }
+    
+    protected boolean useItem(Dungeon d, SpeciesEntity e)
+    {
+        if(!e.getItems().isEmpty())
+        {
+            Item heldItem = e.getItems().get(0);
+            double hpPercentage = (double)e.getCurrentHP() / e.getMaximumHP();
+            double staminaPercentage = (double)e.getCurrentStamina() / e.getMaximumStamina();
+            System.out.println(hpPercentage + "|" + staminaPercentage);
+            if(heldItem.getType() == Item.HP_HEALING && hpPercentage < 0.5)
+            {
+                e.useItem(heldItem);
+                return true;
+            }
+            else if(heldItem.getType() == Item.STAMINA_HEALING && staminaPercentage < 0.25)
+            {
+                e.useItem(heldItem);
+                return true;
+            }
+        }
+        return false;
     }
 }

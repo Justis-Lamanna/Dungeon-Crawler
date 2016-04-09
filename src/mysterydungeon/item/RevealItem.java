@@ -8,12 +8,10 @@ package mysterydungeon.item;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.FadeToClearAnimation;
 import mysterydungeon.dungeon.Dungeon;
-import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.SpeciesEntity;
 
 /**
@@ -68,4 +66,9 @@ public class RevealItem implements Item
         return desc;
     }
     
+    @Override
+    public int getType()
+    {
+        return Item.LIGHT;
+    }
 }

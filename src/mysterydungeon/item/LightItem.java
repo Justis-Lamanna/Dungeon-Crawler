@@ -65,4 +65,10 @@ public class LightItem implements Item
     {
         return String.format("Increases view size by %.1fx", size);
     }
+    
+    @Override
+    public int getType()
+    {
+        return Item.LIGHT;
+    }
 }

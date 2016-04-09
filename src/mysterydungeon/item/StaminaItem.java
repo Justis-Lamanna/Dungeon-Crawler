@@ -77,4 +77,9 @@ public class StaminaItem implements Item
         return String.format("Increases your stamina by up to %d.", staminaToHeal);
     }
     
+    @Override
+    public int getType()
+    {
+        return Item.STAMINA_HEALING;
+    }
 }

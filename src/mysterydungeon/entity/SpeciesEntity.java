@@ -493,17 +493,21 @@ public class SpeciesEntity implements Entity<Species>
     {
         if(item != null)
         {
+            MysteryDungeon.updateLog(String.format("%s used %s.", name, item.getName()));
             boolean remove = item.useItem(this);
             if(remove)
             {
                 heldItems.remove(item);
-                if(isPlayer){MysteryDungeon.updateInventory(heldItems);}
-            }
-            ArrayList<SpeciesEntity> entities = dungeon.getEntities();
-            for(SpeciesEntity others : entities)
-            {
-                others.doState();
-                others.setMoving(true);
+                if(isPlayer)
+                {
+                    MysteryDungeon.updateInventory(heldItems);
+                    ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+                    for(SpeciesEntity others : entities)
+                    {
+                        others.doState();
+                        others.setMoving(true);
+                    }
+                }
             }
         }
     }

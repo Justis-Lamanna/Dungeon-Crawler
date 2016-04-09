@@ -42,7 +42,7 @@ public class HPItem implements Item
         }
         else
         {
-            MysteryDungeon.updateLog(String.format("HP was healed by %d.", added));
+            MysteryDungeon.updateLog(String.format("HP was healed by %d.", -added));
             return REMOVE;
         }
     }
@@ -72,4 +72,9 @@ public class HPItem implements Item
         return String.format("Increases your HP by up to %d.", hpToHeal);
     }
     
+    @Override
+    public int getType()
+    {
+        return Item.HP_HEALING;
+    }
 }

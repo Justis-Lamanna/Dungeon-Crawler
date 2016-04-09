@@ -29,7 +29,7 @@ public class FollowState extends EntityState
     @Override
     public void doState(SpeciesEntity e, Dungeon d)
     {
-        if(e.getCurrentHP() > 0)
+        if(e.getCurrentHP() > 0 && !useItem(d, e))
         {
             SpeciesEntity player = d.getEntities().get(0);
             ArrayList<Move> moves = (ArrayList<Move>)e.getMoves().clone();
@@ -82,6 +82,7 @@ public class FollowState extends EntityState
         SpeciesEntity player = dungeon.getEntities().get(0);
         for(int dir = 0; dir < 8; dir++)
         {
+            entity.facing = dir;
             ArrayList<SpeciesEntity> defenders = move.getDefender(dungeon, entity);
             if(defenders.contains(player))
             {

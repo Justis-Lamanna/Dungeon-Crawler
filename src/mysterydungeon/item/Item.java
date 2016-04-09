@@ -17,6 +17,11 @@ public interface Item
     public static final boolean REMOVE = true;
     public static final boolean KEEP = false;
     
+    public static final int NORMAL = 0;
+    public static final int HP_HEALING = 1;
+    public static final int STAMINA_HEALING = 2;
+    public static final int LIGHT = 3;
+    
     /**
      * Dictate what the item will do when used.
      * @param user The user of the item.
@@ -42,5 +47,9 @@ public interface Item
      */
     String getDescription();
     
-    
+    /**
+     * Get the type of item this is.
+     * @return This items type, as referenced by the above constants.
+     */
+    int getType();
 }
