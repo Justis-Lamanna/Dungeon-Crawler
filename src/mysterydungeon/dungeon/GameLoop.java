@@ -7,7 +7,6 @@ package mysterydungeon.dungeon;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
@@ -17,7 +16,6 @@ import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.entity.StairEntity;
 import mysterydungeon.move.Move;
-import static mysterydungeon.move.Move.delay;
 
 /**
  * The main loop of the game.
@@ -25,7 +23,7 @@ import static mysterydungeon.move.Move.delay;
  * which constantly updates the game and repaints.
  * @author Justis
  */
-public class GameLoop implements Runnable
+public class GameLoop
 {
 
     /**
@@ -56,7 +54,6 @@ public class GameLoop implements Runnable
      * it caused slight issues in regards to reading and writing. This class
      * now runs normally, once the dungeon and 
      */
-    @Override
     public void run()
     {
         long lastLoopTime = System.nanoTime();
@@ -152,7 +149,7 @@ public class GameLoop implements Runnable
                 for(int dir = 0; dir < 8; dir++)
                 {
                     Node next = playerNode;
-                    for(int range = 0; range < 4; range++)
+                    while(true)
                     {
                         if(next == null){break;}
                         next = next.getPath(dir);
@@ -236,7 +233,7 @@ public class GameLoop implements Runnable
             if(playerCenterX == item.getX() && playerCenterY == item.getY())
             {
                 dungeon.clearItem(item);
-                MysteryDungeon.updateLog(String.format("Picked up a %s.", item.getContained().getName()));
+                MysteryDungeon.updateLog(String.format("%s picked up %s.", player.getName(), item.getContained().getName()));
                 player.addItem(item.getContained());
                 break;
             }
