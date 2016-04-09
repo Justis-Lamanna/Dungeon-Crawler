@@ -34,20 +34,6 @@ public class DungeonLayout
      */
     public DungeonLayout(String filename)
     {
-        recalculate(filename);
-    }
-    
-    /**
-     * Gets the base map of this dungeon.
-     * @return The base map of the dungeon.
-     */
-    public int[][] getBaseMap()
-    {
-        return basemap;
-    }
-    
-    public void recalculate(String filename)
-    {
         try
         {	
             Scanner inScanner = new Scanner(new File(filename));
@@ -69,5 +55,14 @@ public class DungeonLayout
             ex.printStackTrace();
         }
     }
-        
+    
+    /**
+     * Gets the base map of this dungeon.
+     * @return The base map of the dungeon.
+     */
+    public int[][] getBaseMap()
+    {
+        return basemap;
+    }
+            
 }

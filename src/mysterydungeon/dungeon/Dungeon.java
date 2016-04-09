@@ -681,8 +681,21 @@ public class Dungeon
         items.remove(item);
     }
     
+    /**
+     * Get the stairs!
+     * @return The StairEntity representing the stairs.
+     */
     public StairEntity getStairs()
     {
         return stairs;
+    }
+    
+    /**
+     * Set a new layout for this dungeon.
+     * @param newLayout The new layout for the dungeon.
+     */
+    public void setLayout(DungeonLayout newLayout)
+    {
+        layout = newLayout;
     }
 }
