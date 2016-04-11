@@ -285,21 +285,6 @@ public abstract class EntityState
         return -1;
     }
     
-    protected void pickupItem(Dungeon d, SpeciesEntity e)
-    {
-        ArrayList<ItemEntity> items = d.getItems();
-        for(ItemEntity item : items)
-        {
-            if(e.getItems().isEmpty() && e.getDestinationNode().getX() == item.getX() && e.getDestinationNode().getY() == item.getY())
-            {
-                MysteryDungeon.updateLog(String.format("%s picked up %s.", e.getName(), item.getContained().getName()));
-                e.addItem(item.getContained());
-                d.clearItem(item);
-                break;
-            }
-        }
-    }
-    
     protected boolean useItem(Dungeon d, SpeciesEntity e)
     {
         if(!e.getItems().isEmpty())

@@ -44,6 +44,21 @@ public interface Entity<E>
      */
     E getContained();
     
+    /**
+     * A function that will be automatically called on each turn.
+     * For entities, this will generally hand off to the state. For
+     * items and stairs, this will check for someone standing on it.
+     */
+    void onTurn();
+    
+    /**
+     * Generates a random node.
+     * More specifically, this picks a random room, then a random
+     * number inside that. It makes no distinction on whether the
+     * node is occupied or not.
+     * @param dungeon The dungeon the entity is in.
+     * @return A random node of a random room.
+     */
     static Node generateRandomLocation(Dungeon dungeon)
     {
         ArrayList<RoomNode> rooms = dungeon.getRooms();

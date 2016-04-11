@@ -661,7 +661,7 @@ public class Dungeon
      */
     public void spawnItem(Item item, Node node)
     {
-        items.add(new ItemEntity(item, node));
+        items.add(new ItemEntity(item, this, node));
     }
     
     /**

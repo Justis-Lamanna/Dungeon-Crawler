@@ -82,4 +82,10 @@ public class AnimatedEntity implements Animation, Entity
     {
         return entity;
     }
+    
+    @Override
+    public void onTurn()
+    {
+        entity.onTurn();
+    }
 }

@@ -63,7 +63,7 @@ public class FadeScreenAnimation implements Animation
                 image.setRGB(xx, yy, (currentAlpha << 24));
             }
         }
-        currentAlpha -= steps;
+        currentAlpha += steps;
         if(currentAlpha < 0)
         {
             currentAlpha = 0;

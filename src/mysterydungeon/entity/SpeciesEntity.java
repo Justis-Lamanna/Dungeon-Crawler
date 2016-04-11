@@ -11,7 +11,6 @@ import mysterydungeon.MysteryDungeon;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
-import mysterydungeon.dungeon.RoomNode;
 import mysterydungeon.item.Item;
 import mysterydungeon.move.Move;
 
@@ -538,6 +537,12 @@ public class SpeciesEntity implements Entity<Species>
     public Dungeon getDungeon()
     {
         return dungeon;
+    }
+    
+    @Override
+    public void onTurn()
+    {
+        doState();
     }
 
     @Override

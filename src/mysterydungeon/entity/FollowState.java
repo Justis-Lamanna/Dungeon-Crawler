@@ -62,7 +62,6 @@ public class FollowState extends EntityState
                     }
                 }
             }
-            pickupItem(d, e);
         }
     }
 

@@ -12,6 +12,7 @@ import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.FadeScreenAnimation;
+import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.entity.StairEntity;
@@ -105,7 +106,10 @@ public class GameLoop
                 {
                     entity.setCurrentNode(entity.getDestinationNode());
                     entity.setMoving(false);
-                    if(entity.isPlayer()){onPlayerStep(dungeon, entity);}
+                    if(entity.isPlayer())
+                    {
+                        onTurnCompletion(dungeon);
+                    }
                 }
             }
         }
@@ -113,7 +117,7 @@ public class GameLoop
         {
             for(SpeciesEntity others : entities)
             {
-                others.doState();
+                others.onTurn();
                 others.setMoving(true);
             }
         }
@@ -220,40 +224,19 @@ public class GameLoop
         }
         return -1;
     }
-
-    private void onPlayerStep(Dungeon dungeon, SpeciesEntity player)
+    
+    private void onTurnCompletion(Dungeon dungeon)
     {
+        ArrayList<ItemEntity> items = dungeon.getItems();
+        for(ItemEntity item : items)
+        {
+            item.onTurn();
+        }
+        dungeon.getStairs().onTurn();
+        SpeciesEntity player = dungeon.getEntities().get(0);
         int playerCenterX = player.getDestinationNode().getX();
         int playerCenterY = player.getDestinationNode().getY();
         dungeon.setDiscovered(playerCenterX, playerCenterY);
         player.addHP(1);
-        ArrayList<ItemEntity> items = dungeon.getItems();
-        for(ItemEntity item : items)
-        {
-            if(playerCenterX == item.getX() && playerCenterY == item.getY())
-            {
-                dungeon.clearItem(item);
-                MysteryDungeon.updateLog(String.format("%s picked up %s.", player.getName(), item.getContained().getName()));
-                player.addItem(item.getContained());
-                break;
-            }
-        }
-        StairEntity stairs = dungeon.getStairs();
-        if(playerCenterX == stairs.getX() && playerCenterY == stairs.getY())
-        {
-            doStairs();
-        }
-    }
-    
-    public void doStairs()
-    {
-        DungeonComp component = DungeonComp.getInstance();
-        Animation fadeAnimation = new FadeScreenAnimation(
-                0, 0, component.getWidth(), component.getHeight(), 0, -8);
-        Animation.animate(fadeAnimation, 20);
-        component.getDungeon().startDungeon();
-        fadeAnimation = new FadeScreenAnimation(
-                0, 0, component.getWidth(), component.getHeight(), 255, 8);
-        Animation.animate(fadeAnimation, 20);
     }
 }
