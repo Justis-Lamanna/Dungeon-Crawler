@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.GameLoop;
 import mysterydungeon.entity.SpeciesEntity;
@@ -212,6 +213,13 @@ public class MysteryDungeon extends JFrame{
         log.setForeground(Color.WHITE);
         log.setBackground(Color.BLACK);
         log.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+        DefaultCaret caret = (DefaultCaret)log.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        
+        JButton clearLog = new JButton("Clear Log");
+        clearLog.addActionListener(e -> clearLog());
+        hud.add(clearLog, setGridBagConstraints(0, 9, 3, 1, 1, 0.1));
+        
         return hud;
     }
     

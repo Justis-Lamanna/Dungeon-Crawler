@@ -18,7 +18,7 @@ import mysterydungeon.item.Item;
  */
 public class NeutralMove extends Move
 {
-    public static final NeutralMove BASH = new NeutralMove("Bash", 2);
+    public static final NeutralMove BASH = new NeutralMove("Bash", 5);
     
     private final String name;
     private final int power;

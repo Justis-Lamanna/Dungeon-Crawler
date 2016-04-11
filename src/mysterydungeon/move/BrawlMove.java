@@ -23,17 +23,17 @@ public class BrawlMove extends Move
     /**
      * A constant representing the Weak Punch attack.
      */
-    public static final BrawlMove WEAK_PUNCH = new BrawlMove("Weak Punch", 5, 5);
+    public static final BrawlMove WEAK_PUNCH = new BrawlMove("Weak Punch", 10, 5);
     
     /**
      * A constant representing the Punch attack.
      */
-    public static final BrawlMove PUNCH = new BrawlMove("Punch", 15, 10);
+    public static final BrawlMove PUNCH = new BrawlMove("Punch", 20, 10);
     
     /**
      * A constant representing the Strong Punch attack.
      */
-    public static final BrawlMove STRONG_PUNCH = new BrawlMove("Strong Punch", 25, 15);
+    public static final BrawlMove STRONG_PUNCH = new BrawlMove("Strong Punch", 30, 15);
     
     private final int basePower;
     private final int stamina;
