@@ -12,12 +12,21 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import javax.sound.midi.Instrument;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Synthesizer;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
@@ -56,12 +65,25 @@ public class MysteryDungeon extends JFrame{
      */
     public static final String TILEMAP = "Maps/map1.txt";
     
+    /**
+     * A constant representing the numpad control scheme.
+     */
+    public static final int NUMPAD = 0;
+    
+    /**
+     * A constant representing the arrow keys control scheme.
+     */
+    public static final int ARROW_KEYS = 1;
+    
+    private static int controlScheme = NUMPAD;
     
     private static JProgressBar hpBar = new JProgressBar(0, 100);
     private static JProgressBar staminaBar = new JProgressBar(0, 100);
     private static JComboBox<Item> inventory = new JComboBox<>();
     private static JTextArea log = new JTextArea("Entered the Dungeon.\n", 50, 10);
     
+    private static MidiChannel[] midi;
+    private static Synthesizer synth;
 
     private DungeonComp dungeon;
 
@@ -75,8 +97,42 @@ public class MysteryDungeon extends JFrame{
         frame.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        //new Thread(new GameLoop(frame.getComponent())).start();
+        initializeMidi();
         new GameLoop().run();
+    }
+    
+    private static void initializeMidi()
+    {
+        try
+        {
+            synth = MidiSystem.getSynthesizer();
+            synth.open();
+            midi = synth.getChannels();
+        }
+        catch(MidiUnavailableException ex)
+        {
+            ex.printStackTrace();
+        }   
+    }
+    
+    public static void playNote(int instrument, int note, int volume, int delay)
+    {
+        Instrument[] instr = synth.getDefaultSoundbank().getInstruments();
+        synth.loadInstrument(instr[instrument]);
+        midi[0].noteOn(note, volume);
+        delay(delay);
+        midi[0].noteOff(note);
+    }
+    
+    public static void delay(long millis)
+    {
+        long stop = System.currentTimeMillis() + millis;
+        while(System.currentTimeMillis() < stop);
+    }
+    
+    public static int getControlScheme()
+    {
+        return controlScheme;
     }
 
     /**
@@ -148,6 +204,9 @@ public class MysteryDungeon extends JFrame{
         JPanel hud = createHud();
         c = setGridBagConstraints(5, 0, 1, 3, 1, 1);
         frame.add(hud, c);
+        
+        JMenuBar menu = createMenu();
+        setJMenuBar(menu);
 
         addKeyListener(Controls.getInstance());
         this.setFocusable(true);
@@ -221,6 +280,23 @@ public class MysteryDungeon extends JFrame{
         hud.add(clearLog, setGridBagConstraints(0, 9, 3, 1, 1, 0.1));
         
         return hud;
+    }
+    
+    private JMenuBar createMenu()
+    {
+        JMenuBar menu = new JMenuBar();
+        JMenu controls = new JMenu("Controls");
+        ButtonGroup group = new ButtonGroup();
+        JRadioButtonMenuItem numpad = new JRadioButtonMenuItem("Numpad", true);
+        numpad.addItemListener(i -> controlScheme = NUMPAD);
+        JRadioButtonMenuItem dpad = new JRadioButtonMenuItem("Arrow Keys");
+        dpad.addItemListener(i -> controlScheme = ARROW_KEYS);
+        group.add(numpad);
+        group.add(dpad);
+        controls.add(numpad);
+        controls.add(dpad);
+        menu.add(controls);
+        return menu;
     }
     
     /**

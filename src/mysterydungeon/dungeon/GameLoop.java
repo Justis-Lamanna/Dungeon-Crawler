@@ -10,12 +10,8 @@ import java.util.ArrayList;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
-import mysterydungeon.animation.Animation;
-import mysterydungeon.animation.FadeScreenAnimation;
-import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.ItemEntity;
-import mysterydungeon.entity.StairEntity;
 import mysterydungeon.move.Move;
 
 /**
@@ -38,6 +34,7 @@ public class GameLoop
     public static final int FRAMES_RUN = 6;
     
     private boolean useMove = true;
+    private boolean collidedOnce = false;
     private final DungeonComp comp;
     private final Controls controls = Controls.getInstance();
     
@@ -153,9 +150,8 @@ public class GameLoop
                 for(int dir = 0; dir < 8; dir++)
                 {
                     Node next = playerNode;
-                    while(true)
+                    while(next != null)
                     {
-                        if(next == null){break;}
                         next = next.getPath(dir);
                         for(SpeciesEntity entity : entities)
                         {
@@ -177,11 +173,16 @@ public class GameLoop
                 player.setDestinationNode(playerNode.getPath(directionPressed));
                 player.facing = directionPressed;
                 player.setMoving(true);
+                collidedOnce = false;
                 return true;
             }
             else
             {
-                //Collision. Make a bump noise in the future, I guess?
+                if(!collidedOnce)
+                {
+                    MysteryDungeon.playNote(0, 60, 50, 100);
+                    collidedOnce = true;
+                }
             }
         }
         else if(attackPressed != -1 && useMove)
@@ -202,15 +203,34 @@ public class GameLoop
 
     private int getDirectionPressed()
     {
-        if(controls.isKeyDown(KeyEvent.VK_NUMPAD4)){return 6;}
-        else if(controls.isKeyDown(KeyEvent.VK_NUMPAD6)){return 2;}
-        else if(controls.isKeyDown(KeyEvent.VK_NUMPAD8)){return 0;}
-        else if(controls.isKeyDown(KeyEvent.VK_NUMPAD2)){return 4;}
-        else if(controls.isKeyDown(KeyEvent.VK_NUMPAD7)){return 7;}
-        else if(controls.isKeyDown(KeyEvent.VK_NUMPAD9)){return 1;}
-        else if(controls.isKeyDown(KeyEvent.VK_NUMPAD3)){return 3;}
-        else if(controls.isKeyDown(KeyEvent.VK_NUMPAD1)){return 5;}
-        else{return -1;}
+        if(MysteryDungeon.getControlScheme() == MysteryDungeon.NUMPAD)
+        {   
+            if(controls.isKeyDown(KeyEvent.VK_NUMPAD4)){return 6;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD6)){return 2;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD8)){return 0;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD2)){return 4;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD7)){return 7;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD9)){return 1;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD3)){return 3;}
+            else if(controls.isKeyDown(KeyEvent.VK_NUMPAD1)){return 5;}
+            else{return -1;}
+        }
+        else if(MysteryDungeon.getControlScheme() == MysteryDungeon.ARROW_KEYS)
+        {   
+            if(controls.isKeyDown(KeyEvent.VK_UP) && controls.isKeyDown(KeyEvent.VK_LEFT)){return 7;}
+            else if(controls.isKeyDown(KeyEvent.VK_UP) && controls.isKeyDown(KeyEvent.VK_RIGHT)){return 1;}
+            else if(controls.isKeyDown(KeyEvent.VK_DOWN) && controls.isKeyDown(KeyEvent.VK_RIGHT)){return 3;}
+            else if(controls.isKeyDown(KeyEvent.VK_DOWN) && controls.isKeyDown(KeyEvent.VK_LEFT)){return 5;}
+            else if(controls.isKeyDown(KeyEvent.VK_LEFT)){return 6;}
+            else if(controls.isKeyDown(KeyEvent.VK_RIGHT)){return 2;}
+            else if(controls.isKeyDown(KeyEvent.VK_UP)){return 0;}
+            else if(controls.isKeyDown(KeyEvent.VK_DOWN)){return 4;}
+            else{return -1;}
+        }
+        else
+        {
+            return -1;
+        }
     }
 
     private int getAttackPressed()
