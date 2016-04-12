@@ -20,6 +20,11 @@ import mysterydungeon.move.Move;
  */
 public class SpeciesEntity implements Entity<Species>
 {
+    /**
+     * A constant representing the range at which this entity should begin to attack.
+     */
+    public static final int RANGE = 5; //If the player is this many nodes away, switch to the attack.
+    
     private Node currentNode;
     private Node gotoNode;
     private Dungeon dungeon;
@@ -30,6 +35,7 @@ public class SpeciesEntity implements Entity<Species>
     private boolean moving;
     private String name;
     private boolean isPlayer;
+    private int range = RANGE;
 
     private int currentHP;
     private int maxHP;
@@ -531,12 +537,39 @@ public class SpeciesEntity implements Entity<Species>
     }
     
     /**
+     * Removes an item from this entity.
+     * @param item The item to remove from inventory.
+     */
+    public void removeItem(Item item)
+    {
+        heldItems.remove(item);
+    }
+    
+    /**
      * Returns the dungeon this entity is in.
      * @return The dungeon this entity is in.
      */
     public Dungeon getDungeon()
     {
         return dungeon;
+    }
+    
+    /**
+     * Get the range of sight this entity has.
+     * @return The number of tiles ahead the entity can "see".
+     */
+    public int getRange()
+    {
+        return range;
+    }
+    
+    /**
+     * Set a new range of sight for this entity.
+     * @param newRange The number of tiles ahead this entity will see.
+     */
+    public void setRange(int newRange)
+    {
+        range = newRange;
     }
     
     @Override

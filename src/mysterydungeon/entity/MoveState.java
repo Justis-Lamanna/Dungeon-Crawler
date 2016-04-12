@@ -19,11 +19,6 @@ public class MoveState extends EntityState
     private Node targetNode = null;
 
     /**
-     * A constant representing the range at which this entity should begin to attack.
-     */
-    public static final int RANGE = 5; //If the player is this many nodes away, switch to the attack.
-
-    /**
      * Generates the behavior of this entity.
      * More specifically, it follows hallways, and turns at random on junctions.
      * In rooms, it travels to a randomly-chosen exit.
@@ -34,7 +29,8 @@ public class MoveState extends EntityState
     public void doState(SpeciesEntity e, Dungeon d)
     {
         Node current = e.getCurrentNode();
-        if(d.getRoom(current) != null)
+        boolean useItem = useItem(d, e);
+        if(d.getRoom(current) != null && !useItem)
         {
             if(targetNode == null)
             {
@@ -62,7 +58,7 @@ public class MoveState extends EntityState
             e.facing = getDirection(current, nextNode);
             e.setDestinationNode(nextNode);
         }
-        else
+        else if(d.getRoom(current) == null && !useItem)
         {
             //You're on a pathway. Keep going the same way. If you're at an intersection, pick one at random.
             targetNode = null;
@@ -94,7 +90,7 @@ public class MoveState extends EntityState
                 e.setDestinationNode(next);
             }
         }
-        if(playerNearby(d, e.getCurrentNode(), RANGE))
+        if(playerNearby(d, e.getCurrentNode(), e.getRange()))
         {
             e.setState(new FollowState());
         }

@@ -12,6 +12,7 @@ import mysterydungeon.MysteryDungeon;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.item.Item;
+import mysterydungeon.item.LightItem;
 
 /**
  * An abstract class, for use in defining states. Many helpful functions are
@@ -292,7 +293,6 @@ public abstract class EntityState
             Item heldItem = e.getItems().get(0);
             double hpPercentage = (double)e.getCurrentHP() / e.getMaximumHP();
             double staminaPercentage = (double)e.getCurrentStamina() / e.getMaximumStamina();
-            System.out.println(hpPercentage + "|" + staminaPercentage);
             if(heldItem.getType() == Item.HP_HEALING && hpPercentage < 0.5)
             {
                 e.useItem(heldItem);
@@ -302,6 +302,12 @@ public abstract class EntityState
             {
                 e.useItem(heldItem);
                 return true;
+            }
+            if(heldItem.getClass() == LightItem.class)
+            {
+                e.removeItem(heldItem);
+                MysteryDungeon.updateLog(String.format("%s was able to see farther.", e.getName()));
+                e.setRange(SpeciesEntity.RANGE + 2);
             }
         }
         return false;

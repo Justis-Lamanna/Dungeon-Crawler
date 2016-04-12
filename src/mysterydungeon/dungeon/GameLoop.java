@@ -180,7 +180,7 @@ public class GameLoop
             {
                 if(!collidedOnce)
                 {
-                    MysteryDungeon.playNote(0, 60, 50, 100);
+                    MysteryDungeon.playNote(0, 60, 1, 100);
                     collidedOnce = true;
                 }
             }
