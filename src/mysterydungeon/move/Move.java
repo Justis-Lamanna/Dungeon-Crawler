@@ -130,7 +130,7 @@ public abstract class Move implements Comparable
         {
             Controls.getInstance().update();
         }
-        DungeonComp.getInstance().getDungeon().startDungeon();
+        DungeonComp.getInstance().getDungeon().startNextFloor();
     }
     
     public static void faint(SpeciesEntity fainted)

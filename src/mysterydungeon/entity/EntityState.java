@@ -308,6 +308,7 @@ public abstract class EntityState
                 e.removeItem(heldItem);
                 MysteryDungeon.updateLog(String.format("%s was able to see farther.", e.getName()));
                 e.setRange(SpeciesEntity.RANGE + 2);
+                return true;
             }
         }
         return false;

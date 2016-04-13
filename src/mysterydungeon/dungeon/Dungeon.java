@@ -68,6 +68,8 @@ public class Dungeon
     private final ArrayList<Entity> items = new ArrayList<>();
     
     private StairEntity stairs;
+    private int floor;
+    private boolean up;
 
     /**
      * The random number generator, used in all instances of randomness in-game.
@@ -80,9 +82,9 @@ public class Dungeon
      * @param speciesList A list of possible species that may appear in the dungeon.
      * @param itemList A list of possible items that may appear in the dungeon.
      */
-    public Dungeon(String basemapFilename, Species[] speciesList, Item[] itemList)
+    public Dungeon(String basemapFilename, Species[] speciesList, Item[] itemList, boolean up)
     {
-        this(new DungeonLayout(basemapFilename), speciesList, itemList);
+        this(new DungeonLayout(basemapFilename), speciesList, itemList, up);
     }
     
     /**
@@ -91,17 +93,19 @@ public class Dungeon
      * @param speciesList An array of the species that may appear in the dungeon.
      * @param itemList An array of the items that may appear in the dungeon.
      */
-    public Dungeon(DungeonLayout layout, Species[] speciesList, Item[] itemList)
+    public Dungeon(DungeonLayout layout, Species[] speciesList, Item[] itemList, boolean up)
     {
         possibleSpecies = speciesList;
         possibleItems = itemList;
+        floor = 0;
         this.layout = layout;
+        this.up = up;
     }
     
     /**
      * Calculates the relevant data for the dungeon, loads the player and enemies, and starts the game loop.
      */
-    public void startDungeon()
+    public void startNextFloor()
     {
         loadDungeon();
         MysteryDungeon.clearLog();
@@ -121,6 +125,8 @@ public class Dungeon
         spawnItems(1);
         initializeMask();
         stairs = new StairEntity(this, StairEntity.DOWN);
+        floor++;
+        System.out.println(getFloor());
     }
 
     /**
@@ -128,6 +134,7 @@ public class Dungeon
      */
     public void loadDungeon()
     {
+        layout.swapVertical();
         basemap = layout.getBaseMap();
         generateTilemap(basemap);
         findNodes();
@@ -697,5 +704,14 @@ public class Dungeon
     public void setLayout(DungeonLayout newLayout)
     {
         layout = newLayout;
+    }
+    
+    /**
+     * Get the current floor you're on.
+     * @return The floor number. If negative, you're going down.
+     */
+    public int getFloor()
+    {
+        return up ? floor : -floor;
     }
 }

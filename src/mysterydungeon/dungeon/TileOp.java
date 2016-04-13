@@ -208,7 +208,8 @@ public class TileOp
             case 288:
             case 292: return O_E;
             case 38: 
-            case 39: 
+            case 39:
+            case 263:
             case 294:
             case 295: return O_NE;
             case 64: return O_SW_CORNER;

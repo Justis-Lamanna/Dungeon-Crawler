@@ -84,7 +84,7 @@ public class StairEntity implements Entity
             Animation fadeAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 0, 8);
             Animation.animate(fadeAnimation, 20);
-            component.getDungeon().startDungeon();
+            component.getDungeon().startNextFloor();
             fadeAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 255, -8);
             Animation.animate(fadeAnimation, 20);

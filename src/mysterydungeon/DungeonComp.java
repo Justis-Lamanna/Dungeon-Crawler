@@ -76,7 +76,7 @@ public class DungeonComp extends JComponent
     {
         super();
         this.dungeon = dungeon;
-        dungeon.startDungeon();
+        dungeon.startNextFloor();
         generateTiles(tiles);
         try{attackImage = ImageIO.read(new File("Sprites/attack.png"));}
         catch(IOException ex){attackImage = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR);}
@@ -417,7 +417,7 @@ public class DungeonComp extends JComponent
      */
     public void reopen(boolean repaint)
     {
-        dungeon.startDungeon();
+        dungeon.startNextFloor();
         if(repaint){repaint();}
     }
 

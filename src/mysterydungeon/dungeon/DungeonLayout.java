@@ -64,5 +64,35 @@ public class DungeonLayout
     {
         return basemap;
     }
+    
+    public void swapHorizontal()
+    {
+        int width = basemap[0].length;
+        int height = basemap.length;
+        int[][] newMap = new int[height][width];
+        for(int xx = 0; xx < height; xx++)
+        {
+            for(int yy = 0; yy < width; yy++)
+            {
+                newMap[xx][width - 1 - yy] = basemap[xx][yy];
+            }
+        }
+        basemap = newMap;
+    }
+    
+    public void swapVertical()
+    {
+        int width = basemap[0].length;
+        int height = basemap.length;
+        int[][] newMap = new int[height][width];
+        for(int xx = 0; xx < height; xx++)
+        {
+            for(int yy = 0; yy < width; yy++)
+            {
+                newMap[height - 1 - xx][yy] = basemap[xx][yy];
+            }
+        }
+        basemap = newMap;
+    }
             
 }
