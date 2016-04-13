@@ -10,7 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import mysterydungeon.DungeonComp;
+import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
+import mysterydungeon.animation.FadeLetters;
 import mysterydungeon.animation.FadeScreenAnimation;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
@@ -84,7 +86,16 @@ public class StairEntity implements Entity
             Animation fadeAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 0, 8);
             Animation.animate(fadeAnimation, 20);
+            
             component.getDungeon().startNextFloor();
+            
+            String floor = String.format("FLOOR %s%s", dungeon.getFloor()<0 ? "B" : "", Math.abs(dungeon.getFloor()));
+            int stringX = (DungeonComp.getInstance().getWidth() / 2) - (floor.length() * 8);
+            int stringY = (DungeonComp.getInstance().getHeight() / 3) - 12;
+            Animation letterAnimation = new FadeLetters(stringX, stringY, floor);
+            MysteryDungeon.playNote(0, 500, 150, 100);
+            Animation.animate(letterAnimation, 20);
+            
             fadeAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 255, -8);
             Animation.animate(fadeAnimation, 20);

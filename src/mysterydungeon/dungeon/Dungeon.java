@@ -81,6 +81,7 @@ public class Dungeon
      * @param basemapFilename The filename of the base map this dungeon should display.
      * @param speciesList A list of possible species that may appear in the dungeon.
      * @param itemList A list of possible items that may appear in the dungeon.
+     * @param up True if stairs go up, false if they go down.
      */
     public Dungeon(String basemapFilename, Species[] speciesList, Item[] itemList, boolean up)
     {
@@ -92,6 +93,7 @@ public class Dungeon
      * @param layout The layout of this dungeon.
      * @param speciesList An array of the species that may appear in the dungeon.
      * @param itemList An array of the items that may appear in the dungeon.
+     * @param up True if stairs go up, false if they go down.
      */
     public Dungeon(DungeonLayout layout, Species[] speciesList, Item[] itemList, boolean up)
     {
@@ -124,9 +126,8 @@ public class Dungeon
         items.clear();
         spawnItems(1);
         initializeMask();
-        stairs = new StairEntity(this, StairEntity.DOWN);
+        stairs = new StairEntity(this, up);
         floor++;
-        System.out.println(getFloor());
     }
 
     /**

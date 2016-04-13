@@ -145,7 +145,7 @@ public class MysteryDungeon extends JFrame{
         JPanel frame = new JPanel(new GridBagLayout());
         GridBagConstraints c;
         
-        Dungeon dg = new Dungeon(tilemapFilename, Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, true);
+        Dungeon dg = new Dungeon(tilemapFilename, Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, false);
         dungeon = DungeonComp.getInstance(tileFilename, dg);
         JScrollPane scrollpane = new JScrollPane(dungeon);
         c = setGridBagConstraints(0, 0, 5, 1, 0.9, 1.0);
