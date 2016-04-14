@@ -732,4 +732,13 @@ public class Dungeon
     {
         return up ? floor : -floor;
     }
+    
+    /**
+     * Set the floor you're currently on.
+     * @param floor The new floor number.
+     */
+    public void setFloor(int floor)
+    {
+        this.floor = floor;
+    }
 }

@@ -30,7 +30,7 @@ public class FadeLetters implements Animation
         BufferedImage font;
         try
         {
-            font = ImageIO.read(new File("Sprites/numbers.png"));
+            font = ImageIO.read(new File("Sprites/font.png"));
         }
         catch(IOException ex)
         {

@@ -10,6 +10,8 @@ import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
+import mysterydungeon.animation.FadeLetters;
+import mysterydungeon.animation.FadeScreenAnimation;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.SpeciesEntity;
@@ -125,12 +127,19 @@ public abstract class Move implements Comparable
      */
     public static void respawn()
     {
-        MysteryDungeon.updateLog("Press any key...");
-        while(Controls.getInstance().isAnyKeyDown())
+        DungeonComp component = DungeonComp.getInstance();
+        Animation fadeAnimation = new FadeScreenAnimation(
+                    0, 0, component.getWidth(), component.getHeight(), 0, 8);
+        Animation.animate(fadeAnimation, 20);
+        
+        String youDied = "YOU DIED";
+        int stringX = (DungeonComp.getInstance().getWidth() / 2) - (youDied.length() * 8);
+        int stringY = (DungeonComp.getInstance().getHeight() / 3) - 12;
+        Animation textAnimation = new FadeLetters(stringX, stringY, youDied);
+        while(true)
         {
-            Controls.getInstance().update();
+            Animation.animate(textAnimation, 20);
         }
-        DungeonComp.getInstance().getDungeon().startNextFloor();
     }
     
     public static void faint(SpeciesEntity fainted)
