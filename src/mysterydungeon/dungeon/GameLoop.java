@@ -97,7 +97,7 @@ public class GameLoop
             if(entity.isMoving())
             {
                 doneMoving = false;
-                int[] iValues = interpolate(entity, isRunning ? FRAMES_RUN : FRAMES_WALK);
+                int[] iValues = interpolate(entity, FRAMES_WALK);
                 entity.addPixel(iValues[0], iValues[1]);
                 if(entity.getDestinationNode().equals(entity.getX(), entity.getY()))
                 {

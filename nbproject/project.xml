@@ -5,6 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>MysteryDungeon</name>
             <source-roots>
+                <root id="src.Maps.dir"/>
+                <root id="src.Sprites.dir"/>
                 <root id="src.dir"/>
             </source-roots>
             <test-roots>
