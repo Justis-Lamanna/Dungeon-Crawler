@@ -105,7 +105,25 @@ public class Dungeon
     }
     
     /**
-     * Calculates the relevant data for the dungeon, loads the player and enemies, and starts the game loop.
+     * Initialize the next floor of the dungeon.
+     * More specifically, this clears the log, initializes player, spawns
+     * enemies and items, initializes the mask, generates the stairs, and
+     * increments the floor by one. This method also allows you to conveniently
+     * swap to a new layout.
+     * @param nextFloorLayout The layout of the next floor.
+     */
+    public void startNextFloor(DungeonLayout nextFloorLayout)
+    {
+        layout = nextFloorLayout;
+        startNextFloor();
+    }
+    
+    /**
+     * Initialize the next floor of the dungeon.
+     * More specifically, this clears the log, initializes player, spawns
+     * enemies and items, initializes the mask, generates the stairs, and
+     * increments the floor by one. The layout of the dungeon will not change; this
+     * essentially just acts as a retry for this floor.
      */
     public void startNextFloor()
     {
@@ -135,7 +153,6 @@ public class Dungeon
      */
     public void loadDungeon()
     {
-        layout.swapVertical();
         basemap = layout.getBaseMap();
         generateTilemap(basemap);
         findNodes();
@@ -699,12 +716,12 @@ public class Dungeon
     }
     
     /**
-     * Set a new layout for this dungeon.
-     * @param newLayout The new layout for the dungeon.
+     * Get this dungeon's layout.
+     * @return The layout of this dungeon.
      */
-    public void setLayout(DungeonLayout newLayout)
+    public DungeonLayout getLayout()
     {
-        layout = newLayout;
+        return layout;
     }
     
     /**

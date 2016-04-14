@@ -15,6 +15,7 @@ import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.FadeLetters;
 import mysterydungeon.animation.FadeScreenAnimation;
 import mysterydungeon.dungeon.Dungeon;
+import mysterydungeon.dungeon.DungeonLayout;
 import mysterydungeon.dungeon.Node;
 
 /**
@@ -87,7 +88,12 @@ public class StairEntity implements Entity
                     0, 0, component.getWidth(), component.getHeight(), 0, 8);
             Animation.animate(fadeAnimation, 20);
             
-            component.getDungeon().startNextFloor();
+            DungeonLayout layout = dungeon.getLayout();
+            int random = Dungeon.PRNG.nextInt(4);
+            if(random == 1){layout.swapHorizontal();}
+            else if(random == 2){layout.swapVertical();}
+            else if(random == 3){layout.swapHorizontal(); layout.swapVertical();}
+            component.getDungeon().startNextFloor(layout);
             
             String floor = String.format("FLOOR %s%s", dungeon.getFloor()<0 ? "B" : "", Math.abs(dungeon.getFloor()));
             int stringX = (DungeonComp.getInstance().getWidth() / 2) - (floor.length() * 8);
