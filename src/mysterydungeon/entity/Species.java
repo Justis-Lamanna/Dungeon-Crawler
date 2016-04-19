@@ -28,7 +28,6 @@ public class Species
 {
     private String name;
     private String imageFilename;
-    private BufferedImage image;
     private boolean water;
     private int maxhp;
     private ArrayList<Move> moves = new ArrayList<>();
@@ -192,7 +191,6 @@ public class Species
     {
         this.name = name;
         this.imageFilename = imageFilename;
-        this.image = null;
         this.water = water;
         this.maxhp = hp;
     }
@@ -208,23 +206,21 @@ public class Species
 
     /**
      * Get this species image.
-     * The species image won't be stored until this method is called.
+     * Each call to this method returns a new image. This is done ultimately
+     * to facilitate animation; each entity has one copy of its sprite, and this
+     * sprite can be used to animate attacks.
      * @return This species image.
      */
     public BufferedImage getImage()
     {
-        if(image == null)
-        {	
-            try
-            {
-                image = ImageIO.read(new File(imageFilename));
-            }
-            catch(IOException ex)
-            {
-                ex.printStackTrace();
-            }
+        try
+        {
+            return ImageIO.read(new File(imageFilename));
         }
-        return image;
+        catch(IOException ex)
+        {
+            return null;
+        }
     }
 
     /**

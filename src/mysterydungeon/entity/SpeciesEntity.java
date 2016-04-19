@@ -36,6 +36,7 @@ public class SpeciesEntity implements Entity<Species>
     private String name;
     private boolean isPlayer;
     private int range = RANGE;
+    private BufferedImage sprite;
 
     private int currentHP;
     private int maxHP;
@@ -72,6 +73,7 @@ public class SpeciesEntity implements Entity<Species>
         heldItems = new ArrayList<>();
         randomizeLocation();
         currentState = startState;
+        sprite = species.getImage();
     }
 
     /**
@@ -117,6 +119,7 @@ public class SpeciesEntity implements Entity<Species>
      * Get the species of this entity.
      * @return This entity's species.
      */
+    @Override
     public Species getContained()
     {
         return species;
@@ -175,7 +178,7 @@ public class SpeciesEntity implements Entity<Species>
     @Override
     public BufferedImage getImage()
     {
-        return species.getImage();
+        return sprite;
     }
 
     /**

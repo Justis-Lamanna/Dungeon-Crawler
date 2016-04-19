@@ -99,7 +99,7 @@ public class StairEntity implements Entity
             //Pop up the dungeon level. Fades out level.
             String floor = String.format("FLOOR %s%s", dungeon.getFloor() < 0 ? "B" : "", Math.abs(dungeon.getFloor()));
             int stringX = (DungeonComp.getInstance().getWidth() / 2) - (floor.length() * 8);
-            int stringY = (DungeonComp.getInstance().getHeight() / 3) - 12;
+            int stringY = (DungeonComp.getInstance().getHeight() / 3) - 12; // 12 is equal to the font height divided by two.
             Animation letterAnimation = new FadeLetters(stringX, stringY, floor);
             MysteryDungeon.playNote(0, 500, 150, 100);
             Animation.animate(letterAnimation, 20);
