@@ -73,8 +73,9 @@ public interface Animation
      * returns true, in which case it terminates.
      * @param anim The animation to play.
      * @param delay The amount of time to wait between frames.
+     * @param remove True if the animation should be removed when done, false if not.
      */
-    public static void animate(Animation anim, long delay)
+    public static void animate(Animation anim, long delay, boolean remove)
     {
         DungeonComp component = DungeonComp.getInstance();
         component.addAnimation(anim);
@@ -83,6 +84,11 @@ public interface Animation
             component.paintImmediately(anim.getX(), anim.getY(), anim.getImage().getWidth(), anim.getImage().getHeight());
             delay(delay);
         } while (!anim.animate());
-        component.removeAnimation(anim);
+        if(remove){component.removeAnimation(anim);}
+    }
+    
+    public static void animate(Animation anim, long delay)
+    {
+        animate(anim, delay, true);
     }
 }

@@ -47,7 +47,21 @@ public class FadeLetters implements Animation
     @Override
     public boolean animate()
     {
-        return counter++ >= 60;
+        //return counter++ >= 60;
+        counter++;
+        if(counter < 30)
+        {
+            return false;
+        }
+        if(counter < 94)
+        {
+            decreaseAlpha(string, 4);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     @Override
@@ -94,6 +108,23 @@ public class FadeLetters implements Animation
             {
                 int rgb = letter.getRGB(xx, yy);
                 string.setRGB(x+xx, y+yy, rgb);
+            }
+        }
+    }
+    
+    private void decreaseAlpha(BufferedImage image, int dalpha)
+    {
+        for(int xx = 0; xx < image.getWidth(); xx++)
+        {
+            for(int yy = 0; yy < image.getHeight(); yy++)
+            {
+                int argb = image.getRGB(xx, yy);
+                int rgb = argb & 0xFFFFFF;
+                int alpha = argb >>> 24;
+                alpha -= dalpha;
+                if(alpha < 0){alpha = 0;}
+                argb = (alpha << 24) + rgb;
+                image.setRGB(xx, yy, argb);
             }
         }
     }

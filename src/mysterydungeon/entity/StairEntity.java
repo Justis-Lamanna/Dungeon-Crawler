@@ -86,7 +86,7 @@ public class StairEntity implements Entity
             DungeonComp component = DungeonComp.getInstance();
             Animation fadeAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 0, 8);
-            Animation.animate(fadeAnimation, 20);
+            Animation.animate(fadeAnimation, 20, false);
             
             DungeonLayout layout = dungeon.getLayout();
             int random = Dungeon.PRNG.nextInt(4);
@@ -95,16 +95,17 @@ public class StairEntity implements Entity
             else if(random == 3){layout.swapHorizontal(); layout.swapVertical();}
             component.getDungeon().startNextFloor(layout);
             
-            String floor = String.format("FLOOR %s%s", dungeon.getFloor()<0 ? "B" : "", Math.abs(dungeon.getFloor()));
+            String floor = String.format("FLOOR %s%s", dungeon.getFloor() < 0 ? "B" : "", Math.abs(dungeon.getFloor()));
             int stringX = (DungeonComp.getInstance().getWidth() / 2) - (floor.length() * 8);
             int stringY = (DungeonComp.getInstance().getHeight() / 3) - 12;
             Animation letterAnimation = new FadeLetters(stringX, stringY, floor);
             MysteryDungeon.playNote(0, 500, 150, 100);
             Animation.animate(letterAnimation, 20);
+            component.removeAnimation(fadeAnimation);
             
-            fadeAnimation = new FadeScreenAnimation(
+            Animation fadeBackAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 255, -8);
-            Animation.animate(fadeAnimation, 20);
+            Animation.animate(fadeBackAnimation, 20);
         }
     }
 }
