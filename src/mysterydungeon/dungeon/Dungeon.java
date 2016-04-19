@@ -7,12 +7,9 @@ package mysterydungeon.dungeon;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.Scanner;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.Species;
@@ -158,30 +155,6 @@ public class Dungeon
         findNodes();
         findPaths();
         findRooms();
-    }
-
-    private void generateBasemap(String filename)
-    {
-        try
-        {	
-            Scanner inScanner = new Scanner(new File(filename));
-            int mapWidth = inScanner.nextInt();
-            int mapHeight = inScanner.nextInt();
-            inScanner.nextLine(); //There's a newline left after nextInt. This eats the newLine.
-            basemap = new int[mapHeight][mapWidth];
-            for(int row = 0; row < basemap.length; row++)
-            {
-                String[] line = inScanner.nextLine().split(" +");
-                for(int col = 0; col < line.length; col++)
-                {
-                    basemap[row][col] = Integer.parseInt(line[col]);
-                }
-            }
-        }
-        catch(IOException ex)
-        {
-            ex.printStackTrace();
-        }
     }
 
     private void generateTilemap(int[][] basemap)

@@ -49,13 +49,13 @@ public class FadeLetters implements Animation
     {
         //return counter++ >= 60;
         counter++;
-        if(counter < 30)
+        if(counter < 32)
         {
             return false;
         }
-        if(counter < 94)
+        if(counter < 64)
         {
-            decreaseAlpha(string, 4);
+            decreaseAlpha(string, 8);
             return false;
         }
         else

@@ -83,26 +83,29 @@ public class StairEntity implements Entity
         SpeciesEntity player = dungeon.getEntities().get(0);
         if(player.getDestinationNode().getX() == this.getX() && player.getDestinationNode().getY() == this.getY())
         {
+            
             DungeonComp component = DungeonComp.getInstance();
+            //Fade screen to black. Hold as black.
             Animation fadeAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 0, 8);
             Animation.animate(fadeAnimation, 20, false);
-            
+            //Flip layout some way.
             DungeonLayout layout = dungeon.getLayout();
             int random = Dungeon.PRNG.nextInt(4);
             if(random == 1){layout.swapHorizontal();}
             else if(random == 2){layout.swapVertical();}
             else if(random == 3){layout.swapHorizontal(); layout.swapVertical();}
             component.getDungeon().startNextFloor(layout);
-            
+            //Pop up the dungeon level. Fades out level.
             String floor = String.format("FLOOR %s%s", dungeon.getFloor() < 0 ? "B" : "", Math.abs(dungeon.getFloor()));
             int stringX = (DungeonComp.getInstance().getWidth() / 2) - (floor.length() * 8);
             int stringY = (DungeonComp.getInstance().getHeight() / 3) - 12;
             Animation letterAnimation = new FadeLetters(stringX, stringY, floor);
             MysteryDungeon.playNote(0, 500, 150, 100);
             Animation.animate(letterAnimation, 20);
+            //Pulls out the black that was held from before.
             component.removeAnimation(fadeAnimation);
-            
+            //Fades screen to the new dungeon.
             Animation fadeBackAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 255, -8);
             Animation.animate(fadeBackAnimation, 20);
