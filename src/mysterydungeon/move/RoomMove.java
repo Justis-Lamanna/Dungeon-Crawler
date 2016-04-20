@@ -170,7 +170,7 @@ public class RoomMove extends Move
     private void doAnimation(int startX, int startY)
     {
         Animation anim = new RoomAnimation(startX - 16, startY - 16);
-        Move.animate(anim, 5);
+        Animation.animateScreen(anim, 5);
     }
     
     @Override

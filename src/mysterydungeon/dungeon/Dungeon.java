@@ -587,7 +587,7 @@ public class Dungeon
      * @param innerRadius The radius of full transparency inside the circle.
      * @return The circle generated.
      */
-    public BufferedImage generateShadow(int outerRadius, int innerRadius)
+    public static BufferedImage generateShadow(int outerRadius, int innerRadius)
     {
         BufferedImage returnShadow = new BufferedImage(outerRadius * 2, outerRadius * 2, BufferedImage.TYPE_4BYTE_ABGR);
         int mid = returnShadow.getWidth() / 2;
@@ -637,7 +637,7 @@ public class Dungeon
         for(int count = 0; count < number; count++)
         {
             Item randomItem = possibleItems[PRNG.nextInt(possibleItems.length)];
-            items.add(new ItemEntity(randomItem, this));
+            spawnItem(randomItem);
         }
     }
     
@@ -648,7 +648,8 @@ public class Dungeon
      */
     public void spawnItem(Item item)
     {
-        items.add(new ItemEntity(item, this));
+        ItemEntity itemEntity = new ItemEntity(item, this);
+        items.add(itemEntity);
     }
     
     /**

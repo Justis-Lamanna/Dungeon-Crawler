@@ -7,7 +7,6 @@ package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
 import mysterydungeon.DungeonComp;
-import static mysterydungeon.move.Move.delay;
 
 /**
  * An interface for creating animations.
@@ -67,12 +66,26 @@ public interface Animation
     }
     
     /**
-     * Animate a certain animation.
+     * Pause program execution by some amount of time.
+     * @param millis The number of milliseconds to wait.
+     */
+    public static void delay(long millis)
+    {
+        long waitUntil = System.currentTimeMillis() + millis;
+        while(System.currentTimeMillis() < waitUntil)
+        {
+            //Waiting...
+        }
+    }
+    
+    /**
+     * Play a certain animation.
      * Animations that are played a fix amount of time should use this method
      * to animate. This method repeatedly calls the animate() method until it
-     * returns true, in which case it terminates.
+     * returns true, in which case it terminates. The animation may or may not
+     * be removed from the animation queue, depending on the boolean.
      * @param anim The animation to play.
-     * @param delay The amount of time to wait between frames.
+     * @param delay The amount of time to wait between calls to animate().
      * @param remove True if the animation should be removed when done, false if not.
      */
     public static void animate(Animation anim, long delay, boolean remove)
@@ -87,8 +100,38 @@ public interface Animation
         if(remove){component.removeAnimation(anim);}
     }
     
+    /**
+     * Play a certain animation.
+     * Animations that should play immediately should use this method
+     * to animate. This method repeatedly calls the animate() method until
+     * it returns true, in which case it terminates. The animation
+     * will then be removed from the queue.
+     * @param anim The animation to play.
+     * @param delay The amount of time to wait between calls to animate().
+     */
     public static void animate(Animation anim, long delay)
     {
         animate(anim, delay, true);
+    }
+    
+    /**
+     * Play a certain animation.
+     * Animations that should play immediately should use this method
+     * to animate. This method repeatedly calls the animate() method until
+     * it returns true, in which case it terminates. Repaint is called on
+     * the entire screen, instead of just where the image is being painted.
+     * @param anim The animation to play.
+     * @param delay The amount of time to wait between calls to animate().
+     */
+    public static void animateScreen(Animation anim, long delay)
+    {
+        DungeonComp component = DungeonComp.getInstance();
+        component.addAnimation(anim);
+        do
+        {
+            component.paintImmediately(0, 0, component.getWidth(), component.getHeight());
+            delay(delay);
+        } while (!anim.animate());
+        component.removeAnimation(anim);
     }
 }

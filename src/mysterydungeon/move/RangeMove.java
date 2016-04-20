@@ -181,7 +181,7 @@ public class RangeMove extends Move
     private void doAnimation(int startX, int startY, int direction, int range)
     {
         Animation anim = new RangeAnimation(startX, startY, direction, range);
-        Move.animate(anim, 5);
+        Animation.animate(anim, 5);
     }
     
     @Override

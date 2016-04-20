@@ -13,11 +13,11 @@ import java.awt.image.BufferedImage;
  */
 public class FadeScreenAnimation implements Animation
 {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     private int currentAlpha;
-    private int steps;
-    private BufferedImage image;
+    private final int steps;
+    private final BufferedImage image;
     
     public FadeScreenAnimation(int x, int y, int width, int height, int startAlpha, int steps)
     {
