@@ -31,6 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 import mysterydungeon.dungeon.Dungeon;
+import mysterydungeon.dungeon.DungeonLayout;
 import mysterydungeon.dungeon.GameLoop;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.item.Item;
@@ -145,7 +146,8 @@ public class MysteryDungeon extends JFrame{
         JPanel frame = new JPanel(new GridBagLayout());
         GridBagConstraints c;
         
-        Dungeon dg = new Dungeon(tilemapFilename, Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, false);
+        //Dungeon dg = new Dungeon(tilemapFilename, Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, false);
+        Dungeon dg = new Dungeon(new DungeonLayout("Maps/Building/", 25, 25), Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, false);
         dungeon = DungeonComp.getInstance(tileFilename, dg);
         JScrollPane scrollpane = new JScrollPane(dungeon);
         c = setGridBagConstraints(0, 0, 5, 1, 0.9, 1.0);

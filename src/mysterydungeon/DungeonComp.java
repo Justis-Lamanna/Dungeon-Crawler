@@ -312,8 +312,11 @@ public class DungeonComp extends JComponent
                 int facing = entity.facing;
                 drawX = calculateDrawPointX(entity.getX(), 32);
                 drawY = calculateDrawPointY(entity.getY(), 32);
-                BufferedImage arrow = arrowImage.getSubimage(0, facing*32, 32, 32);
-                g.drawImage(arrow, drawX, drawY, null);
+                if(facing >= 0)
+                {
+                    BufferedImage arrow = arrowImage.getSubimage(0, facing*32, 32, 32);
+                    g.drawImage(arrow, drawX, drawY, null);
+                }
             }
             anim.animate();
         }

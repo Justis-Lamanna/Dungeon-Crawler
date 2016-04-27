@@ -82,7 +82,7 @@ public class Dungeon
      */
     public Dungeon(String basemapFilename, Species[] speciesList, Item[] itemList, boolean up)
     {
-        this(new DungeonLayout(basemapFilename), speciesList, itemList, up);
+        this(new DungeonLayout(DungeonLayout.readLayout(basemapFilename)), speciesList, itemList, up);
     }
     
     /**

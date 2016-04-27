@@ -49,9 +49,16 @@ public class MoveState extends EntityState
                     }
                     targetNode = randomExteriorNode;
                 }
-                else
+                else if(currentRoom.getExteriorNodes().size() > 0)
                 {
                     targetNode = currentRoom.getExteriorNodes().get(0);
+                }
+                else
+                {
+                    do
+                    {
+                        targetNode = current.getPath(Dungeon.PRNG.nextInt(8));
+                    } while (targetNode == null);
                 }
             }
             Node nextNode = nextNode(e, d, current, targetNode);
