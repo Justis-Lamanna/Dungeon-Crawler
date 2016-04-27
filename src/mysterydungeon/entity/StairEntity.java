@@ -89,13 +89,9 @@ public class StairEntity implements Entity
             Animation fadeAnimation = new FadeScreenAnimation(
                     0, 0, component.getWidth(), component.getHeight(), 0, 8);
             Animation.animate(fadeAnimation, 20, false);
-            //Flip layout some way.
-            DungeonLayout layout = dungeon.getLayout();
-            int random = Dungeon.PRNG.nextInt(4);
-            if(random == 1){layout.swapHorizontal();}
-            else if(random == 2){layout.swapVertical();}
-            else if(random == 3){layout.swapHorizontal(); layout.swapVertical();}
-            component.getDungeon().startNextFloor(layout);
+            //Next floor. Make it!
+            dungeon.getLayout().nextFloor();
+            component.getDungeon().startNextFloor();
             //Pop up the dungeon level. Fades out level.
             String floor = String.format("FLOOR %s%s", dungeon.getFloor() < 0 ? "B" : "", Math.abs(dungeon.getFloor()));
             int stringX = (DungeonComp.getInstance().getWidth() / 2) - (floor.length() * 8);

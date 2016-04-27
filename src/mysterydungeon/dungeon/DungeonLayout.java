@@ -7,7 +7,6 @@ package mysterydungeon.dungeon;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -19,36 +18,44 @@ import java.util.Scanner;
 public class DungeonLayout
 {
     private int[][] basemap;
+    private File[] roomMaps;
+    private int width;
+    private int height;
     
     /**
-     * Creates a DungeonLayout
+     * Creates a DungeonLayout.
      * @param basemap The base map of the dungeon.
      */
     public DungeonLayout(int[][] basemap)
     {
         this.basemap = basemap;
+        roomMaps = null;
+        width = basemap[0].length;
+        height = basemap.length;
     }
     
-    
+    /**
+     * Creates a DungeonLayout.
+     * This one creates the dungeon dynamically, using the random number generator.
+     * The parameter roomsDirectory points to a specific directory, containing all
+     * room layouts that the dungeon can contain. The dungeon will place these rooms
+     * at random, and connect them with paths. The layouts are built in the same formatting
+     * as the standard hard-coded base maps.
+     * @param roomsDirectory The directory containing all the room maps.
+     * @param width The width of the dungeon.
+     * @param height The height of the dungeon.
+     */
     public DungeonLayout(String roomsDirectory, int width, int height)
     {
         File rooms = new File(roomsDirectory);
+        this.width = width;
+        this.height = height;
         basemap = new int[width][height];
-        for(int row = 0; row < height; row++)
-        {
-            for(int col = 0; col < width; col++)
-            {
-                basemap[row][col] = 1;
-            }
-        }
         if(rooms.isDirectory())
         {
-            File[] roomMaps = rooms.listFiles((d, n) -> n.endsWith(".txt"));
-            for(File map : roomMaps)
-            {
-                System.out.println(map);
-            }
+            roomMaps = rooms.listFiles((d, n) -> n.endsWith(".txt"));
         }
+        generateFloor();
     }
     
     /**
@@ -58,6 +65,21 @@ public class DungeonLayout
     public int[][] getBaseMap()
     {
         return basemap;
+    }
+    
+    public void nextFloor()
+    {
+        if(roomMaps == null)
+        {
+            int random = Dungeon.PRNG.nextInt(4);
+            if(random == 1){swapHorizontal();}
+            else if(random == 2){swapVertical();}
+            else if(random == 3){swapHorizontal(); swapVertical();}
+        }
+        else
+        {
+            generateFloor();
+        }
     }
     
     public void swapHorizontal()
@@ -115,5 +137,21 @@ public class DungeonLayout
             ex.printStackTrace();
         }
         return returnMap;
+    }
+    
+    private void generateFloor()
+    {
+        replace(basemap, 0, 1);
+    }
+    
+    private void replace(int[][] array, int original, int replace)
+    {
+        for(int row = 0; row < array.length; row++)
+        {
+            for(int col = 0; col < array[0].length; col++)
+            {
+                if(array[row][col] == original){array[row][col] = replace;}
+            }
+        }
     }
 }
