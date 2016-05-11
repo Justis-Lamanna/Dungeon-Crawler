@@ -15,6 +15,7 @@ import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.Species;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.AnimatedEntity;
+import mysterydungeon.animation.BounceAnimation;
 import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.entity.StairEntity;
@@ -56,7 +57,7 @@ public class Dungeon
 
     private AnimatedEntity player;
     private final Species[] possibleSpecies;
-    private final ArrayList<Entity> enemies = new ArrayList<>();
+    private final ArrayList<AnimatedEntity> enemies = new ArrayList<>();
     
     private BufferedImage mask = null;
     private BufferedImage shadow = null;
@@ -129,12 +130,13 @@ public class Dungeon
         if(player == null)
         {
             //Players are a pseudo-singleton...There's only one player!
-            player = new AnimatedEntity(new SpeciesEntity(this, Species.PLAYER, null, true));
-            player.getContained().addItems(LightItem.TORCH, LightItem.FLASHLIGHT, RevealItem.SEEING_LIGHT);
+            player = new AnimatedEntity(this, Species.PLAYER, null, true);
+            player.setAnimation(new BounceAnimation(player, 24));
+            player.addItems(LightItem.TORCH, LightItem.FLASHLIGHT, RevealItem.SEEING_LIGHT);
         }
         else
         {
-            player.getContained().randomizeLocation();
+            player.randomizeLocation();
         }
         enemies.clear();
         spawnEnemies(1);
@@ -325,34 +327,18 @@ public class Dungeon
     {
             return rooms;
     }
-
-    /**
-     * Returns all the entities in this dungeon.
-     * @return List of all entities, with the player occupying slot 0.
-     */
-    public ArrayList<SpeciesEntity> getEntities()
-    {
-        ArrayList<SpeciesEntity> entities = new ArrayList<>();
-        entities.add(player.getContained());
-        for(Entity enemy : enemies)
-        {
-            AnimatedEntity convertedEnemy = (AnimatedEntity)enemy;    
-            entities.add(convertedEnemy.getContained());
-        }
-        return entities;
-    }
    
     /**
      * Returns a list of all entities in this dungeon, as animated entities.
      * @return A list of AnimatedEntities, with the player occupying slot 0.
      */
-    public ArrayList<AnimatedEntity> getAnimatedEntities()
+    public ArrayList<AnimatedEntity> getEntities()
     {
         ArrayList<AnimatedEntity> entities = new ArrayList<>();
         entities.add(player);
-        for(Entity enemy : enemies)
+        for(AnimatedEntity enemy : enemies)
         {
-                entities.add((AnimatedEntity)enemy);
+                entities.add(enemy);
         }
         return entities;
     }
@@ -366,22 +352,19 @@ public class Dungeon
         for(int count = 0; count < number; count++)
         {
             Species randomSpecies = possibleSpecies[PRNG.nextInt(possibleSpecies.length)];
-            SpeciesEntity enemy = new SpeciesEntity(this, randomSpecies);
-            while(!isValidPosition(enemy))
-            {
-                enemy.randomizeLocation();
-            }
-            enemies.add(new AnimatedEntity(enemy));
+            AnimatedEntity enemy = new AnimatedEntity(this, randomSpecies);
+            enemy.setAnimation(new BounceAnimation(enemy, 24));
+            spawnEnemy(enemy);
         }
     }
     
-    /**
-     * Spawns a specific enemy in this dungeon.
-     * @param entity The entity to spawn.
-     */
-    public void spawnEnemy(SpeciesEntity entity)
+    public void spawnEnemy(AnimatedEntity enemy)
     {
-        enemies.add(new AnimatedEntity(entity));
+        while(!isValidPosition(enemy))
+        {
+            enemy.randomizeLocation();
+        }
+        enemies.add(enemy);
     }
 
     /**
@@ -416,24 +399,15 @@ public class Dungeon
         {
             return false;
         }
-        for(Entity enemy : enemies)
+        for(AnimatedEntity enemy : enemies)
         {
-            if(newEnemyX == ((SpeciesEntity)enemy.getContained()).getTileX() && newEnemyY == ((SpeciesEntity)enemy.getContained()).getTileY())
+            if(newEnemyX == enemy.getTileX() && newEnemyY == enemy.getTileY())
             {
                 return false;
             }
         }
         return true;
     }
-
-    /*
-    public void updateAll()
-    {
-        for(AnimatedEntity enemy : enemies)
-        {
-            enemy.getEntity().doState();
-        }
-    }*/
 
     /**
      * Generates a random node contained in the map.
@@ -544,7 +518,9 @@ public class Dungeon
                 mask.setRGB(xx, yy, 0xFF000000);
             }
         }
-        setDiscovered(player.getContained().getTileX(), player.getContained().getTileY());
+        setDiscovered(
+                ((SpeciesEntity)player.getContained()).getTileX(), 
+                ((SpeciesEntity)player.getContained()).getTileY());
     }
     
     /**
@@ -603,6 +579,7 @@ public class Dungeon
                 }
                 else
                 {
+                    //This fancy formula is responsible for the fade from clear to black.
                     rgb = (int)((256.0 / (outerRadius * outerRadius)) * distance * distance);
                 }
                 if(rgb > 255){rgb = 255;}

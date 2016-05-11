@@ -22,15 +22,28 @@ import mysterydungeon.dungeon.Node;
  *
  * @author jlamanna
  */
-public class StairEntity implements Entity
+public class StairEntity implements ActionEntity
 {
+
+    /**
+     *
+     */
     public static final boolean UP = true;
+
+    /**
+     *
+     */
     public static final boolean DOWN = false;
     
     private final Node location;
     private final Dungeon dungeon;
     private final boolean type;
     
+    /**
+     *
+     * @param dungeon
+     * @param type
+     */
     public StairEntity(Dungeon dungeon, boolean type)
     {
         location = Entity.generateRandomLocation(dungeon);
@@ -71,10 +84,14 @@ public class StairEntity implements Entity
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
-    public Object getContained()
+    public Entity getContained()
     {
-        return null;
+        return this;
     }
     
     @Override

@@ -21,11 +21,19 @@ import mysterydungeon.entity.SpeciesEntity;
 public class RevealItem implements Item
 {
     
+    /**
+     *
+     */
     public static final RevealItem SEEING_LIGHT = new RevealItem("Seeing Light", "Reveals the layout of the dungeon.");
     
     private final String name;
     private final String desc;
     
+    /**
+     *
+     * @param name
+     * @param description
+     */
     public RevealItem(String name, String description)
     {
         this.name = name;

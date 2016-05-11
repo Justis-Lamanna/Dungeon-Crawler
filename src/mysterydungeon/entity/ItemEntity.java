@@ -8,6 +8,7 @@ package mysterydungeon.entity;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.item.Item;
@@ -16,12 +17,17 @@ import mysterydungeon.item.Item;
  *
  * @author Justis
  */
-public class ItemEntity implements Entity<Item>
+public class ItemEntity implements ActionEntity
 {
     private final Item item;
     private final Dungeon dungeon;
     private final Node currentNode;
     
+    /**
+     *
+     * @param item
+     * @param dungeon
+     */
     public ItemEntity(Item item, Dungeon dungeon)
     {
         this.item = item;
@@ -29,6 +35,12 @@ public class ItemEntity implements Entity<Item>
         currentNode = Entity.generateRandomLocation(dungeon);
     }
     
+    /**
+     *
+     * @param item
+     * @param dungeon
+     * @param node
+     */
     public ItemEntity(Item item, Dungeon dungeon, Node node)
     {
         this.item = item;
@@ -36,10 +48,14 @@ public class ItemEntity implements Entity<Item>
         currentNode = node;
     }
     
+    /**
+     *
+     * @return
+     */
     @Override
-    public Item getContained()
+    public Entity getContained()
     {
-        return item;
+        return this;
     }
     
     @Override
@@ -63,7 +79,7 @@ public class ItemEntity implements Entity<Item>
     @Override
     public void onTurn()
     {
-        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+        ArrayList<AnimatedEntity> entities = dungeon.getEntities();
         for(SpeciesEntity entity : entities)
         {
             if(entity.getDestinationNode().getX() == this.getX() && entity.getDestinationNode().getY() == this.getY())

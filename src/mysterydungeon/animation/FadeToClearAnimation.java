@@ -6,6 +6,7 @@
 package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
+import mysterydungeon.entity.Entity;
 
 /**
  *
@@ -19,6 +20,13 @@ public class FadeToClearAnimation implements Animation
     private final int step;
     private int counter;
     
+    /**
+     *
+     * @param x
+     * @param y
+     * @param image
+     * @param step
+     */
     public FadeToClearAnimation(int x, int y, BufferedImage image, int step)
     {
         this.x = x;
@@ -69,6 +77,16 @@ public class FadeToClearAnimation implements Animation
     public int getY()
     {
         return y;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Entity getContained()
+    {
+        return this;
     }
     
 }

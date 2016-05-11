@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Node;
 
 /**
@@ -121,7 +122,7 @@ public class BrawlMove extends Move
         {
             return new ArrayList<>();
         }
-        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+        ArrayList<AnimatedEntity> entities = dungeon.getEntities();
         for(SpeciesEntity entity : entities)
         {
             if(entity.getDestinationNode().equals(facingNode))

@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import mysterydungeon.entity.Entity;
 
 /**
  * Creates an animation for a room attack.
@@ -77,5 +78,15 @@ public class RoomAnimation implements Animation
             counter++;
             return false;
         }
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Entity getContained()
+    {
+        return this;
     }
 }

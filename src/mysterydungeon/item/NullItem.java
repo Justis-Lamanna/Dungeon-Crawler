@@ -17,6 +17,9 @@ import mysterydungeon.entity.SpeciesEntity;
 public class NullItem implements Item
 {
 
+    /**
+     *
+     */
     public static final NullItem NULL_ITEM = new NullItem();
     
     @Override

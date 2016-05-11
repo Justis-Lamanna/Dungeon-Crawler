@@ -6,7 +6,9 @@
 package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
-import mysterydungeon.entity.Entity;
+import mysterydungeon.dungeon.Dungeon;
+import mysterydungeon.entity.EntityState;
+import mysterydungeon.entity.Species;
 import mysterydungeon.entity.SpeciesEntity;
 
 /**
@@ -17,75 +19,127 @@ import mysterydungeon.entity.SpeciesEntity;
  * reasons.
  * @author jlamanna
  */
-public class AnimatedEntity implements Animation, Entity
+public class AnimatedEntity extends SpeciesEntity implements Animation
 {
-    private final SpeciesEntity entity;
-    private int counter;
-    
-    private static final int FRAMES_BETWEEN_STEP = 24;
+    Animation animation = null;
     
     /**
-     * Create an animated entity.
-     * @param entity The base entity to use.
+     * Creates an entity.
+     * Remember, the entity will only be drawn when it's added to the dungeon!
+     * @param dungeon The dungeon this entity resides in.
+     * @param species The species this entity is.
+     * @param startState The initial state of this entity.
+     * @param player True if this entity is the player, false if not.
      */
-    public AnimatedEntity(SpeciesEntity entity)
+    public AnimatedEntity(Dungeon dungeon, Species species, EntityState startState, boolean player)
     {
-        this.entity = entity;
-        counter = 0;
+        super(dungeon, species, startState, player);
+    }
+
+    /**
+     * Creates an entity.
+     * This entity will be initialized with a default state of MoveState, causing
+     * it to wander the dungeons until it sees the player. Remember, the entity will
+     * only be drawn when it's added to the dungeon!
+     * @param dungeon The dungeon this entity resides in.
+     * @param species The species this entity is.
+     * @param player True if this entity is the player, false if not.
+     */
+    public AnimatedEntity(Dungeon dungeon, Species species, boolean player)
+    {
+        super(dungeon, species, player);
+    }
+
+    /**
+     * Creates an entity.
+     * This entity will be initialized with a default state of MoveState, causing
+     * it to wander the dungeons until it sees the player. It is also, by default,
+     * not the player. Remember, the entity will only be drawn when it's added to
+     * the dungeon!
+     * @param dungeon The dungeon this entity resides in.
+     * @param species The species this entity is.
+     */
+    public AnimatedEntity(Dungeon dungeon, Species species)
+    {
+        super(dungeon, species);
     }
     
-    @Override
-    public int getX()
+    /**
+     *
+     * @param newAnimation
+     */
+    public void setAnimation(Animation newAnimation)
     {
-        return entity.getX();
+        animation = newAnimation;
     }
     
-    @Override
-    public int getY()
+    /**
+     *
+     * @return
+     */
+    public Animation getAnimation()
     {
-        if(counter < FRAMES_BETWEEN_STEP)
+        return animation;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public BufferedImage getAnimatedImage()
+    {
+        if(animation == null)
         {
-            return entity.getY();
+            return getImage();
         }
         else
         {
-            return entity.getY() - 1;
+            return animation.getImage();
         }
     }
     
-    @Override
-    public BufferedImage getImage()
+    /**
+     *
+     * @return
+     */
+    public int getAnimatedX()
     {
-        return entity.getContained().getImage();
+        if(animation == null)
+        {
+            return getX();
+        }
+        else
+        {
+            return animation.getX();
+        }
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public int getAnimatedY()
+    {
+        if(animation == null)
+        {
+            return getY();
+        }
+        else
+        {
+            return animation.getY();
+        }
     }
     
     @Override
     public boolean animate()
     {
-        if(counter == FRAMES_BETWEEN_STEP * 2)
+        if(animation == null)
         {
-            counter = 0;
+            return false;
         }
         else
         {
-            counter++;
+            return animation.animate();
         }
-        return false;
-    }
-    
-    /**
-     * Get the entity associated with this animated entity.
-     * @return The entity contained in this animated entity.
-     */
-    @Override
-    public SpeciesEntity getContained()
-    {
-        return entity;
-    }
-    
-    @Override
-    public void onTurn()
-    {
-        entity.onTurn();
     }
 }

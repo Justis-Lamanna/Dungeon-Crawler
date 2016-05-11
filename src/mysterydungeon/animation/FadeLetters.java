@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import mysterydungeon.entity.Entity;
 
 /**
  *
@@ -21,6 +22,12 @@ public class FadeLetters implements Animation
     private int counter = 0;
     private BufferedImage string;
     
+    /**
+     *
+     * @param x
+     * @param y
+     * @param word
+     */
     public FadeLetters(int x, int y, String word)
     {
         this.x = x;
@@ -80,6 +87,16 @@ public class FadeLetters implements Animation
     public int getY()
     {
         return y;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Entity getContained()
+    {
+        return this;
     }
     
     private BufferedImage getLetter(BufferedImage font, char letter)

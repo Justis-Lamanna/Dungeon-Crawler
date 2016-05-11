@@ -18,8 +18,20 @@ import mysterydungeon.entity.SpeciesEntity;
  */
 public class StaminaItem implements Item
 {
+
+    /**
+     *
+     */
     public static final Item AAA_BATTERY = new StaminaItem("AAA Battery", 50);
+
+    /**
+     *
+     */
     public static final Item C_BATTERY = new StaminaItem("C Battery", 100);
+
+    /**
+     *
+     */
     public static final Item NV_BATTERY = new StaminaItem("9V Battery", 200);
     
     private final String name;

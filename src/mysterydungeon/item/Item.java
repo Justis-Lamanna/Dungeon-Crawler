@@ -14,12 +14,35 @@ import mysterydungeon.entity.SpeciesEntity;
  */
 public interface Item
 {
+
+    /**
+     *
+     */
     public static final boolean REMOVE = true;
+
+    /**
+     *
+     */
     public static final boolean KEEP = false;
     
+    /**
+     *
+     */
     public static final int NORMAL = 0;
+
+    /**
+     *
+     */
     public static final int HP_HEALING = 1;
+
+    /**
+     *
+     */
     public static final int STAMINA_HEALING = 2;
+
+    /**
+     *
+     */
     public static final int LIGHT = 3;
     
     /**

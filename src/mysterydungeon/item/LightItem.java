@@ -19,12 +19,25 @@ import mysterydungeon.entity.SpeciesEntity;
  */
 public class LightItem implements Item
 {
+
+    /**
+     *
+     */
     public static final LightItem TORCH = new LightItem("Torch", 1.5);
+
+    /**
+     *
+     */
     public static final LightItem FLASHLIGHT = new LightItem("Flashlight", 2);
     
     private final double size;
     private final String name;
     
+    /**
+     *
+     * @param name
+     * @param size
+     */
     public LightItem(String name, double size)
     {
         this.size = size;

@@ -6,6 +6,7 @@
 package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
+import mysterydungeon.entity.Entity;
 
 /**
  *
@@ -19,6 +20,15 @@ public class FadeScreenAnimation implements Animation
     private final int steps;
     private final BufferedImage image;
     
+    /**
+     *
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param startAlpha
+     * @param steps
+     */
     public FadeScreenAnimation(int x, int y, int width, int height, int startAlpha, int steps)
     {
         this.x = x;
@@ -73,5 +83,15 @@ public class FadeScreenAnimation implements Animation
             currentAlpha = 255;
         }
         return currentAlpha == 0 || currentAlpha == 255;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @Override
+    public Entity getContained()
+    {
+        return this;
     }
 }

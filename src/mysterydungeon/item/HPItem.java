@@ -18,13 +18,30 @@ import mysterydungeon.entity.SpeciesEntity;
  */
 public class HPItem implements Item
 {
+
+    /**
+     *
+     */
     public static final HPItem REPAIR_V1 = new HPItem("Repair V1", 25);
+
+    /**
+     *
+     */
     public static final HPItem REPAIR_V2 = new HPItem("Repair V2", 50);
+
+    /**
+     *
+     */
     public static final HPItem REPAIR_V10 = new HPItem("Repair V10", 75);
     
     private final String name;
     private final int hpToHeal;
     
+    /**
+     *
+     * @param name
+     * @param HP
+     */
     public HPItem(String name, int HP)
     {
         this.name = name;

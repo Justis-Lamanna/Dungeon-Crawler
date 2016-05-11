@@ -7,6 +7,7 @@ package mysterydungeon.move;
 
 import java.util.ArrayList;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.SpeciesEntity;
@@ -18,12 +19,21 @@ import mysterydungeon.item.Item;
  */
 public class NeutralMove extends Move
 {
+
+    /**
+     *
+     */
     public static final NeutralMove BASH = new NeutralMove("Bash", 5);
     
     private final String name;
     private final int power;
     private final int stamina;
     
+    /**
+     *
+     * @param name
+     * @param power
+     */
     public NeutralMove(String name, int power)
     {
         this.name = name;
@@ -87,7 +97,7 @@ public class NeutralMove extends Move
         {
             return new ArrayList<>();
         }
-        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+        ArrayList<AnimatedEntity> entities = dungeon.getEntities();
         for(SpeciesEntity entity : entities)
         {
             if(entity.getDestinationNode().equals(facingNode))

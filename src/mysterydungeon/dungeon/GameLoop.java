@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.move.Move;
@@ -88,7 +89,7 @@ public class GameLoop
     public void updateGame(double delta)
     {
         Dungeon dungeon = comp.getDungeon();
-        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+        ArrayList<AnimatedEntity> entities = dungeon.getEntities();
         SpeciesEntity player = entities.get(0);
         boolean doneMoving = true;
         boolean isRunning = controls.isKeyDown(KeyEvent.VK_NUMPAD5);
@@ -135,7 +136,7 @@ public class GameLoop
     private boolean handleControls(Dungeon dungeon, SpeciesEntity player)
     {
         Node playerNode = player.getCurrentNode();
-        ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+        ArrayList<AnimatedEntity> entities = dungeon.getEntities();
         int directionPressed = getDirectionPressed();
         int attackPressed = getAttackPressed();
         if(controls.isKeyDown(KeyEvent.VK_CONTROL))

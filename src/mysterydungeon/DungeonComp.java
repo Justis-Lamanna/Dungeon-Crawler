@@ -18,7 +18,6 @@ import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.dungeon.RoomNode;
-import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.entity.FollowState;
 import mysterydungeon.entity.ItemEntity;
 import mysterydungeon.move.Move;
@@ -293,15 +292,15 @@ public class DungeonComp extends JComponent
 
     private void paintEntities(Graphics g)
     {
-        ArrayList<AnimatedEntity> allEntities = dungeon.getAnimatedEntities();
+        ArrayList<AnimatedEntity> allEntities = dungeon.getEntities();
         for(AnimatedEntity anim : allEntities)
         {
-            SpeciesEntity entity = anim.getContained();
-            BufferedImage entityImage = anim.getImage();
-            int drawX = calculateDrawPointX(anim.getX(), entityImage.getWidth());
-            int drawY = calculateDrawPointY(anim.getY(), entityImage.getHeight());
+            //SpeciesEntity entity = (SpeciesEntity)anim.getContained();
+            BufferedImage entityImage = anim.getAnimatedImage();
+            int drawX = calculateDrawPointX(anim.getAnimatedX(), entityImage.getWidth());
+            int drawY = calculateDrawPointY(anim.getAnimatedY(), entityImage.getHeight());
             g.drawImage(entityImage, drawX, drawY, null);
-            if(entity.getState() != null && entity.getState().getClass().equals(FollowState.class))
+            if(anim.getState() != null && anim.getState().getClass().equals(FollowState.class))
             {
                 drawX += (entityImage.getWidth() - attackImage.getWidth()) / 2;
                 drawY -= attackImage.getHeight();
@@ -309,9 +308,9 @@ public class DungeonComp extends JComponent
             }
             else
             {
-                int facing = entity.facing;
-                drawX = calculateDrawPointX(entity.getX(), 32);
-                drawY = calculateDrawPointY(entity.getY(), 32);
+                int facing = anim.facing;
+                drawX = calculateDrawPointX(anim.getX(), 32);
+                drawY = calculateDrawPointY(anim.getY(), 32);
                 if(facing >= 0)
                 {
                     BufferedImage arrow = arrowImage.getSubimage(0, facing*32, 32, 32);

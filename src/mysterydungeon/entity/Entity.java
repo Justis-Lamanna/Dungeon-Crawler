@@ -16,9 +16,8 @@ import mysterydungeon.dungeon.RoomNode;
  * This class is used to bridge the gap between a class, and its appearance
  * in the dungeon.
  * @author jlamanna
- * @param <E> The contained item.
  */
-public interface Entity<E>
+public interface Entity
 {
     /**
      * Get the X value of the entity.
@@ -39,17 +38,10 @@ public interface Entity<E>
     BufferedImage getImage();
     
     /**
-     * Get the item contained inside this entity.
-     * @return The item wrapped.
+     *
+     * @return
      */
-    E getContained();
-    
-    /**
-     * A function that will be automatically called on each turn.
-     * For entities, this will generally hand off to the state. For
-     * items and stairs, this will check for someone standing on it.
-     */
-    void onTurn();
+    Entity getContained();
     
     /**
      * Generates a random node.

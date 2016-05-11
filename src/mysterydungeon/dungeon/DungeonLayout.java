@@ -67,6 +67,9 @@ public class DungeonLayout
         return basemap;
     }
     
+    /**
+     *
+     */
     public void nextFloor()
     {
         if(roomMaps == null)
@@ -82,6 +85,9 @@ public class DungeonLayout
         }
     }
     
+    /**
+     *
+     */
     public void swapHorizontal()
     {
         int width = basemap[0].length;
@@ -97,6 +103,9 @@ public class DungeonLayout
         basemap = newMap;
     }
     
+    /**
+     *
+     */
     public void swapVertical()
     {
         int width = basemap[0].length;
@@ -112,6 +121,11 @@ public class DungeonLayout
         basemap = newMap;
     }
      
+    /**
+     *
+     * @param filename
+     * @return
+     */
     public static int[][] readLayout(String filename)
     {
         int[][] returnMap = null;

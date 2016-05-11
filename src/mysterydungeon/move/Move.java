@@ -86,6 +86,7 @@ public abstract class Move implements Comparable
     
     /**
      * Get the description of this move, for use in the move menu.
+     * @return 
      */
     public abstract String getDescription();
     
@@ -109,6 +110,10 @@ public abstract class Move implements Comparable
         }
     }
     
+    /**
+     *
+     * @param fainted
+     */
     public static void faint(SpeciesEntity fainted)
     {
         if(fainted.isPlayer())

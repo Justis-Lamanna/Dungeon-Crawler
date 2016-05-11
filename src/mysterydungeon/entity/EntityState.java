@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import mysterydungeon.MysteryDungeon;
+import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.item.Item;
@@ -216,7 +217,7 @@ public abstract class EntityState
      */
     protected boolean isOccupied(SpeciesEntity entity, Dungeon dungeon, Node node)
     {
-        ArrayList<SpeciesEntity> enemies = dungeon.getEntities();
+        ArrayList<AnimatedEntity> enemies = dungeon.getEntities();
         for(SpeciesEntity enemy : enemies)
         {
             if(enemy.equals(entity)){continue;}
@@ -244,6 +245,14 @@ public abstract class EntityState
         return entityNearby(d, player, start, range);
     }
     
+    /**
+     *
+     * @param d
+     * @param e
+     * @param start
+     * @param range
+     * @return
+     */
     protected boolean entityNearby(Dungeon d, SpeciesEntity e, Node start, int range)
     {
         Node playerNode = e.getCurrentNode();
@@ -286,6 +295,12 @@ public abstract class EntityState
         return -1;
     }
     
+    /**
+     *
+     * @param d
+     * @param e
+     * @return
+     */
     protected boolean useItem(Dungeon d, SpeciesEntity e)
     {
         if(!e.getItems().isEmpty())

@@ -7,6 +7,7 @@ package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
 import mysterydungeon.DungeonComp;
+import mysterydungeon.entity.Entity;
 
 /**
  * An interface for creating animations.
@@ -14,7 +15,7 @@ import mysterydungeon.DungeonComp;
  * methods. It's fun!
  * @author jlamanna
  */
-public interface Animation
+public interface Animation extends Entity
 {
     /**
      * Changes the various parameters.

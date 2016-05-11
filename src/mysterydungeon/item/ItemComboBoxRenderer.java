@@ -22,6 +22,10 @@ import javax.swing.ListCellRenderer;
  */
 public class ItemComboBoxRenderer extends JLabel implements ListCellRenderer
 {
+
+    /**
+     *
+     */
     public ItemComboBoxRenderer()
     {
         setHorizontalAlignment(LEFT);

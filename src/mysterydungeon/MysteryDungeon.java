@@ -31,7 +31,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
 import mysterydungeon.dungeon.Dungeon;
-import mysterydungeon.dungeon.DungeonLayout;
 import mysterydungeon.dungeon.GameLoop;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.item.Item;
@@ -116,6 +115,13 @@ public class MysteryDungeon extends JFrame{
         }   
     }
     
+    /**
+     *
+     * @param instrument
+     * @param note
+     * @param volume
+     * @param delay
+     */
     public static void playNote(int instrument, int note, int volume, int delay)
     {
         Instrument[] instr = synth.getDefaultSoundbank().getInstruments();
@@ -125,12 +131,20 @@ public class MysteryDungeon extends JFrame{
         midi[0].noteOff(note);
     }
     
+    /**
+     *
+     * @param millis
+     */
     public static void delay(long millis)
     {
         long stop = System.currentTimeMillis() + millis;
         while(System.currentTimeMillis() < stop);
     }
     
+    /**
+     *
+     * @return
+     */
     public static int getControlScheme()
     {
         return controlScheme;
@@ -146,8 +160,8 @@ public class MysteryDungeon extends JFrame{
         JPanel frame = new JPanel(new GridBagLayout());
         GridBagConstraints c;
         
-        //Dungeon dg = new Dungeon(tilemapFilename, Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, false);
-        Dungeon dg = new Dungeon(new DungeonLayout("Maps/Building/", 25, 25), Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, false);
+        Dungeon dg = new Dungeon(tilemapFilename, Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, false);
+        //Dungeon dg = new Dungeon(new DungeonLayout("Maps/Building/", 25, 25), Dungeon.TEST_LIST, Dungeon.TEST_ITEMS, false);
         dungeon = DungeonComp.getInstance(tileFilename, dg);
         JScrollPane scrollpane = new JScrollPane(dungeon);
         c = setGridBagConstraints(0, 0, 5, 1, 0.9, 1.0);

@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.DungeonComp;
+import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.item.Item;
@@ -18,7 +19,7 @@ import mysterydungeon.move.Move;
  * A class representing an entity. An entity is any moving object in a dungeon.
  * @author Justis
  */
-public class SpeciesEntity implements Entity<Species>
+public class SpeciesEntity implements ActionEntity
 {
     /**
      * A constant representing the range at which this entity should begin to attack.
@@ -30,13 +31,25 @@ public class SpeciesEntity implements Entity<Species>
     private Dungeon dungeon;
     private Species species;
     private EntityState currentState;
-    private int currentX;
-    private int currentY;
+
+    /**
+     *
+     */
+    protected int currentX;
+
+    /**
+     *
+     */
+    protected int currentY;
     private boolean moving;
     private String name;
     private boolean isPlayer;
     private int range = RANGE;
-    private BufferedImage sprite;
+
+    /**
+     *
+     */
+    protected BufferedImage sprite;
 
     private int currentHP;
     private int maxHP;
@@ -120,9 +133,9 @@ public class SpeciesEntity implements Entity<Species>
      * @return This entity's species.
      */
     @Override
-    public Species getContained()
+    public Entity getContained()
     {
-        return species;
+        return this;
     }
 
     /**
@@ -165,11 +178,19 @@ public class SpeciesEntity implements Entity<Species>
         gotoNode = n;
     }
     
+    /**
+     *
+     * @return
+     */
     public int getTileX()
     {
         return currentNode.getX();
     }
     
+    /**
+     *
+     * @return
+     */
     public int getTileY()
     {
         return currentNode.getY();
@@ -471,6 +492,10 @@ public class SpeciesEntity implements Entity<Species>
         if(isPlayer){MysteryDungeon.updateInventory(heldItems);}
     }
     
+    /**
+     *
+     * @param newItems
+     */
     public void addItems(Item... newItems)
     {
         for(Item item : newItems)
@@ -509,7 +534,7 @@ public class SpeciesEntity implements Entity<Species>
                 if(isPlayer)
                 {
                     MysteryDungeon.updateInventory(heldItems);
-                    ArrayList<SpeciesEntity> entities = dungeon.getEntities();
+                    ArrayList<AnimatedEntity> entities = dungeon.getEntities();
                     for(SpeciesEntity others : entities)
                     {
                         others.doState();
