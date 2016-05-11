@@ -14,19 +14,20 @@ import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.SpeciesEntity;
 
 /**
- *
+ * Represents a light-generating item.
+ * This type of item is for increasing the fog of war a certain amount.
  * @author jlamanna
  */
 public class LightItem implements Item
 {
 
     /**
-     *
+     * The item "Torch", which expands the FOW by 50%.
      */
     public static final LightItem TORCH = new LightItem("Torch", 1.5);
 
     /**
-     *
+     * The item "Flashlight", which doubles the FOW.
      */
     public static final LightItem FLASHLIGHT = new LightItem("Flashlight", 2);
     
@@ -34,9 +35,9 @@ public class LightItem implements Item
     private final String name;
     
     /**
-     *
-     * @param name
-     * @param size
+     * Creates a light item.
+     * @param name The name of the item.
+     * @param size The new radius of light is equal to 100 times this parameter.
      */
     public LightItem(String name, double size)
     {

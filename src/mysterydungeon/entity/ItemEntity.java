@@ -14,7 +14,7 @@ import mysterydungeon.dungeon.Node;
 import mysterydungeon.item.Item;
 
 /**
- *
+ * Represents an item as shown in the dungeon.
  * @author Justis
  */
 public class ItemEntity implements ActionEntity
@@ -24,9 +24,9 @@ public class ItemEntity implements ActionEntity
     private final Node currentNode;
     
     /**
-     *
-     * @param item
-     * @param dungeon
+     * Creates an item entity.
+     * @param item The item this entity contains.
+     * @param dungeon The dungeon this entity resides in.
      */
     public ItemEntity(Item item, Dungeon dungeon)
     {
@@ -36,26 +36,16 @@ public class ItemEntity implements ActionEntity
     }
     
     /**
-     *
-     * @param item
-     * @param dungeon
-     * @param node
+     * Creates an item entity.
+     * @param item The item this entity contains.
+     * @param dungeon The dungeon this entity resides in.
+     * @param node The node this entity should be generated on.
      */
     public ItemEntity(Item item, Dungeon dungeon, Node node)
     {
         this.item = item;
         this.dungeon = dungeon;
         currentNode = node;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Entity getContained()
-    {
-        return this;
     }
     
     @Override
@@ -89,7 +79,7 @@ public class ItemEntity implements ActionEntity
                     MysteryDungeon.updateLog(String.format("%s picked up %s.", entity.getName(), item.getName()));
                     entity.addItem(item);
                     dungeon.clearItem(this);
-                    break;
+                    return;
                 }
             }
         }

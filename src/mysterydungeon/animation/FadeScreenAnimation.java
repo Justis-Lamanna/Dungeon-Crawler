@@ -6,10 +6,9 @@
 package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
-import mysterydungeon.entity.Entity;
 
 /**
- *
+ * Creates and fades a rectangle or solid black.
  * @author Justis
  */
 public class FadeScreenAnimation implements Animation
@@ -21,13 +20,13 @@ public class FadeScreenAnimation implements Animation
     private final BufferedImage image;
     
     /**
-     *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param startAlpha
-     * @param steps
+     * Builds this animation.
+     * @param x The x position of this rectangle.
+     * @param y The y position of this rectangle.
+     * @param width The width of this rectangle.
+     * @param height The height of this rectangle.
+     * @param startAlpha The starting alpha of this rectangle.
+     * @param steps The number to subtract from the alpha each frame.
      */
     public FadeScreenAnimation(int x, int y, int width, int height, int startAlpha, int steps)
     {
@@ -83,15 +82,5 @@ public class FadeScreenAnimation implements Animation
             currentAlpha = 255;
         }
         return currentAlpha == 0 || currentAlpha == 255;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Entity getContained()
-    {
-        return this;
     }
 }

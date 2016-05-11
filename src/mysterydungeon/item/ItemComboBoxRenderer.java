@@ -24,7 +24,7 @@ public class ItemComboBoxRenderer extends JLabel implements ListCellRenderer
 {
 
     /**
-     *
+     * Creates this combo-box renderer.
      */
     public ItemComboBoxRenderer()
     {

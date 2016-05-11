@@ -9,10 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import mysterydungeon.entity.Entity;
 
 /**
- *
+ * Animation displaying text.
+ * This animation places text instantly on the screen, then fades them out.
  * @author jlamanna
  */
 public class FadeLetters implements Animation
@@ -23,10 +23,11 @@ public class FadeLetters implements Animation
     private BufferedImage string;
     
     /**
-     *
-     * @param x
-     * @param y
-     * @param word
+     * Creates this animation.
+     * The word can only contain capital letters A-Z, numbers 0-9, and space.
+     * @param x The x position of the string, in pixels.
+     * @param y The y position of the string, in pixels.
+     * @param word The word to print out.
      */
     public FadeLetters(int x, int y, String word)
     {
@@ -87,16 +88,6 @@ public class FadeLetters implements Animation
     public int getY()
     {
         return y;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Entity getContained()
-    {
-        return this;
     }
     
     private BufferedImage getLetter(BufferedImage font, char letter)

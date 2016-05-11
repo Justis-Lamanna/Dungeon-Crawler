@@ -18,7 +18,8 @@ public class NullItem implements Item
 {
 
     /**
-     *
+     * The empty item.
+     * This item is used when the bag is empty.
      */
     public static final NullItem NULL_ITEM = new NullItem();
     

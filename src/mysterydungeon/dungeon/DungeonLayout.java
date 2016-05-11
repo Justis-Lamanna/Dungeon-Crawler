@@ -19,8 +19,8 @@ public class DungeonLayout
 {
     private int[][] basemap;
     private File[] roomMaps;
-    private int width;
-    private int height;
+    private final int mapWidth;
+    private final int mapHeight;
     
     /**
      * Creates a DungeonLayout.
@@ -30,8 +30,8 @@ public class DungeonLayout
     {
         this.basemap = basemap;
         roomMaps = null;
-        width = basemap[0].length;
-        height = basemap.length;
+        mapWidth = basemap[0].length;
+        mapHeight = basemap.length;
     }
     
     /**
@@ -48,8 +48,8 @@ public class DungeonLayout
     public DungeonLayout(String roomsDirectory, int width, int height)
     {
         File rooms = new File(roomsDirectory);
-        this.width = width;
-        this.height = height;
+        mapWidth = width;
+        mapHeight = height;
         basemap = new int[width][height];
         if(rooms.isDirectory())
         {

@@ -20,17 +20,17 @@ public class HPItem implements Item
 {
 
     /**
-     *
+     * The item "Repair V1", which heals 25 health.
      */
     public static final HPItem REPAIR_V1 = new HPItem("Repair V1", 25);
 
     /**
-     *
+     * The item "Repair V2", which heals 50 health.
      */
     public static final HPItem REPAIR_V2 = new HPItem("Repair V2", 50);
 
     /**
-     *
+     * The item "Repair V10", which heals 75 health.
      */
     public static final HPItem REPAIR_V10 = new HPItem("Repair V10", 75);
     
@@ -38,9 +38,9 @@ public class HPItem implements Item
     private final int hpToHeal;
     
     /**
-     *
-     * @param name
-     * @param HP
+     * Creates an HP-healing item.
+     * @param name The name of the item.
+     * @param HP THe amount of health to heal.
      */
     public HPItem(String name, int HP)
     {

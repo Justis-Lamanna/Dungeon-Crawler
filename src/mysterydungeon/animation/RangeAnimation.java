@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import mysterydungeon.entity.Entity;
 
 /**
  * An animation for a ranged attack.
@@ -84,16 +83,5 @@ public class RangeAnimation implements Animation
     public BufferedImage getImage()
     {
         return image;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Entity getContained()
-    {
-        return this;
-    }
-    
+    }    
 }

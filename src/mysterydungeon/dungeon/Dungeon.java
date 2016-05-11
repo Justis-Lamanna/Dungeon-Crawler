@@ -383,7 +383,7 @@ public class Dungeon
     {
         for(int index = 0; index < enemies.size(); index++)
         {
-            if(enemies.get(index).getContained().equals(enemy))
+            if(enemies.get(index).equals(enemy))
             {
                 enemies.remove(enemies.get(index));
                 return;
@@ -518,9 +518,7 @@ public class Dungeon
                 mask.setRGB(xx, yy, 0xFF000000);
             }
         }
-        setDiscovered(
-                ((SpeciesEntity)player.getContained()).getTileX(), 
-                ((SpeciesEntity)player.getContained()).getTileY());
+        setDiscovered(player.getTileX(), player.getTileY());
     }
     
     /**

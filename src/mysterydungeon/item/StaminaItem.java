@@ -20,17 +20,17 @@ public class StaminaItem implements Item
 {
 
     /**
-     *
+     * The item "AAA Battery", which restores 50 stamina.
      */
     public static final Item AAA_BATTERY = new StaminaItem("AAA Battery", 50);
 
     /**
-     *
+     * The item "C Battery", which restores 100 stamina.
      */
     public static final Item C_BATTERY = new StaminaItem("C Battery", 100);
 
     /**
-     *
+     * The item "9V Battery", which restores 200 stamina.
      */
     public static final Item NV_BATTERY = new StaminaItem("9V Battery", 200);
     

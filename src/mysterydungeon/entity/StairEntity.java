@@ -15,23 +15,22 @@ import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.FadeLetters;
 import mysterydungeon.animation.FadeScreenAnimation;
 import mysterydungeon.dungeon.Dungeon;
-import mysterydungeon.dungeon.DungeonLayout;
 import mysterydungeon.dungeon.Node;
 
 /**
- *
+ * Represents the stairs of the dungeon.
  * @author jlamanna
  */
 public class StairEntity implements ActionEntity
 {
 
     /**
-     *
+     * A constant representing stairs moving up.
      */
     public static final boolean UP = true;
 
     /**
-     *
+     * A constant representing the stairs moving down.
      */
     public static final boolean DOWN = false;
     
@@ -40,9 +39,9 @@ public class StairEntity implements ActionEntity
     private final boolean type;
     
     /**
-     *
-     * @param dungeon
-     * @param type
+     * Creates the stairs.
+     * @param dungeon The dungeon these stairs reside in.
+     * @param type The type of stairs, up or down.
      */
     public StairEntity(Dungeon dungeon, boolean type)
     {
@@ -82,16 +81,6 @@ public class StairEntity implements ActionEntity
         {
             return new BufferedImage(24, 24, BufferedImage.TYPE_4BYTE_ABGR);
         }
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Entity getContained()
-    {
-        return this;
     }
     
     @Override

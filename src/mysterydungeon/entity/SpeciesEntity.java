@@ -32,24 +32,14 @@ public class SpeciesEntity implements ActionEntity
     private Species species;
     private EntityState currentState;
 
-    /**
-     *
-     */
-    protected int currentX;
-
-    /**
-     *
-     */
-    protected int currentY;
+    private int currentX;
+    private int currentY;
     private boolean moving;
     private String name;
     private boolean isPlayer;
     private int range = RANGE;
 
-    /**
-     *
-     */
-    protected BufferedImage sprite;
+    private BufferedImage sprite;
 
     private int currentHP;
     private int maxHP;
@@ -129,16 +119,6 @@ public class SpeciesEntity implements ActionEntity
     }
 
     /**
-     * Get the species of this entity.
-     * @return This entity's species.
-     */
-    @Override
-    public Entity getContained()
-    {
-        return this;
-    }
-
-    /**
      * Get the current node this entity is on.
      * @return The entity's current node.
      */
@@ -179,7 +159,7 @@ public class SpeciesEntity implements ActionEntity
     }
     
     /**
-     *
+     * Get the x position of this entity, in tiles.
      * @return
      */
     public int getTileX()
@@ -188,7 +168,7 @@ public class SpeciesEntity implements ActionEntity
     }
     
     /**
-     *
+     * Get the y position of this entity, in tiles.
      * @return
      */
     public int getTileY()

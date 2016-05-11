@@ -38,12 +38,6 @@ public interface Entity
     BufferedImage getImage();
     
     /**
-     *
-     * @return
-     */
-    Entity getContained();
-    
-    /**
      * Generates a random node.
      * More specifically, this picks a random room, then a random
      * number inside that. It makes no distinction on whether the

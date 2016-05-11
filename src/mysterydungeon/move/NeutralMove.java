@@ -11,17 +11,16 @@ import mysterydungeon.animation.AnimatedEntity;
 import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.dungeon.Node;
 import mysterydungeon.entity.SpeciesEntity;
-import mysterydungeon.item.Item;
 
 /**
- *
+ * A standard, no stamina move.
  * @author Justis
  */
 public class NeutralMove extends Move
 {
 
     /**
-     *
+     * A constant representing the move "Bash".
      */
     public static final NeutralMove BASH = new NeutralMove("Bash", 5);
     
@@ -30,9 +29,10 @@ public class NeutralMove extends Move
     private final int stamina;
     
     /**
-     *
-     * @param name
-     * @param power
+     * Creates a neutral move.
+     * These moves, by definition, require no stamina.
+     * @param name The name of the attack.
+     * @param power The power of the attack.
      */
     public NeutralMove(String name, int power)
     {

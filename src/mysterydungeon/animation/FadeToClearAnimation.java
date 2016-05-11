@@ -6,10 +6,10 @@
 package mysterydungeon.animation;
 
 import java.awt.image.BufferedImage;
-import mysterydungeon.entity.Entity;
 
 /**
- *
+ * Fades an image out.
+ * Essentially draws an image, and slowly decreases the alpha to zero.
  * @author jlamanna
  */
 public class FadeToClearAnimation implements Animation
@@ -21,11 +21,11 @@ public class FadeToClearAnimation implements Animation
     private int counter;
     
     /**
-     *
-     * @param x
-     * @param y
-     * @param image
-     * @param step
+     * Builds this animation.
+     * @param x The x position of the image to fade out.
+     * @param y The y position of the image to fade out.
+     * @param image The image to fade out.
+     * @param step The number to subtract from the alpha each frame.
      */
     public FadeToClearAnimation(int x, int y, BufferedImage image, int step)
     {
@@ -78,15 +78,4 @@ public class FadeToClearAnimation implements Animation
     {
         return y;
     }
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Entity getContained()
-    {
-        return this;
-    }
-    
 }

@@ -116,11 +116,11 @@ public class MysteryDungeon extends JFrame{
     }
     
     /**
-     *
-     * @param instrument
-     * @param note
-     * @param volume
-     * @param delay
+     * Plays a note of music.
+     * @param instrument The instrument number to use.
+     * @param note The note to play. (60 = Middle C)
+     * @param volume The "velocity" of the note. I think it's the volume?
+     * @param delay The length of time the note should play.
      */
     public static void playNote(int instrument, int note, int volume, int delay)
     {
@@ -132,8 +132,8 @@ public class MysteryDungeon extends JFrame{
     }
     
     /**
-     *
-     * @param millis
+     * Waits some amount of time.
+     * @param millis The number of milliseconds to wait.
      */
     public static void delay(long millis)
     {
@@ -142,8 +142,9 @@ public class MysteryDungeon extends JFrame{
     }
     
     /**
-     *
-     * @return
+     * Gets the current control scheme.
+     * @return MysteryDungeon.NUMPAD or MysteryDungeon.ARROW_KEYS, depending on if
+     * the numpad or arrow keys are being used for controls.
      */
     public static int getControlScheme()
     {

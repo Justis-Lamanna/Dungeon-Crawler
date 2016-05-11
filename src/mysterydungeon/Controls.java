@@ -60,6 +60,7 @@ public class Controls implements KeyListener
 	 * 
 	 * @param e The KeyEvent fired by the awt Toolkit
 	 */
+        @Override
 	public void keyPressed(KeyEvent e) {
 		//System.out.println("InputManager: A key has been pressed code=" + e.getKeyCode());
 		if( e.getKeyCode() >= 0 && e.getKeyCode() < 256 ) {
@@ -77,6 +78,7 @@ public class Controls implements KeyListener
 	 * 
 	 * @param e The KeyEvent fired by the awt Toolkit.
 	 */
+        @Override
 	public void keyReleased(KeyEvent e) {
 		//System.out.println("InputManager: A key has been released code=" + e.getKeyCode());
 		if( e.getKeyCode() >= 0 && e.getKeyCode() < 256 ) {
@@ -94,6 +96,7 @@ public class Controls implements KeyListener
 	 * 
 	 * @param e The KeyEvent fired by the awt Toolkit.
 	 */
+        @Override
 	public void keyTyped(KeyEvent e) {	
 		keyCache += e.getKeyChar();
 		

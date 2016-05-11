@@ -12,16 +12,18 @@ import mysterydungeon.entity.Species;
 import mysterydungeon.entity.SpeciesEntity;
 
 /**
- * A wrapper class, which wraps an Entity inside an Animation.
- * This class adds an animation to an entity, to make it more visually interesting.
- * Currently, this causes the entity to bounce up and down every so often.
- * While this could conceivably handle the sliding between tiles, it doesn't because
- * reasons.
+ * Couples an entity with an animation.
+ * This used to be a decorator for Entity, allowing animations to be "stacked".
+ * However, that code caused alot of awkward casts; this makes the code
+ * so much nicer. Now, this couples a SpeciesEntity with an associated
+ * animation.
+ * <br><br>
+ * Animations function the same as before.
  * @author jlamanna
  */
 public class AnimatedEntity extends SpeciesEntity implements Animation
 {
-    Animation animation = null;
+    private Animation animation = null;
     
     /**
      * Creates an entity.
@@ -65,8 +67,9 @@ public class AnimatedEntity extends SpeciesEntity implements Animation
     }
     
     /**
-     *
-     * @param newAnimation
+     * Sets the associated animation.
+     * If this animation is set to null, it acts as a non-animation.
+     * @param newAnimation The new animation to use.
      */
     public void setAnimation(Animation newAnimation)
     {
@@ -74,8 +77,8 @@ public class AnimatedEntity extends SpeciesEntity implements Animation
     }
     
     /**
-     *
-     * @return
+     * Gets the associated animation.
+     * @return The animation this AnimatedEntity uses.
      */
     public Animation getAnimation()
     {
@@ -83,8 +86,9 @@ public class AnimatedEntity extends SpeciesEntity implements Animation
     }
     
     /**
-     *
-     * @return
+     * Gets the image, after the animation has been applied.
+     * If the animation is null, this functions as getImage().
+     * @return The image, after animation.
      */
     public BufferedImage getAnimatedImage()
     {
@@ -99,8 +103,9 @@ public class AnimatedEntity extends SpeciesEntity implements Animation
     }
     
     /**
-     *
-     * @return
+     * Gets the X position of this sprite, after the animation has been applied.
+     * If the animation is null, this functions as getX().
+     * @return The X position, after animation.
      */
     public int getAnimatedX()
     {
@@ -115,8 +120,9 @@ public class AnimatedEntity extends SpeciesEntity implements Animation
     }
     
     /**
-     *
-     * @return
+     * Gets the Y position of this sprite, after the animation has been applied.
+     * If the animation is null, this functions as getY().
+     * @return The Y position, after animation.
      */
     public int getAnimatedY()
     {

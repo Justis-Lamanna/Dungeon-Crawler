@@ -30,11 +30,16 @@ import mysterydungeon.move.Move;
  * <br>2. A series of numbers, with:
  * <br>a. 0, which means an obstacle.
  * <br>b. 1, which means a standard floor.
- * <br>c. 2, which means a water tile. (Not entirely working yet)
  * <br><br>
  * Tile maps are similar, except the tile number is used. Tile 0 is the top left
  * corner, Tile 1 is the one immediately to the right, and so on, wrapping to
  * the next line when the end of the row is reached.
+ * <br><br>
+ * A note on tiles: The image containing all the tiles may be any dimension, so
+ * long as those dimensions are multiples of TILE_SIZE. The image is split into
+ * 24x24 chunks, and placed in an array. The index of this array is the tile
+ * number, and can be found by going left-to-right, top-to-bottom, adding one
+ * as you progress.
  * @author Justis
  */
 public class DungeonComp extends JComponent
@@ -111,7 +116,13 @@ public class DungeonComp extends JComponent
     {
         return singleton;
     }
-
+    
+    /**
+     * Paints everything.
+     * Depending on certain parameters, draws the current dungeon. These
+     * parameters may be modified through the toggleXXX() methods, and setDrawMap().
+     * @param g The Graphics associated with this component.
+     */
     @Override
     public void paint(Graphics g)
     {
@@ -130,7 +141,14 @@ public class DungeonComp extends JComponent
         }
         paintMoves(g);
     }
-
+    
+    /**
+     * Paints the map.
+     * More specifically, this paints the tile map, which is the base map
+     * that's been made pretty by adding walls and other fancy graphics.
+     * @param g The Graphics associated with this component.
+     * @param backgroundTile The tile number of the tile that should be used as the background.
+     */
     private void paintMap(Graphics g, int backgroundTile)
     {
         int[][] tilemap = dungeon.getTilemap();
@@ -152,7 +170,17 @@ public class DungeonComp extends JComponent
             }
         }
     }
-
+    
+    /**
+     * Paints the map.
+     * More specifically, this paints the base map, using the specified
+     * tiles to draw out the raw map.
+     * @param g The Graphics associated with this component.
+     * @param backgroundTile The tile number of the tile that should be used as the background.
+     * @param obstacleTile The tile number of the tile that should be used to represent an obstacle.
+     * @param groundTile The tile number of the tile that should be used to represent the ground.
+     * @param waterTile  The tile number of the tile that should be used to represent water.
+     */
     private void paintBasemap(Graphics g, int backgroundTile, int obstacleTile, int groundTile, int waterTile)
     {
         BufferedImage bgTile = tiles[backgroundTile];
@@ -283,7 +311,7 @@ public class DungeonComp extends JComponent
         ArrayList<ItemEntity> allItems = dungeon.getItems();
         for(ItemEntity item : allItems)
         {
-            BufferedImage itemImage = item.getContained().getImage();
+            BufferedImage itemImage = item.getImage();
             int drawX = item.getX() * TILE_SIZE;
             int drawY = item.getY() * TILE_SIZE;
             g.drawImage(itemImage, drawX, drawY, null);
@@ -295,11 +323,11 @@ public class DungeonComp extends JComponent
         ArrayList<AnimatedEntity> allEntities = dungeon.getEntities();
         for(AnimatedEntity anim : allEntities)
         {
-            //SpeciesEntity entity = (SpeciesEntity)anim.getContained();
             BufferedImage entityImage = anim.getAnimatedImage();
             int drawX = calculateDrawPointX(anim.getAnimatedX(), entityImage.getWidth());
             int drawY = calculateDrawPointY(anim.getAnimatedY(), entityImage.getHeight());
             g.drawImage(entityImage, drawX, drawY, null);
+            //TODO: Move these things to animations?
             if(anim.getState() != null && anim.getState().getClass().equals(FollowState.class))
             {
                 drawX += (entityImage.getWidth() - attackImage.getWidth()) / 2;

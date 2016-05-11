@@ -15,14 +15,15 @@ import mysterydungeon.dungeon.Dungeon;
 import mysterydungeon.entity.SpeciesEntity;
 
 /**
- *
+ * Represents a dungeon-revealing item.
+ * This type of item removes the fog of war entirely.
  * @author jlamanna
  */
 public class RevealItem implements Item
 {
     
     /**
-     *
+     * The item "Seeing Light".
      */
     public static final RevealItem SEEING_LIGHT = new RevealItem("Seeing Light", "Reveals the layout of the dungeon.");
     
@@ -30,9 +31,9 @@ public class RevealItem implements Item
     private final String desc;
     
     /**
-     *
-     * @param name
-     * @param description
+     * Creates a dungeon-revealing item.
+     * @param name The name of this item.
+     * @param description The description of this item.
      */
     public RevealItem(String name, String description)
     {

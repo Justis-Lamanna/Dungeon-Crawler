@@ -6,14 +6,12 @@
 package mysterydungeon.move;
 
 import java.util.ArrayList;
-import mysterydungeon.Controls;
 import mysterydungeon.DungeonComp;
 import mysterydungeon.MysteryDungeon;
 import mysterydungeon.animation.Animation;
 import mysterydungeon.animation.FadeLetters;
 import mysterydungeon.animation.FadeScreenAnimation;
 import mysterydungeon.dungeon.Dungeon;
-import mysterydungeon.entity.Entity;
 import mysterydungeon.entity.SpeciesEntity;
 import mysterydungeon.item.Item;
 
@@ -111,7 +109,9 @@ public abstract class Move implements Comparable
     }
     
     /**
-     *
+     * Handles fainting for all entities.
+     * If the entity is the player, execution is passed to respawn(). Else it
+     * handles the entity dropping items and other things.
      * @param fainted
      */
     public static void faint(SpeciesEntity fainted)

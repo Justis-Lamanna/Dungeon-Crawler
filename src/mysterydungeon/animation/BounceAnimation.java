@@ -9,7 +9,9 @@ import java.awt.image.BufferedImage;
 import mysterydungeon.entity.Entity;
 
 /**
- *
+ * Plays a bounce animation.
+ * Basically just bounces the entity one pixel up and down every so often.\
+ * Used as the standard animation for all overworlds.
  * @author jlamanna
  */
 public class BounceAnimation implements Animation
@@ -19,9 +21,9 @@ public class BounceAnimation implements Animation
     private int counter = 0;
     
     /**
-     *
-     * @param entity
-     * @param speed
+     * Creates a bounce animation.
+     * @param entity The entity to be bounced.
+     * @param speed The number of frames between bounce.
      */
     public BounceAnimation(AnimatedEntity entity, int speed)
     {
@@ -61,7 +63,6 @@ public class BounceAnimation implements Animation
         }
     }
 
-    @Override
     public Entity getContained()
     {
         return entity;

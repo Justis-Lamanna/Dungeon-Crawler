@@ -16,32 +16,32 @@ public interface Item
 {
 
     /**
-     *
+     * A constant representing that the item is one-time used.
      */
     public static final boolean REMOVE = true;
 
     /**
-     *
+     * A constant representing that the item is multi-use.
      */
     public static final boolean KEEP = false;
     
     /**
-     *
+     * A constant representing the average item type.
      */
     public static final int NORMAL = 0;
 
     /**
-     *
+     * A constant representing the health-healing item type.
      */
     public static final int HP_HEALING = 1;
 
     /**
-     *
+     * A constant representing the stamina-healing item type.
      */
     public static final int STAMINA_HEALING = 2;
 
     /**
-     *
+     * A constant representing the light item type.
      */
     public static final int LIGHT = 3;
     
